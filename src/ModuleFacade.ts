@@ -1,11 +1,10 @@
 
-import Spider, { AuthorData } from "./modules/searchSECO-spider/src/Spider";
+import Spider, { AuthorData, VulnerabilityData } from "./modules/searchSECO-spider/src/Spider";
 import Crawler, { CrawlData, ProjectMetadata } from "./modules/searchSECO-crawler/src/Crawler";
 import Parser from "./modules/searchSECO-parser/src/Parser";
 import { Flags } from "./Input";
 import Logger from "./modules/searchSECO-logger/src/Logger";
 import path from 'path'
-import fs from 'fs'
 import HashData from "./modules/searchSECO-parser/src/HashData";
 import config from './config/config'
 
@@ -15,37 +14,43 @@ export default class ModuleFacade {
     private static _filePath = path.join(__dirname, '../.tmp')
 
     public static async DownloadRepository(repo: string, flags: Flags): Promise<void> {
-        fs.rmSync(this._filePath, { force: true, recursive: true })
-        Logger.Debug("Calling the spider to download a repository", Logger.GetCallerLocation())
-        await this.Spider.downloadRepo(repo, this._filePath, flags.Branch)
-        Logger.Debug("Download finished", Logger.GetCallerLocation())
+        return new Promise(resolve => {
+            Logger.Debug("Purging previously downloaded project", Logger.GetCallerLocation())
+            this.Spider.clearDirectory(this._filePath).then(async () => {
+                Logger.Debug("Calling the spider to download a repository", Logger.GetCallerLocation())
+                this.Spider.downloadRepo(repo, this._filePath, flags.Branch).then(() => {
+                    Logger.Debug("Download finished", Logger.GetCallerLocation())
+                    resolve()
+                })
+            })
+        })
     }
 
     public static async UpdateVersion(repo: string, prevTag: string, newTag: string, prevUnchangedFiles: string[]): Promise<string[]> {
         Logger.Debug(`Calling the spider to switch from ${prevTag} to ${newTag}`, Logger.GetCallerLocation())
-        Logger.Warning("This is not implemented yet!", Logger.GetCallerLocation())
-        const output: string[] = []
+        const output = await this.Spider.updateVersion(prevTag, newTag, repo, prevUnchangedFiles)
         Logger.Debug("Updating finished", Logger.GetCallerLocation())
         return output
     }
 
     public static async SwitchVersion(repo: string, tag: string) {
         Logger.Debug(`Calling the spider to switch to version ${tag}`, Logger.GetCallerLocation())
-        await this.Spider.switchVersion(tag)
+        await this.Spider.switchVersion(tag, repo)
         Logger.Debug("Switching finished", Logger.GetCallerLocation())
     }
 
     public static async TrimFiles(lines: Map<string, number[]>, repo: string) {
         Logger.Debug("Calling the spider to trim files", Logger.GetCallerLocation())
-        await this.Spider.trimFiles(this._filePath, lines)
+        await this.Spider.trimFiles(repo, lines)
         Logger.Debug("Trimming finished", Logger.GetCallerLocation())
     }
 
     public static async GetAuthors(repo: string): Promise<AuthorData> {
-        Logger.Debug("Calling the spider to trim files", Logger.GetCallerLocation())
+        Logger.Debug("Calling the spider to download author data", Logger.GetCallerLocation())
         let authorData: Promise<AuthorData> = Promise.resolve(new Map())
         try {
             authorData = this.Spider.downloadAuthor(repo)
+            console.log(JSON.stringify(authorData))
         }
         catch (e) {
             Logger.Warning(`Error getting authors: ${e}`, Logger.GetCallerLocation())
@@ -73,9 +78,7 @@ export default class ModuleFacade {
 
     public static async ParseRepository(repo: string, flags: Flags): Promise<HashData[]> {
         Logger.Debug("Calling the parser to parse a repository", Logger.GetCallerLocation())
-        if (!fs.existsSync(repo))
-            return []
-        const hashes = (await Parser.ParseFiles({ path: repo })).result
+        const hashes = (await Parser.ParseFiles({ path: repo }, Logger.GetVerbosity())).result
         Logger.Debug("Parsing finished", Logger.GetCallerLocation())
         return hashes
     }
@@ -94,10 +97,9 @@ export default class ModuleFacade {
         return crawldata
     }
 
-    public static async GetVulnerabilityCommits(downloadPath: string): Promise<[string, string, Map<string, number[]>][]> {
+    public static async GetVulnerabilityCommits(downloadPath: string): Promise<VulnerabilityData[]> {
         Logger.Debug("Calling the spider to get vulnerability commits", Logger.GetCallerLocation())
-        Logger.Warning("This is not implemented yet!", Logger.GetCallerLocation())
-        return []
+        return await this.Spider.getVulns(downloadPath)
     }
 
 }

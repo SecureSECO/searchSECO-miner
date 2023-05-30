@@ -49,12 +49,13 @@ export default abstract class Command {
         const metadata = await ModuleFacade.GetProjectMetadata(this._flags.MandatoryArgument, this._flags)
 
         if (!metadata) {
-            Logger.Warning("Error getting project metadata. Moving on...", Logger.GetCallerLocation())
+            Logger.Warning("Error getting project metadata. Moving on", Logger.GetCallerLocation())
             return
         }
 
-        if (!this._flags.Branch)
+        if (!this._flags.Branch || (["main", "master"].includes(this._flags.Branch) && this._flags.Branch !== metadata.defaultBranch))
             this._flags.Branch = metadata.defaultBranch
+        Logger.Debug(`Default branch is ${metadata.defaultBranch}`, Logger.GetCallerLocation())
         
         let startingTime = await DatabaseRequest.GetProjectVersion(metadata.id.toString(), metadata.versionTime)
         if (parseInt(metadata.versionTime) <= startingTime) {
@@ -66,20 +67,15 @@ export default abstract class Command {
         await ModuleFacade.DownloadRepository(this._flags.MandatoryArgument, this._flags)        
         metadata.versionHash = await ModuleFacade.GetCurrentVersion(DOWNLOAD_LOCATION)
 
-        // if (error) {
-        //     Logger.Warning(`Error downloading repo: ${error}`, Logger.GetCallerLocation())
-        //     return
-        // }
-
         const vulnCommits = await ModuleFacade.GetVulnerabilityCommits(DOWNLOAD_LOCATION)
         Logger.Info(`${vulnCommits.length} vulnerabilities found in project`, Logger.GetCallerLocation())
         Logger.Warning("This needs to be logged to a file!", Logger.GetCallerLocation())
 
         vulnCommits.forEach(async commit => {
-            Logger.Debug(`Uploading vulnerability: ${commit[1]}`, Logger.GetCallerLocation())
+            Logger.Debug(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation())
             jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime)
             startTime = Date.now()
-            await this.uploadPartialProject(commit[0], commit[2], commit[1], metadata)
+            await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata)
         })
 
         await ModuleFacade.SwitchVersion(DOWNLOAD_LOCATION, this._flags.Branch)
@@ -203,10 +199,9 @@ export default abstract class Command {
     }
 
     private async downloadTagged(prevTag: string, currTag: string, metadata: ProjectMetadata, prevVersionTime: string, prevUnchangedFiles: string[], jobID: string, jobTime: string) {
-        const command = this
         const [unchangedFiles, [hashes, authorData]] = await Promise.all([
             ModuleFacade.UpdateVersion(DOWNLOAD_LOCATION, prevTag, currTag, prevUnchangedFiles), 
-            command.parseAndBlame(currTag, jobID, jobTime)
+            this.parseAndBlame(currTag, jobID, jobTime)
         ])
         await DatabaseRequest.UploadHashes(hashes, metadata, authorData, prevVersionTime, unchangedFiles)
         prevUnchangedFiles = unchangedFiles
@@ -234,8 +229,6 @@ export class StartCommand extends Command {
     }
 
     public async Execute(): Promise<void> {
-        DatabaseRequest.SilenceClient()
-
         this._flags.Branch = ""
         Logger.Info("Starting miner...", Logger.GetCallerLocation())
 

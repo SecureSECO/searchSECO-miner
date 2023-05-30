@@ -8,7 +8,7 @@ import Logger from "./modules/searchSECO-logger/src/Logger";
 import ModuleFacade from "./ModuleFacade";
 import { RequestType } from "./modules/searchSECO-databaseAPI/src/Request";
 import Error, { ErrorCode } from "./Error";
-import { JobResponseData } from "./modules/searchSECO-databaseAPI/src/Response";
+import { JobResponseData, TCPResponse } from "./modules/searchSECO-databaseAPI/src/Response";
 
 function serializeData(
     data: HashData[],
@@ -19,6 +19,7 @@ function serializeData(
 ): string[] {
     const transformedHashList = transformHashList(data)
     const authorSendData = getAuthors(transformedHashList, authors)
+    console.log(authorSendData)
     return [header, prevCommitTime, unchangedFiles.join('?'), hashDataToString(data, authorSendData)]
 }
 
@@ -78,19 +79,16 @@ function getAuthors(hashes: Map<string, HashData[]>, rawData: AuthorData): Map<H
             authorIndex++
         }
     })
-    console.log()
     return output
 }
 
 const PARSER_VERSION = 1
 function generateHeaderFromMetadata(metadata: ProjectMetadata) {
-    const arr = Object.keys(metadata).map(key => {
-        if (key == "defaultBranch")
-            return ''
+    const arr = Object.keys(metadata).filter(key => key !== "defaultBranch").map(key => {
         return metadata[key as keyof ProjectMetadata] || '-'
     })
     arr.push(PARSER_VERSION)
-    return `?${arr.join('?')}`
+    return arr.join('?')
 }
 
 function hashDataToString(hashData: HashData[], authors: Map<HashData, string[]>): string {    
@@ -100,7 +98,7 @@ function hashDataToString(hashData: HashData[], authors: Map<HashData, string[]>
             item.FunctionName,
             item.FileName,
             item.LineNumber,
-            `${authors.get(item).length}${authors.get(item)}`,
+            `${(authors.get(item) || []).length}${(authors.get(item) || [])}`,
             `${item.VulnCode ? `?${item.VulnCode}` : ''}`
         ].join('?')
     }).join('\n')
@@ -110,9 +108,10 @@ function serializeCrawlData(urls: CrawlData, id: string): string[] {
     const result: string[] = []
 
     result.push(`${urls.finalProjectId}?${id}`)
-    Object.keys(urls.languages).forEach(lang => {
-        result.push(`${lang}?${urls.languages[lang]}`)
-    })
+
+    result.push(Object.keys(urls.languages).map(lang => {
+        `${lang}?${urls.languages[lang]}`
+    }).join('?'))
     
     urls.URLImportanceList.forEach(({ url, importance, finalProjectId }) => {
         result.push(`${url}?${importance}?${finalProjectId}`)
@@ -140,7 +139,7 @@ export enum FinishReason {
 }
 
 export default class DatabaseRequest {
-    private static _client = new TCPClient("client", config.DB_HOST, config.DB_PORT)
+    private static _client = new TCPClient("client", config.DB_HOST, config.DB_PORT, Logger.GetVerbosity())
     private static _env: EnvironmentDTO = new EnvironmentDTO()
 
     public static SetEnvironment(env: EnvironmentDTO) {
@@ -160,12 +159,8 @@ export default class DatabaseRequest {
         await this._client.Execute(RequestType.UPLOAD, raw)
     }
 
-    public static async AddCrawledJobs(crawled: CrawlData, id: string) {
-        await this._client.Execute(RequestType.UPLOAD_CRAWL_DATA, serializeCrawlData(crawled, id))
-    }
-
-    public static SilenceClient(silent: boolean = true) {
-        this._client.Silence(silent)
+    public static async AddCrawledJobs(crawled: CrawlData, id: string): Promise<TCPResponse> {
+        return await this._client.Execute(RequestType.UPLOAD_CRAWL_DATA, serializeCrawlData(crawled, id))
     }
 
     public static async GetProjectVersion(id: string, versionTime: string):Promise<number> {
