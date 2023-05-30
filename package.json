@@ -1,0 +1,28 @@
+{
+  "name": "searchseco-miner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "npm run build-ts && copyfiles -f .\\src\\config\\.env .\\dist\\config",
+    "build-ts": "tsc",
+    "start": "npm run build && node dist/main.js start -V 5"
+  },
+  "author": "Wouter Beffers",
+  "license": "MIT",
+  "dependencies": {
+    "copyfiles": "^2.4.1",
+    "dotenv": "^16.0.3",
+    "prompt-sync": "^4.2.0",
+    "searchseco-crawler": "file:src/modules/searchSECO-crawler",
+    "searchseco-databaseapi": "file:src/modules/searchSECO-databaseAPI",
+    "searchseco-logger": "file:src/modules/searchSECO-logger",
+    "searchseco-parser": "file:src/modules/searchSECO-parser",
+    "searchseco-spider": "file:src/modules/searchSECO-spider",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/yargs": "^17.0.24"
+  }
+}
