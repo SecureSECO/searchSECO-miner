@@ -9,13 +9,13 @@ import HashData from "./modules/searchSECO-parser/src/HashData";
 import config from './config/config'
 
 export default class ModuleFacade {
-    public static Spider: Spider = new Spider()
+    public static Spider: Spider = new Spider(Logger.GetVerbosity())
     public static Crawler: Crawler = new Crawler(config.GITHUB_TOKEN)
     private static _filePath = path.join(__dirname, '../.tmp')
 
     public static async DownloadRepository(repo: string, flags: Flags): Promise<void> {
         return new Promise(resolve => {
-            Logger.Debug("Purging previously downloaded project", Logger.GetCallerLocation())
+            Logger.Debug("Deleting previously downloaded project", Logger.GetCallerLocation())
             this.Spider.clearDirectory(this._filePath).then(async () => {
                 Logger.Debug("Calling the spider to download a repository", Logger.GetCallerLocation())
                 this.Spider.downloadRepo(repo, this._filePath, flags.Branch).then(() => {
@@ -47,10 +47,9 @@ export default class ModuleFacade {
 
     public static async GetAuthors(repo: string): Promise<AuthorData> {
         Logger.Debug("Calling the spider to download author data", Logger.GetCallerLocation())
-        let authorData: Promise<AuthorData> = Promise.resolve(new Map())
+        let authorData: AuthorData = new Map()
         try {
-            authorData = this.Spider.downloadAuthor(repo)
-            console.log(JSON.stringify(authorData))
+            authorData = await this.Spider.downloadAuthor(repo)
         }
         catch (e) {
             Logger.Warning(`Error getting authors: ${e}`, Logger.GetCallerLocation())
@@ -78,7 +77,7 @@ export default class ModuleFacade {
 
     public static async ParseRepository(repo: string, flags: Flags): Promise<HashData[]> {
         Logger.Debug("Calling the parser to parse a repository", Logger.GetCallerLocation())
-        const hashes = (await Parser.ParseFiles({ path: repo }, Logger.GetVerbosity())).result
+        const hashes = (await Parser.ParseFiles(repo, Logger.GetVerbosity())).result
         Logger.Debug("Parsing finished", Logger.GetCallerLocation())
         return hashes
     }

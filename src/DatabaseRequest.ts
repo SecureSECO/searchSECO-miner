@@ -19,7 +19,6 @@ function serializeData(
 ): string[] {
     const transformedHashList = transformHashList(data)
     const authorSendData = getAuthors(transformedHashList, authors)
-    console.log(authorSendData)
     return [header, prevCommitTime, unchangedFiles.join('?'), hashDataToString(data, authorSendData)]
 }
 
@@ -35,8 +34,8 @@ function transformHashList(data: HashData[]): Map<string, HashData[]>{
             output.get(hash.FileName)[output.get(hash.FileName).length - 2].LineNumber
         ) {
             const j = output.get(hash.FileName).length - 1
-            const temp = JSON.parse(JSON.stringify(output.get(hash.FileName)[j-1]))
-            output.get(hash.FileName)[j] = output.get(hash.FileName)[j-1]
+            const temp = JSON.parse(JSON.stringify(output.get(hash.FileName)[j]))
+            output.get(hash.FileName)[j] = JSON.parse(JSON.stringify(output.get(hash.FileName)[j-1]))
             output.get(hash.FileName)[j-1] = temp
         }
     })
@@ -46,15 +45,15 @@ function transformHashList(data: HashData[]): Map<string, HashData[]>{
 function getAuthors(hashes: Map<string, HashData[]>, rawData: AuthorData): Map<HashData, string[]> {
     const output = new Map<HashData, string[]>()
 
-    rawData.forEach((value, key) => {
+    rawData.forEach((_, key) => {
         let currentEnd = -1, hashesIndex = -1, authorIndex = 0
         let dupes: Map<string, number>
 
         const h = hashes.get(key) || []
         const raw = rawData.get(key) || []
 
-        while (hashesIndex < h.length || authorIndex < raw.length) {
-            if (authorIndex == raw.length || currentEnd < raw[authorIndex].line) {
+        while (h.length > 0 && raw.length > 0 && (hashesIndex < h.length || authorIndex < raw.length)) {
+            if (authorIndex == raw.length || (raw[authorIndex] && currentEnd < raw[authorIndex].line)) {
                 hashesIndex++
                 if (hashesIndex >= h.length)
                     break
@@ -70,10 +69,11 @@ function getAuthors(hashes: Map<string, HashData[]>, rawData: AuthorData): Map<H
                 const author = cd.commit.author
                 const mail = cd.commit.authorMail
                 const toAdd = `?${author.replace('?','')}?${mail.replace('?','')}`
-                if (dupes.get(toAdd) == 0) {
+                if (!dupes.get(toAdd) || dupes.get(toAdd) == 0) {
                     if (!output.has(h[hashesIndex]))
                         output.set(h[hashesIndex], [])
                     output.get(h[hashesIndex]).push(toAdd)
+                    dupes.set(toAdd, 1)
                 }
             }
             authorIndex++
@@ -96,7 +96,7 @@ function hashDataToString(hashData: HashData[], authors: Map<HashData, string[]>
         return [
             item.Hash,
             item.FunctionName,
-            item.FileName,
+            item.FileName.split(/\\|\//).pop(),
             item.LineNumber,
             `${(authors.get(item) || []).length}${(authors.get(item) || [])}`,
             `${item.VulnCode ? `?${item.VulnCode}` : ''}`
@@ -164,10 +164,11 @@ export default class DatabaseRequest {
     }
 
     public static async GetProjectVersion(id: string, versionTime: string):Promise<number> {
+        Logger.Debug(`Getting previous project`, Logger.GetCallerLocation())
         const { responseCode, response } = await this._client.Execute(RequestType.GET_PREVIOUS_PROJECT, [id, versionTime])
         if (response.length == 0)
             return 0
-        return parseInt(response[0].split('\n')[0].split('?')[0]) || 0
+        return parseInt(response[0].raw.split('\n')[0].split('?')[0]) || 0
     }
 
     public static async GetNextJob(): Promise<string> {
