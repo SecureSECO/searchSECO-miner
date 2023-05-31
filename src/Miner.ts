@@ -17,11 +17,11 @@ export default class Miner {
         if (input.Flags.Help)
             commandFactory.PrintHelpMessage(input.Command)
         else if (input.Flags.Version)
-            Logger.Info("Versions are not implemented yet", Logger.GetCallerLocation())
+            console.log("v1.0.0")
         else {
             const env = new EnvironmentDTO()
             const command = commandFactory.GetCommand(input.Command, input.Flags, env)
-            await command?.Execute()
+            command?.Execute()
         }
     }
 }

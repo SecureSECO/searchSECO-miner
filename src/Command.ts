@@ -13,6 +13,19 @@ import { JobResponseData } from "./modules/searchSECO-databaseAPI/src/Response";
 const DOWNLOAD_LOCATION = path.join(__dirname, "../.tmp")
 const TAGS_COUNT = 20
 
+export class SigInt {
+    public static Stop: boolean = false
+    public static IsStopped: boolean = false
+    public static async StopProcess() {
+        this.Stop = true
+        while (!this.IsStopped)
+            await new Promise(resolve => (setTimeout(resolve, 5000)))
+    }
+    public static ResumeProcess() {
+        this.Stop = false
+    }
+}
+
 export default abstract class Command {
     protected static _helpMessageText: string
     protected _flags: Flags
@@ -232,8 +245,7 @@ export class StartCommand extends Command {
         this._flags.Branch = ""
         Logger.Info("Starting miner...", Logger.GetCallerLocation())
 
-        let stop = false
-        while (!stop) {
+        while (!SigInt.Stop) {
             const job = await DatabaseRequest.GetNextJob()
             const splitted = job.split('?')
             switch (splitted[0]) {
@@ -258,6 +270,8 @@ export class StartCommand extends Command {
                     break;
             }
         }
+
+        SigInt.IsStopped = true
     }
 
     public HandleTimeout() {
