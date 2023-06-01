@@ -19,7 +19,7 @@ function serializeData(
 ): string[] {
     const transformedHashList = transformHashList(data)
     const authorSendData = getAuthors(transformedHashList, authors)
-    return [header, prevCommitTime, unchangedFiles.join('?'), hashDataToString(data, authorSendData)]
+    return [header, prevCommitTime, unchangedFiles.join('?'), ...hashDataToString(data, authorSendData)]
 }
 
 function transformHashList(data: HashData[]): Map<string, HashData[]>{
@@ -91,17 +91,17 @@ function generateHeaderFromMetadata(metadata: ProjectMetadata) {
     return arr.join('?')
 }
 
-function hashDataToString(hashData: HashData[], authors: Map<HashData, string[]>): string {    
+function hashDataToString(hashData: HashData[], authors: Map<HashData, string[]>): string[] {    
     return hashData.map(item => {
         return [
             item.Hash,
             item.FunctionName,
             item.FileName.split(/\\|\//).pop(),
             item.LineNumber,
-            `${(authors.get(item) || []).length}${(authors.get(item) || [])}`,
-            `${item.VulnCode ? `?${item.VulnCode}` : ''}`
+            `${(authors.get(item) || []).length}${(authors.get(item) || []).join('')}`,
+            `${item.VulnCode || ''}`
         ].join('?')
-    }).join('\n')
+    })
 }
 
 function serializeCrawlData(urls: CrawlData, id: string): string[] {

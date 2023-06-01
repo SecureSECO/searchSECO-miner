@@ -223,7 +223,7 @@ export default abstract class Command {
     private trimHashes(hashes: HashData[], lines: Map<string, number[]>) {
         const result: HashData[] = []
         hashes.forEach(hash => {
-            lines.get(hash.FileName).forEach(line => {
+            (lines.get(hash.FileName) || []).forEach(line => {
                 if (hash.LineNumber <= line && line <= hash.LineNumberEnd) {
                     result.push(hash)
                     return
