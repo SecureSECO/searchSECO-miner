@@ -25,7 +25,7 @@ function serializeData(
 function transformHashList(data: HashData[]): Map<string, HashData[]>{
     const output = new Map<string, HashData[]>()
     data.forEach(hash => {
-        if (!output.has(hash.FileName))
+        if (hash && !output.has(hash.FileName))
             output.set(hash.FileName, [])
         output.get(hash.FileName).push(hash)
 
