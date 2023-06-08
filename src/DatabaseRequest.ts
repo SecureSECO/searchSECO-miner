@@ -28,7 +28,9 @@ function transformHashList(data: HashData[]): Map<string, HashData[]>{
     data.forEach(hash => {
         if (hash && !output.has(hash.FileName))
             output.set(hash.FileName, [])
-        output.get(hash.FileName).push(hash)
+        
+        if (output.get(hash.FileName))
+            output.get(hash.FileName).push(hash)
 
         if (output.get(hash.FileName).length > 1 &&
             output.get(hash.FileName)[output.get(hash.FileName).length - 1].LineNumber <
