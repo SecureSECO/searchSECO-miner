@@ -8,6 +8,7 @@ interface ENV {
     DB_PORT: string | number | undefined;
     DB_HOST: string | undefined;
     DAO_CONTRACT_ADDRESS: `0x${string}` | undefined;
+    PERSONAL_WALLET_ADDRESS: `0x${string}` | undefined
     PRIVATE_KEY: string | undefined;
     DEV_MNEMONIC: string | undefined;
     GITHUB_TOKEN: string | undefined;
@@ -18,6 +19,7 @@ interface Config {
     DB_PORT: string | number | undefined;
     DB_HOST: string | undefined;
     DAO_CONTRACT_ADDRESS: `0x${string}` | undefined;
+    PERSONAL_WALLET_ADDRESS: `0x${string}` | undefined
     PRIVATE_KEY: string | undefined;
     DEV_MNEMONIC: string | undefined;
     GITHUB_TOKEN: string | undefined
@@ -29,6 +31,7 @@ function getConfig(): ENV {
         DB_PORT: process.env.DB_PORT,
         DB_HOST: process.env.DB_HOST,
         DAO_CONTRACT_ADDRESS: process.env.DAO_CONTRACT_ADDRESS as `0x${string}`,
+        PERSONAL_WALLET_ADDRESS: process.env.PERSONAL_WALLET_ADDRESS as `0x${string}`,
         PRIVATE_KEY: process.env.PRIVATE_KEY,
         DEV_MNEMONIC: process.env.DEV_MNEMONIC,
         GITHUB_TOKEN: process.env.GITHUB_TOKEN

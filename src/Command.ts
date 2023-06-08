@@ -9,6 +9,7 @@ import DatabaseRequest, { FinishReason } from "./DatabaseRequest";
 import { ProjectMetadata } from "./modules/searchSECO-crawler/src/Crawler";
 import Error from './Error'
 import { JobResponseData } from "./modules/searchSECO-databaseAPI/src/Response";
+import config from "./config/config";
 
 const DOWNLOAD_LOCATION = path.join(__dirname, "../.tmp")
 const TAGS_COUNT = 20
@@ -19,7 +20,7 @@ export class SigInt {
     public static async StopProcess() {
         this.Stop = true
         while (!this.IsStopped)
-            await new Promise(resolve => (setTimeout(resolve, 5000)))
+            await new Promise(resolve => (setTimeout(resolve, 1000)))
     }
     public static ResumeProcess() {
         this.Stop = false
@@ -242,10 +243,15 @@ export class StartCommand extends Command {
     }
 
     public async Execute(): Promise<void> {
-        this._flags.Branch = ""
         Logger.Info("Starting miner...", Logger.GetCallerLocation())
+        Logger.Info(`Checking presence of miner in the database with wallet ${config.PERSONAL_WALLET_ADDRESS}`, Logger.GetCallerLocation())
+        const added = await DatabaseRequest.AddMinerToDatabase()
+        if (added)
+            Logger.Info("New miner added to database", Logger.GetCallerLocation())
+        else await DatabaseRequest.SetMinerStatus('running')
 
         while (!SigInt.Stop) {
+            this._flags.Branch = ""
             const job = await DatabaseRequest.GetNextJob()
             const splitted = job.split('?')
             switch (splitted[0]) {
@@ -297,4 +303,11 @@ export class StartCommand extends Command {
     }
 }
 
+export class ClaimCommand extends Command {
+    protected static _helpMessageText: string
 
+    public Execute(): Promise<void> {
+        return Promise.resolve()
+    }
+
+}
