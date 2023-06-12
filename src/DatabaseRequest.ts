@@ -248,7 +248,7 @@ export default class DatabaseRequest {
     }
 
     public static async AddMinerToDatabase(id: string): Promise<boolean> {
-        const query = "INSERT INTO rewarding.miners (id, wallet, claimable_hashes, status) VALUES (?, ?, ?, 'running') IF NOT EXISTS;"
+        const query = "INSERT INTO rewarding.miners (id, wallet, claimable_hashes, status) VALUES (?, ?, ?, 'running');"
         const result = await cassandraClient.execute(query, [ 
             cassandra.types.Uuid.fromString(id),
             config.PERSONAL_WALLET_ADDRESS,
