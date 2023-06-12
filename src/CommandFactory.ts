@@ -11,9 +11,9 @@ export default class CommandFactory {
         }
     }
 
-    public GetCommand(cmd: string, flags: Flags, env: EnvironmentDTO): Command | undefined {
+    public GetCommand(cmd: string, id: string, flags: Flags, env: EnvironmentDTO): Command | undefined {
         switch (cmd) {
-            case "start": return new StartCommand(flags, env)
+            case "start": return new StartCommand(id, flags, env)
             default: return undefined
         }
     }

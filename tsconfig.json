@@ -18,7 +18,7 @@
   "include": [
     "src/**/*",
     "src/config/.env", 
-    "src/main.ts"  
+    "src/main.ts"
     ],
   "exclude": [
     "**/tests/*",

@@ -23,9 +23,11 @@
     "searchseco-logger": "file:src/modules/searchSECO-logger",
     "searchseco-parser": "file:src/modules/searchSECO-parser",
     "searchseco-spider": "file:src/modules/searchSECO-spider",
+    "uuid": "^9.0.0",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.1",
     "@types/yargs": "^17.0.24"
   }
 }

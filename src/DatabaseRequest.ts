@@ -10,6 +10,7 @@ import { RequestType } from "./modules/searchSECO-databaseAPI/src/Request";
 import Error, { ErrorCode } from "./Error";
 import { JobResponseData, TCPResponse } from "./modules/searchSECO-databaseAPI/src/Response";
 import cassandra from 'cassandra-driver'
+import Cache from "./Cache";
 
 function serializeData(
     data: HashData[],
@@ -26,7 +27,10 @@ function serializeData(
 function transformHashList(data: HashData[]): Map<string, HashData[]>{
     const output = new Map<string, HashData[]>()
     data.forEach(hash => {
-        if (hash && !output.has(hash.FileName))
+        if (!hash)
+            return
+
+        if (!output.has(hash.FileName))
             output.set(hash.FileName, [])
         
         if (output.get(hash.FileName))
@@ -101,7 +105,7 @@ function hashDataToString(hashData: HashData[], authors: Map<HashData, string[]>
             item.FunctionName,
             item.FileName.split(/\\|\//).pop(),
             item.LineNumber,
-            `${(authors.get(item) || []).length}${(authors.get(item) || []).join('')}`,
+            `${(authors.get(item) || []).length}${(authors.get(item) || []).join('')}`.replace(/&lt;/, '<').replace(/&gt;/g, '>'),
             `${item.VulnCode || ''}`
         ].join('?')
     })
@@ -152,6 +156,11 @@ export enum FinishReason {
 export default class DatabaseRequest {
     private static _client = new TCPClient("client", config.DB_HOST, config.DB_PORT, Logger.GetVerbosity())
     private static _env: EnvironmentDTO = new EnvironmentDTO()
+    private static _minerId: string = ''
+
+    public static SetMinerId(id: string) {
+        this._minerId = id
+    }
 
     public static SetEnvironment(env: EnvironmentDTO) {
         this._env = env
@@ -179,8 +188,8 @@ export default class DatabaseRequest {
 
     public static async GetProjectVersion(id: string, versionTime: string):Promise<number> {
         Logger.Debug(`Getting previous project`, Logger.GetCallerLocation())
-        const { responseCode, response } = await this._client.Execute(RequestType.GET_PREVIOUS_PROJECT, [id, versionTime])
-        if (response.length == 0)
+        const { responseCode, response } = await this._client.Execute(RequestType.GET_PREVIOUS_PROJECT, [ `${id}?${versionTime}` ])
+        if (response.length == 0 || responseCode != 200)
             return 0
         return parseInt(response[0].raw.split('\n')[0].split('?')[0]) || 0
     }
@@ -206,37 +215,55 @@ export default class DatabaseRequest {
         }
     }
 
-    public static async RetrieveClaimableHashCount(): Promise<number> {
+    public static async RetrieveClaimableHashCount(): Promise<cassandra.types.Long> {
         Logger.Debug("Connecting with the database to retrieve all claimable hashes", Logger.GetCallerLocation())
-        const query = "SELECT claimable_hashes FROM miners WHERE wallet=?;"
-        const result = await cassandraClient.execute(query, [config.PERSONAL_WALLET_ADDRESS], { prepare: true })
+        const query = "SELECT claimable_hashes FROM miners WHERE id=? AND wallet=?;"
+        const result = await cassandraClient.execute(query, [
+            cassandra.types.Uuid.fromString(this._minerId),
+            config.PERSONAL_WALLET_ADDRESS
+        ], { prepare: true })
         return result.rows[0]?.claimable_hashes || 0
     }
 
     private static async incrementClaimableHashes(amount: number) {
         Logger.Debug(`Incrementing claimable hash count by ${amount}`, Logger.GetCallerLocation())
         const currentCount = await this.RetrieveClaimableHashCount()
-        const query = "UPDATE rewarding.miners SET claimable_hashes=? WHERE wallet=?;"
-        const newTotal = new Number(currentCount + amount)
-        await cassandraClient.execute(query, [ newTotal, config.PERSONAL_WALLET_ADDRESS ], { prepare: true })
-        Logger.Debug(`Total of claimable hashes is now ${currentCount + amount}`, Logger.GetCallerLocation())
+        const newCount = currentCount.add(cassandra.types.Long.fromNumber(amount))
+        const query = "UPDATE rewarding.miners SET claimable_hashes=? WHERE id=? AND wallet=?;"
+        await cassandraClient.execute(query, [ 
+            newCount, 
+            cassandra.types.Uuid.fromString(this._minerId),
+            config.PERSONAL_WALLET_ADDRESS 
+        ], { prepare: true })
+        Logger.Debug(`Total of claimable hashes is now ${newCount.low}`, Logger.GetCallerLocation())
     }
 
     public static async ResetClaimableHashCount() {
         Logger.Debug("Resetting claimable hash count", Logger.GetCallerLocation())
         const query = "UPDATE rewarding.miners SET claimable_hashes=? WHERE wallet=?;"
-        await cassandraClient.execute(query, [ 0, config.PERSONAL_WALLET_ADDRESS ], { prepare: true })
+        await cassandraClient.execute(query, [ 
+            0, 
+            config.PERSONAL_WALLET_ADDRESS 
+        ], { prepare: true })
     }
 
-    public static async AddMinerToDatabase(): Promise<boolean> {
-        const query = "INSERT INTO rewarding.miners (wallet, claimable_hashes, status) VALUES (?, 0, 'running') IF NOT EXISTS;"
-        const result = await cassandraClient.execute(query, [ config.PERSONAL_WALLET_ADDRESS ], { prepare: true })
+    public static async AddMinerToDatabase(id: string): Promise<boolean> {
+        const query = "INSERT INTO rewarding.miners (id, wallet, claimable_hashes, status) VALUES (?, ?, ?, 'running') IF NOT EXISTS;"
+        const result = await cassandraClient.execute(query, [ 
+            cassandra.types.Uuid.fromString(id),
+            config.PERSONAL_WALLET_ADDRESS,
+            cassandra.types.Long.fromNumber(0)
+        ], { prepare: true })
         return result.rows[0]['[applied]']
     }
 
-    public static async SetMinerStatus(status: string) {
-        const query = "UPDATE rewarding.miners SET status=? WHERE wallet=?;"
-        Logger.Debug(`Updating miner status to ${status}`, Logger.GetCallerLocation())
-        await cassandraClient.execute(query, [ status, config.PERSONAL_WALLET_ADDRESS ], { prepare: true })
+    public static async SetMinerStatus(id: string, status: string) {
+        const query = "UPDATE rewarding.miners SET status=? WHERE id=? AND wallet=?;"
+        Logger.Debug(`Setting miner status to ${status}`, Logger.GetCallerLocation())
+        await cassandraClient.execute(query, [ 
+            status, 
+            cassandra.types.Uuid.fromString(id), 
+            config.PERSONAL_WALLET_ADDRESS 
+        ], { prepare: true })
     }
 }
