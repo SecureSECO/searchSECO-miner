@@ -5,6 +5,12 @@ import CommandFactory from './CommandFactory'
 import EnvironmentDTO from './EnvironmentDTO'
 
 export default class Miner {
+    private _id: string
+
+    constructor(id: string) {
+        this._id = id
+    }
+
     public async Start() {
         const input = InputParser.Parse(yargs.argv)
 
@@ -20,7 +26,7 @@ export default class Miner {
             console.log("v1.0.0")
         else {
             const env = new EnvironmentDTO()
-            const command = commandFactory.GetCommand(input.Command, input.Flags, env)
+            const command = commandFactory.GetCommand(input.Command, this._id, input.Flags, env)
             command?.Execute()
         }
     }

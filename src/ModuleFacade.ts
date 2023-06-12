@@ -13,6 +13,10 @@ export default class ModuleFacade {
     public static Crawler: Crawler = new Crawler(config.GITHUB_TOKEN)
     private static _filePath = path.join(__dirname, '../.tmp')
 
+    public static async SetFilePath(path: string) {
+        this._filePath = path
+    }
+
     public static async DownloadRepository(repo: string, flags: Flags): Promise<void> {
         return new Promise(resolve => {
             Logger.Debug("Deleting previously downloaded project", Logger.GetCallerLocation())

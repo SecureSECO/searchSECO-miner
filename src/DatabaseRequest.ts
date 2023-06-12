@@ -9,6 +9,8 @@ import ModuleFacade from "./ModuleFacade";
 import { RequestType } from "./modules/searchSECO-databaseAPI/src/Request";
 import Error, { ErrorCode } from "./Error";
 import { JobResponseData, TCPResponse } from "./modules/searchSECO-databaseAPI/src/Response";
+import cassandra from 'cassandra-driver'
+import Cache from "./Cache";
 
 function serializeData(
     data: HashData[],
@@ -25,9 +27,14 @@ function serializeData(
 function transformHashList(data: HashData[]): Map<string, HashData[]>{
     const output = new Map<string, HashData[]>()
     data.forEach(hash => {
-        if (hash && !output.has(hash.FileName))
+        if (!hash)
+            return
+
+        if (!output.has(hash.FileName))
             output.set(hash.FileName, [])
-        output.get(hash.FileName).push(hash)
+        
+        if (output.get(hash.FileName))
+            output.get(hash.FileName).push(hash)
 
         if (output.get(hash.FileName).length > 1 &&
             output.get(hash.FileName)[output.get(hash.FileName).length - 1].LineNumber <
@@ -98,7 +105,7 @@ function hashDataToString(hashData: HashData[], authors: Map<HashData, string[]>
             item.FunctionName,
             item.FileName.split(/\\|\//).pop(),
             item.LineNumber,
-            `${(authors.get(item) || []).length}${(authors.get(item) || []).join('')}`,
+            `${(authors.get(item) || []).length}${(authors.get(item) || []).join('')}`.replace(/&lt;/, '<').replace(/&gt;/g, '>'),
             `${item.VulnCode || ''}`
         ].join('?')
     })
@@ -109,9 +116,10 @@ function serializeCrawlData(urls: CrawlData, id: string): string[] {
 
     result.push(`${urls.finalProjectId}?${id}`)
 
-    result.push(Object.keys(urls.languages).map(lang => {
-        `${lang}?${urls.languages[lang]}`
-    }).join('?'))
+    const langs = Object.keys(urls.languages).map(lang => `${lang}?${urls.languages[lang]}`
+    ).join('?')
+
+    result.push(langs)
     
     urls.URLImportanceList.forEach(({ url, importance, finalProjectId }) => {
         result.push(`${url}?${importance}?${finalProjectId}`)
@@ -120,6 +128,13 @@ function serializeCrawlData(urls: CrawlData, id: string): string[] {
 
     return result
 }
+
+const cassandraClient = new cassandra.Client({
+    contactPoints: [ `${config.DB_HOST}:8002` ],
+    localDataCenter: 'dcscience-vs317.science.uu.nl',
+    authProvider: new cassandra.auth.PlainTextAuthProvider('cassandra', 'cassandra'),
+    keyspace: 'rewarding'
+})
 
 export enum FinishReason {
     SUCCESS,
@@ -141,6 +156,11 @@ export enum FinishReason {
 export default class DatabaseRequest {
     private static _client = new TCPClient("client", config.DB_HOST, config.DB_PORT, Logger.GetVerbosity())
     private static _env: EnvironmentDTO = new EnvironmentDTO()
+    private static _minerId: string = ''
+
+    public static SetMinerId(id: string) {
+        this._minerId = id
+    }
 
     public static SetEnvironment(env: EnvironmentDTO) {
         this._env = env
@@ -156,7 +176,10 @@ export default class DatabaseRequest {
         const raw = serializeData(hashes, generateHeaderFromMetadata(metadata), authordata, prevCommitTime, unchangedFiles)
         Logger.Info(`Uploading ${hashes.length} methods to the database`, Logger.GetCallerLocation())
         Logger.Warning("This needs to be logged to a file!", Logger.GetCallerLocation())
-        await this._client.Execute(RequestType.UPLOAD, raw)
+        const { responseCode } = await this._client.Execute(RequestType.UPLOAD, raw)
+        if (responseCode == 200) 
+            await this.incrementClaimableHashes(hashes.length)
+        else Logger.Warning(`Skipping addition of ${hashes.length} hashes to the claimable hashcount`, Logger.GetCallerLocation())
     }
 
     public static async AddCrawledJobs(crawled: CrawlData, id: string): Promise<TCPResponse> {
@@ -165,8 +188,8 @@ export default class DatabaseRequest {
 
     public static async GetProjectVersion(id: string, versionTime: string):Promise<number> {
         Logger.Debug(`Getting previous project`, Logger.GetCallerLocation())
-        const { responseCode, response } = await this._client.Execute(RequestType.GET_PREVIOUS_PROJECT, [id, versionTime])
-        if (response.length == 0)
+        const { responseCode, response } = await this._client.Execute(RequestType.GET_PREVIOUS_PROJECT, [ `${id}?${versionTime}` ])
+        if (response.length == 0 || responseCode != 200)
             return 0
         return parseInt(response[0].raw.split('\n')[0].split('?')[0]) || 0
     }
@@ -178,7 +201,7 @@ export default class DatabaseRequest {
     }
 
     public static async UpdateJob(jobID: string, jobTime: string): Promise<string> {
-        const { response } = await this._client.Execute(RequestType.UPDATE_JOB, [jobID, jobTime])
+        const { response } = await this._client.Execute(RequestType.UPDATE_JOB, [`${jobID}?${jobTime}`])
         return response[0]
     }
 
@@ -190,5 +213,57 @@ export default class DatabaseRequest {
                 Error.Code = ErrorCode.HANDLED_ERRNO
             }
         }
+    }
+
+    public static async RetrieveClaimableHashCount(): Promise<cassandra.types.Long> {
+        Logger.Debug("Connecting with the database to retrieve all claimable hashes", Logger.GetCallerLocation())
+        const query = "SELECT claimable_hashes FROM miners WHERE id=? AND wallet=?;"
+        const result = await cassandraClient.execute(query, [
+            cassandra.types.Uuid.fromString(this._minerId),
+            config.PERSONAL_WALLET_ADDRESS
+        ], { prepare: true })
+        return result.rows[0]?.claimable_hashes || 0
+    }
+
+    private static async incrementClaimableHashes(amount: number) {
+        Logger.Debug(`Incrementing claimable hash count by ${amount}`, Logger.GetCallerLocation())
+        const currentCount = await this.RetrieveClaimableHashCount()
+        const newCount = currentCount.add(cassandra.types.Long.fromNumber(amount))
+        const query = "UPDATE rewarding.miners SET claimable_hashes=? WHERE id=? AND wallet=?;"
+        await cassandraClient.execute(query, [ 
+            newCount, 
+            cassandra.types.Uuid.fromString(this._minerId),
+            config.PERSONAL_WALLET_ADDRESS 
+        ], { prepare: true })
+        Logger.Debug(`Total of claimable hashes is now ${newCount.low}`, Logger.GetCallerLocation())
+    }
+
+    public static async ResetClaimableHashCount() {
+        Logger.Debug("Resetting claimable hash count", Logger.GetCallerLocation())
+        const query = "UPDATE rewarding.miners SET claimable_hashes=? WHERE wallet=?;"
+        await cassandraClient.execute(query, [ 
+            0, 
+            config.PERSONAL_WALLET_ADDRESS 
+        ], { prepare: true })
+    }
+
+    public static async AddMinerToDatabase(id: string): Promise<boolean> {
+        const query = "INSERT INTO rewarding.miners (id, wallet, claimable_hashes, status) VALUES (?, ?, ?, 'running') IF NOT EXISTS;"
+        const result = await cassandraClient.execute(query, [ 
+            cassandra.types.Uuid.fromString(id),
+            config.PERSONAL_WALLET_ADDRESS,
+            cassandra.types.Long.fromNumber(0)
+        ], { prepare: true })
+        return result.rows[0]['[applied]']
+    }
+
+    public static async SetMinerStatus(id: string, status: string) {
+        const query = "UPDATE rewarding.miners SET status=? WHERE id=? AND wallet=?;"
+        Logger.Debug(`Setting miner status to ${status}`, Logger.GetCallerLocation())
+        await cassandraClient.execute(query, [ 
+            status, 
+            cassandra.types.Uuid.fromString(id), 
+            config.PERSONAL_WALLET_ADDRESS 
+        ], { prepare: true })
     }
 }
