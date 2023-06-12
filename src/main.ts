@@ -3,34 +3,28 @@ import { SigInt } from './Command'
 import Logger from './modules/searchSECO-logger/src/Logger'
 import config from './config/config'
 import DatabaseRequest from './DatabaseRequest'
-import Cache from './Cache'
 import { v4 as uuidv4 } from 'uuid'
 
 (async () => {
 
+    await new Promise(resolve => setTimeout(resolve, 3000))
+
     let minerId: string = uuidv4()
 
     async function createNewMiner() {
-        await DatabaseRequest.AddMinerToDatabase(minerId)
-        Cache.SetMinerId(minerId, 'running')
+        await DatabaseRequest.AddMinerToDatabase(minerId, config.PERSONAL_WALLET_ADDRESS)
         Logger.Info(`New miner with id ${minerId} added to database`, Logger.GetCallerLocation())
     }
 
-    Cache.ReadCache()
-
+    const miners = await DatabaseRequest.ListMinersAssociatedWithWallet(config.PERSONAL_WALLET_ADDRESS)
     
-    if (Cache.Store) {
-        const allRunning = Object.keys(Cache.Store).reduce((isRunning, currId) => {
-            const currentRunning = Cache.Store[currId].status === 'running'
-            if (!currentRunning)
-                minerId = currId
-            return isRunning && currentRunning
-        }, true)
-
+    if (miners.length > 0) {
+        const allRunning = miners.every(({ status }) => status === 'running')
         if (allRunning) createNewMiner()
         else {
-            await DatabaseRequest.SetMinerStatus(minerId, 'running')
-            Cache.SetMinerStatus(minerId, 'running')
+            const { id } = miners.find(({ status }) => status === 'idle')
+            minerId = id
+            await DatabaseRequest.SetMinerStatus(id, 'running')
         }
     }
     else createNewMiner()
@@ -39,13 +33,11 @@ import { v4 as uuidv4 } from 'uuid'
         if (config.NODE_ENV === "development") {
             Logger.Info("Detected signal interrupt, exiting immediately", Logger.GetCallerLocation())
             await DatabaseRequest.SetMinerStatus(minerId, 'idle')
-            Cache.SetMinerStatus(minerId, 'idle')
             process.exit(0)
         } else {
             Logger.Info("Detected signal interrupt, finishing current job and exiting", Logger.GetCallerLocation())
             SigInt.StopProcess().then(async () => {
                 await DatabaseRequest.SetMinerStatus(minerId, 'idle')
-                Cache.SetMinerStatus(minerId, 'idle')
                 process.exit(0)
             })
         }

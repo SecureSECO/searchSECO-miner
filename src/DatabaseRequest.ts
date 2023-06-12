@@ -247,12 +247,13 @@ export default class DatabaseRequest {
         ], { prepare: true })
     }
 
-    public static async AddMinerToDatabase(id: string): Promise<boolean> {
-        const query = "INSERT INTO rewarding.miners (id, wallet, claimable_hashes, status) VALUES (?, ?, ?, 'running') IF NOT EXISTS;"
+    public static async AddMinerToDatabase(id: string, wallet: string): Promise<boolean> {
+        const query = "INSERT INTO rewarding.miners (id, wallet, claimable_hashes, status) VALUES (?, ?, ?, ?) IF NOT EXISTS;"
         const result = await cassandraClient.execute(query, [ 
             cassandra.types.Uuid.fromString(id),
-            config.PERSONAL_WALLET_ADDRESS,
-            cassandra.types.Long.fromNumber(0)
+            wallet,
+            cassandra.types.Long.fromNumber(0),
+            'running'
         ], { prepare: true })
         return result.rows[0]['[applied]']
     }
@@ -265,5 +266,15 @@ export default class DatabaseRequest {
             cassandra.types.Uuid.fromString(id), 
             config.PERSONAL_WALLET_ADDRESS 
         ], { prepare: true })
+    }
+
+    public static async ListMinersAssociatedWithWallet(wallet: string): Promise<{id: string, status: string}[]> {
+        const query = "SELECT id, status FROM rewarding.miners WHERE wallet=? ALLOW FILTERING;"
+        Logger.Debug(`List all miners associated with wallet ${wallet}`, Logger.GetCallerLocation())
+        const response = await cassandraClient.execute(query, [
+            wallet
+        ])
+
+        return response.rows.map((row) => ({ id: row.id.toString(), status: row.status.toString() }))
     }
 }

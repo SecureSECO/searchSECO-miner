@@ -3,6 +3,7 @@ import { InputParser } from './Input'
 import Logger from './modules/searchSECO-logger/src/Logger'
 import CommandFactory from './CommandFactory'
 import EnvironmentDTO from './EnvironmentDTO'
+import DatabaseRequest from './DatabaseRequest'
 
 export default class Miner {
     private _id: string
@@ -27,7 +28,13 @@ export default class Miner {
         else {
             const env = new EnvironmentDTO()
             const command = commandFactory.GetCommand(input.Command, this._id, input.Flags, env)
-            command?.Execute()
+
+            try {
+                await command?.Execute()
+            } catch (e) {
+                Logger.Error(`Miner exited with error ${e}. Stopping...`, Logger.GetCallerLocation())
+                await DatabaseRequest.SetMinerStatus(this._id, 'idle')
+            }
         }
     }
 }
