@@ -1,5 +1,5 @@
 # SearchSECO Miner
-This is the repository for the SecureSECO DAO miner built to scrape github, upload project data to the SecureSECO database and to connect with the DAO to facilitate claiming of rewards.
+This is the repository for the SecureSECO DAO miner built to scrape Github, upload project data to the SecureSECO database and to connect with the DAO to facilitate claiming of rewards.
 ## Initial Setup
 ### Environment variables
 All environment variables are listed in `src/config/.env.example`. The variables which are unchanging are already filled in, and the user needs to specify the remaining variables. The variables are exposed via a `.env` file in the same folder as `.env.example`, and this example file serves as a template for the variables that need to be specified in `.env`.
@@ -16,7 +16,7 @@ The miner uses [srcML](https://www.srcml.org/#home) to parse some languages to X
 ## Installing and running the miner
 Download this repository, make a `.env` file, fill in the relevant variables and run the following commands to install the miner:
 ```
-mpn i
+npm i
 git submodule update --init --recursive
 ```
 Then use the following command to run the miner for Windows:
