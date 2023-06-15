@@ -2,15 +2,12 @@ import { TCPClient } from "./modules/searchSECO-databaseAPI/src/Client";
 import { CrawlData, ProjectMetadata } from './modules/searchSECO-crawler/src/Crawler'
 import config from './config/config'
 import { AuthorData } from "./modules/searchSECO-spider/src/Spider";
-import EnvironmentDTO from "./EnvironmentDTO";
 import HashData from "./modules/searchSECO-parser/src/HashData";
 import Logger from "./modules/searchSECO-logger/src/Logger";
-import ModuleFacade from "./ModuleFacade";
 import { RequestType } from "./modules/searchSECO-databaseAPI/src/Request";
 import Error, { ErrorCode } from "./Error";
-import { JobResponseData, TCPResponse } from "./modules/searchSECO-databaseAPI/src/Response";
+import { TCPResponse } from "./modules/searchSECO-databaseAPI/src/Response";
 import cassandra from 'cassandra-driver'
-import Cache from "./Cache";
 
 function serializeData(
     data: HashData[],
@@ -129,13 +126,6 @@ function serializeCrawlData(urls: CrawlData, id: string): string[] {
     return result
 }
 
-const cassandraClient = new cassandra.Client({
-    contactPoints: [ `${config.DB_HOST}:8002` ],
-    localDataCenter: 'dcscience-vs317.science.uu.nl',
-    authProvider: new cassandra.auth.PlainTextAuthProvider('cassandra', 'cassandra'),
-    keyspace: 'rewarding'
-})
-
 export enum FinishReason {
     SUCCESS,
 	UNKNOWN,
@@ -155,15 +145,21 @@ export enum FinishReason {
 
 export default class DatabaseRequest {
     private static _client = new TCPClient("client", config.DB_HOST, config.DB_PORT, Logger.GetVerbosity())
-    private static _env: EnvironmentDTO = new EnvironmentDTO()
-    private static _minerId: string = ''
+    private static _minerId = ''
+    private static _cassandraClient = new cassandra.Client({
+        contactPoints: [ `${config.DB_HOST}:8002` ],
+        localDataCenter: 'dcscience-vs317.science.uu.nl',
+        authProvider: new cassandra.auth.PlainTextAuthProvider('cassandra', 'cassandra'),
+        keyspace: 'rewarding'
+    })
 
     public static SetMinerId(id: string) {
         this._minerId = id
     }
 
-    public static SetEnvironment(env: EnvironmentDTO) {
-        this._env = env
+    public static async ConnectToCassandraNode() {
+        await this._cassandraClient.connect()
+        Logger.Debug('"Successfully connected to Cassandra', Logger.GetCallerLocation())
     }
 
     public static async UploadHashes(
@@ -191,18 +187,18 @@ export default class DatabaseRequest {
         const { responseCode, response } = await this._client.Execute(RequestType.GET_PREVIOUS_PROJECT, [ `${id}?${versionTime}` ])
         if (response.length == 0 || responseCode != 200)
             return 0
-        return parseInt(response[0].raw.split('\n')[0].split('?')[0]) || 0
+        return parseInt((response[0] as { raw: string }).raw.split('\n')[0].split('?')[0]) || 0
     }
 
     public static async GetNextJob(): Promise<string> {
         Logger.Debug("Retrieving new job", Logger.GetCallerLocation())
         const { response } = await this._client.Execute(RequestType.GET_TOP_JOB, [])
-        return response[0].raw
+        return (response[0] as { raw: string }).raw
     }
 
     public static async UpdateJob(jobID: string, jobTime: string): Promise<string> {
         const { response } = await this._client.Execute(RequestType.UPDATE_JOB, [`${jobID}?${jobTime}`])
-        return response[0]
+        return response[0] as string
     }
 
     public static async FinishJob(jobID: string, jobTime: string, code: FinishReason, message: string) {
@@ -218,7 +214,7 @@ export default class DatabaseRequest {
     public static async RetrieveClaimableHashCount(): Promise<cassandra.types.Long> {
         Logger.Debug("Connecting with the database to retrieve all claimable hashes", Logger.GetCallerLocation())
         const query = "SELECT claimable_hashes FROM miners WHERE id=? AND wallet=?;"
-        const result = await cassandraClient.execute(query, [
+        const result = await this._cassandraClient.execute(query, [
             cassandra.types.Uuid.fromString(this._minerId),
             config.PERSONAL_WALLET_ADDRESS
         ], { prepare: true })
@@ -230,7 +226,7 @@ export default class DatabaseRequest {
         const currentCount = await this.RetrieveClaimableHashCount()
         const newCount = currentCount.add(cassandra.types.Long.fromNumber(amount))
         const query = "UPDATE rewarding.miners SET claimable_hashes=? WHERE id=? AND wallet=?;"
-        await cassandraClient.execute(query, [ 
+        await this._cassandraClient.execute(query, [ 
             newCount, 
             cassandra.types.Uuid.fromString(this._minerId),
             config.PERSONAL_WALLET_ADDRESS 
@@ -241,7 +237,7 @@ export default class DatabaseRequest {
     public static async ResetClaimableHashCount() {
         Logger.Debug("Resetting claimable hash count", Logger.GetCallerLocation())
         const query = "UPDATE rewarding.miners SET claimable_hashes=? WHERE wallet=?;"
-        await cassandraClient.execute(query, [ 
+        await this._cassandraClient.execute(query, [ 
             0, 
             config.PERSONAL_WALLET_ADDRESS 
         ], { prepare: true })
@@ -249,7 +245,7 @@ export default class DatabaseRequest {
 
     public static async AddMinerToDatabase(id: string, wallet: string): Promise<boolean> {
         const query = "INSERT INTO rewarding.miners (id, wallet, claimable_hashes, status) VALUES (?, ?, ?, ?) IF NOT EXISTS;"
-        const result = await cassandraClient.execute(query, [ 
+        const result = await this._cassandraClient.execute(query, [ 
             cassandra.types.Uuid.fromString(id),
             wallet,
             cassandra.types.Long.fromNumber(0),
@@ -261,7 +257,7 @@ export default class DatabaseRequest {
     public static async SetMinerStatus(id: string, status: string) {
         const query = "UPDATE rewarding.miners SET status=? WHERE id=? AND wallet=?;"
         Logger.Debug(`Setting miner status to ${status}`, Logger.GetCallerLocation())
-        await cassandraClient.execute(query, [ 
+        await this._cassandraClient.execute(query, [ 
             status, 
             cassandra.types.Uuid.fromString(id), 
             config.PERSONAL_WALLET_ADDRESS 
@@ -271,7 +267,7 @@ export default class DatabaseRequest {
     public static async ListMinersAssociatedWithWallet(wallet: string): Promise<{id: string, status: string}[]> {
         const query = "SELECT id, status FROM rewarding.miners WHERE wallet=? ALLOW FILTERING;"
         Logger.Debug(`List all miners associated with wallet ${wallet}`, Logger.GetCallerLocation())
-        const response = await cassandraClient.execute(query, [
+        const response = await this._cassandraClient.execute(query, [
             wallet
         ])
 

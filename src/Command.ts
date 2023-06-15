@@ -1,4 +1,3 @@
-import EnvironmentDTO from "./EnvironmentDTO";
 import { Flags } from "./Input";
 import HashData from "./modules/searchSECO-parser/src/HashData";
 import { AuthorData } from "./modules/searchSECO-spider/src/Spider";
@@ -8,45 +7,86 @@ import Logger from "./modules/searchSECO-logger/src/Logger";
 import DatabaseRequest from "./DatabaseRequest";
 import { ProjectMetadata } from "./modules/searchSECO-crawler/src/Crawler";
 
-let minerId: string = '';
+/**
+ * Makes a designated repo download location for the current miner.
+ * @param minerId The ID of the current miner
+ * @returns a path string representing the repo download location for the current miner.
+ */ 
 const DOWNLOAD_LOCATION = (minerId: string) => path.join(__dirname, `../.tmp/${minerId}`)
+
 const TAGS_COUNT = 20
 
+/**
+ * Static class storing SIGINT signals. 
+ * This is used to stop the current process when a SIGINT is fired.
+ */
 export class SigInt {
-    public static Stop: boolean = false
-    public static IsStopped: boolean = false
-    public static async StopProcess() {
+    public static Stop = false
+    public static IsStopped = false
+    /**
+     * Signals that the process needs to be stopped. 
+     * Waits until the process signals that it's actually stopped.
+     * @param minerId The miner ID associated with the current process.
+     */
+    public static async StopProcess(minerId: string) {
         this.Stop = true
         while (!this.IsStopped)
             await new Promise(resolve => (setTimeout(resolve, 1000)))
+        if (this.Stop) {
+            await DatabaseRequest.SetMinerStatus(minerId, 'idle')
+            process.exit(0)
+        }
     }
+    /**
+     * Resumes the process if it was gracefully stopped with the SigInt.StopProcess() function
+     */
     public static ResumeProcess() {
         this.Stop = false
     }
+    /**
+     * Gracefully stops the process immediately.
+     * @param minerId The miner ID associated with the current process
+     */
+    public static async StopProcessImmediately(minerId: string) {
+        await DatabaseRequest.SetMinerStatus(minerId, 'idle')
+        process.exit(0)
+    }
 }
 
+/**
+ * The base Command class. This class holds most of the functionalities for modifying repositories
+ */
 export default abstract class Command {
     protected static _helpMessageText: string
     protected _flags: Flags
-    protected _env: EnvironmentDTO
     protected _minerId: string
 
-    constructor(minerId: string, flags: Flags, env: EnvironmentDTO) {
+    constructor(minerId: string, flags: Flags) {
         this._flags = flags
-        this._env = env
         this._minerId = minerId
     }
 
+    /**
+     * Gets the help message associated with the current command
+     * @returns The help message associated with the current command
+     */
     public static GetHelpMessage(): string {
         return this._helpMessageText
     }
 
+    /**
+     * Executes the command.
+     */
     public abstract Execute(): Promise<void>;
 
-    protected async parseAndBlame(tag: string, jobID: string, jobTime: string) 
+    /**
+     * Parses a project and retrieves author data.
+     * @returns a tuple containing a HashData array and an AuthorData object
+     */
+    protected async parseAndBlame() 
         : Promise<[HashData[], AuthorData]>
     {
-        const hashes = await ModuleFacade.ParseRepository(DOWNLOAD_LOCATION(this._minerId), this._flags)
+        const hashes = await ModuleFacade.ParseRepository(DOWNLOAD_LOCATION(this._minerId))
 
         if (hashes.length == 0) {
             Logger.Debug("No methods found, skipping authors", Logger.GetCallerLocation())
@@ -57,21 +97,28 @@ export default abstract class Command {
         return [hashes, authorData]
     }
 
-    protected async uploadProject(jobID: string, jobTime: string, startTime: number) {
+    /**
+     * Processes a project and uploads it to the database.
+     * @param jobID The current job ID
+     * @param jobTime The time the job has been uploaded
+     * @param startTime The time the job started
+     */
+    protected async uploadProject(jobID: string, jobTime: string, startTime: number): Promise<void> {
         Logger.Info("Uploading project to database", Logger.GetCallerLocation())
 
-        const metadata = await ModuleFacade.GetProjectMetadata(this._flags.MandatoryArgument, this._flags)
+        const metadata = await ModuleFacade.GetProjectMetadata(this._flags.MandatoryArgument)
 
         if (!metadata) {
             Logger.Warning("Error getting project metadata. Moving on", Logger.GetCallerLocation())
             return
         }
 
+        // Set default branch
         if (!this._flags.Branch || (["main", "master"].includes(this._flags.Branch) && this._flags.Branch !== metadata.defaultBranch))
             this._flags.Branch = metadata.defaultBranch
-        Logger.Debug(`Default branch is ${metadata.defaultBranch}`, Logger.GetCallerLocation())
+        Logger.Debug(`Default branch is ${this._flags.Branch}`, Logger.GetCallerLocation())
         
-        let startingTime = await DatabaseRequest.GetProjectVersion(metadata.id.toString(), metadata.versionTime)
+        const startingTime = await DatabaseRequest.GetProjectVersion(metadata.id.toString(), metadata.versionTime)
         if (parseInt(metadata.versionTime) <= startingTime) {
             Logger.Info("Most recent version already in database", Logger.GetCallerLocation())
             Logger.Warning("This needs to be logged to a file!", Logger.GetCallerLocation())
@@ -109,7 +156,7 @@ export default abstract class Command {
         }
 
         if (parseInt(metadata.versionTime) > startingTime && tagc == 0) {
-            await this.parseLatest(metadata, startingTime.toString(), jobID, jobTime)
+            await this.parseLatest(metadata)
         }
         else if (tagc != 0) {
             if (tags[tagc-1][1] <= startingTime) {
@@ -123,18 +170,15 @@ export default abstract class Command {
 
     protected async uploadPartialProject(version: string, lines: Map<string, number[]>, vulnCode: string, metadata: ProjectMetadata) {
         if (!metadata.id) {
-            const newMetadata = await ModuleFacade.GetProjectMetadata(this._flags.MandatoryArgument, this._flags)
+            const newMetadata = await ModuleFacade.GetProjectMetadata(this._flags.MandatoryArgument)
             if (!this._flags.Branch)
                 this._flags.Branch = newMetadata.defaultBranch
         }
 
-        // await ModuleFacade.DownloadRepository(this._flags.MandatoryArgument, this._flags)
-        await Promise.all([
-            ModuleFacade.SwitchVersion(version, DOWNLOAD_LOCATION(this._minerId)),
-            ModuleFacade.TrimFiles(lines, DOWNLOAD_LOCATION(this._minerId))
-        ])
+        await ModuleFacade.SwitchVersion(DOWNLOAD_LOCATION(this._minerId), version),
+        await ModuleFacade.TrimFiles(lines, DOWNLOAD_LOCATION(this._minerId))
 
-        let hashes = await ModuleFacade.ParseRepository(DOWNLOAD_LOCATION(this._minerId), this._flags)
+        let hashes = await ModuleFacade.ParseRepository(DOWNLOAD_LOCATION(this._minerId))
         hashes = this.trimHashes(hashes, lines)
         if (hashes.length == 0) {
             Logger.Debug("No methods present, skipping authors", Logger.GetCallerLocation())
@@ -150,43 +194,23 @@ export default abstract class Command {
         await DatabaseRequest.UploadHashes(hashes, metadata, authorData, "", [])
     }
 
-    protected async checkProject() {
-        const url = this._flags.MandatoryArgument
-        // TODO: implement correct type
-        const metadata: any = ModuleFacade.GetProjectMetadata(url, this._flags)
-        if (!metadata) {
-            Logger.Warning("Error getting project metadata, moving on to next job", Logger.GetCallerLocation())
-            return
-        }
-
-        if (!this._flags.Branch)
-            this._flags.Branch = metadata.defaultBranch
-        
-        await ModuleFacade.DownloadRepository(url, this._flags)
-        if (this._flags.ProjectCommit)
-            ModuleFacade.SwitchVersion(this._flags.ProjectCommit, DOWNLOAD_LOCATION(this._minerId))
-        
-        const [ hashes, authorData ] = await this.parseAndBlame("HEAD", "0", "")
-        
-    }
-
-    private async parseLatest(metadata: ProjectMetadata, startingTime: string, jobID: string, jobTime: string) {
+    private async parseLatest(metadata: ProjectMetadata) {
         Logger.Debug("No tags found, just looking at HEAD", Logger.GetCallerLocation())
-        const [hashes, authorData] = await this.parseAndBlame("HEAD", jobID, jobTime)
+        const [hashes, authorData] = await this.parseAndBlame()
         if (hashes.length == 0)
             return
         Logger.Debug("Uploading hashes", Logger.GetCallerLocation())
         await DatabaseRequest.UploadHashes(hashes, metadata, authorData, "", [])
     }
 
-    private async loopThroughTags(tags: [string, number, string][], metadata: ProjectMetadata, startingTime: number, jobID: string, jobTime: string, startTime: number) {
+    private async loopThroughTags(tags: [string, number, string][], metadata: ProjectMetadata, startingTime: number, jobID: string, jobTime: string, _startTime: number) {
         let i = 0
         while (tags[i][1] <= startingTime)
             i++
         
         let prevTag = ""
         let prevVersionTime = ""
-        let prevUnchangedFiles: string[] = []
+        const prevUnchangedFiles: string[] = []
 
         if (i > 0) {
             prevTag = tags[i-1][0]
@@ -206,17 +230,15 @@ export default abstract class Command {
             Logger.Debug(`Comparing tags: ${prevTag} and ${currTag}.`, Logger.GetCallerLocation())
 
             await DatabaseRequest.UpdateJob(jobID, jobTime)
-
-            startTime = Date.now()
-            await this.downloadTagged(prevTag, currTag, metadata, prevVersionTime, prevUnchangedFiles, jobID, jobTime)
+            /* eslint-disable @typescript-eslint/no-unused-vars */
+            _startTime = Date.now()
+            await this.downloadTagged(prevTag, currTag, metadata, prevVersionTime, prevUnchangedFiles)
         }
     }
 
-    private async downloadTagged(prevTag: string, currTag: string, metadata: ProjectMetadata, prevVersionTime: string, prevUnchangedFiles: string[], jobID: string, jobTime: string) {
-        const [unchangedFiles, [hashes, authorData]] = await Promise.all([
-            ModuleFacade.UpdateVersion(DOWNLOAD_LOCATION(this._minerId), prevTag, currTag, prevUnchangedFiles), 
-            this.parseAndBlame(currTag, jobID, jobTime)
-        ])
+    private async downloadTagged(prevTag: string, currTag: string, metadata: ProjectMetadata, prevVersionTime: string, prevUnchangedFiles: string[]) {
+        const unchangedFiles = await ModuleFacade.UpdateVersion(DOWNLOAD_LOCATION(this._minerId), prevTag, currTag, prevUnchangedFiles)
+        const  [hashes, authorData] = await this.parseAndBlame()
         await DatabaseRequest.UploadHashes(hashes, metadata, authorData, prevVersionTime, unchangedFiles)
         prevUnchangedFiles = unchangedFiles
     }
@@ -237,9 +259,9 @@ export default abstract class Command {
 }
 
 export class StartCommand extends Command {
-    protected static _helpMessageText: string = "Start the miner"
-    constructor(minerId: string, flags: Flags, env: EnvironmentDTO) {
-        super(minerId, flags, env)
+    protected static _helpMessageText = "Start the miner"
+    constructor(minerId: string, flags: Flags) {
+        super(minerId, flags)
     }
 
     public async Execute(): Promise<void> {
@@ -250,12 +272,12 @@ export class StartCommand extends Command {
             const job = await DatabaseRequest.GetNextJob()
             const splitted = job.split('?')
             switch (splitted[0]) {
-                case "Spider":
+                case "Spider": {
                     Logger.Info(`New Job: Download and parse ${splitted[2]}`, Logger.GetCallerLocation())
                     const startTime = Date.now()
                     await this.processVersion(splitted, startTime)
                     break;
-                
+                }
                 case "Crawl":
                     Logger.Info("New Job: Crawl for more URLs", Logger.GetCallerLocation())
                     await this.handleCrawlRequest(splitted)
@@ -276,11 +298,11 @@ export class StartCommand extends Command {
     }
 
     public HandleTimeout() {
-
+        /* empty */
     }
 
     private async handleCrawlRequest(splitted: string[]) {
-        const crawled = await ModuleFacade.CrawlRepositories(parseInt(splitted[1]), this._flags)
+        const crawled = await ModuleFacade.CrawlRepositories()
         await DatabaseRequest.AddCrawledJobs(crawled, splitted[2])
     }
 
@@ -291,10 +313,6 @@ export class StartCommand extends Command {
         }
         this._flags.MandatoryArgument = splitted[2]
         await this.uploadProject(splitted[1], splitted[3], startTime)
-    }
-
-    private readCommandLine() {
-
     }
 }
 

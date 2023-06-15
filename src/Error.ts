@@ -4,5 +4,5 @@ export enum ErrorCode {
 }
 
 export default class Error {
-    public static Code: number = 0
+    public static Code = 0
 }

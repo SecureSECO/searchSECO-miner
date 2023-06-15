@@ -7,8 +7,9 @@ import { v4 as uuidv4 } from 'uuid'
 
 (async () => {
 
-    await new Promise(resolve => setTimeout(resolve, 3000))
-
+    // Check if a miner associated with the current wallet is idle.
+    // If there is, assign the idle miner ID to this miner
+    // If it is not, create a new miner
     let minerId: string = uuidv4()
 
     async function createNewMiner() {
@@ -29,17 +30,16 @@ import { v4 as uuidv4 } from 'uuid'
     }
     else createNewMiner()
 
+    // Define a custom signal interrupt.
+    // When the environment is production, wait until the current process has finished.
+    // Else, set the miner to idle and exit immediately.
     process.on('SIGINT', async () => {
         if (config.NODE_ENV === "development") {
             Logger.Info("Detected signal interrupt, exiting immediately", Logger.GetCallerLocation())
-            await DatabaseRequest.SetMinerStatus(minerId, 'idle')
-            process.exit(0)
+            SigInt.StopProcessImmediately(minerId)
         } else {
             Logger.Info("Detected signal interrupt, finishing current job and exiting", Logger.GetCallerLocation())
-            SigInt.StopProcess().then(async () => {
-                await DatabaseRequest.SetMinerStatus(minerId, 'idle')
-                process.exit(0)
-            })
+            await SigInt.StopProcess(minerId)
         }
     })
 
