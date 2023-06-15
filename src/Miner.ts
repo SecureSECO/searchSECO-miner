@@ -3,6 +3,19 @@ import { InputParser } from './Input'
 import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger'
 import CommandFactory from './CommandFactory'
 import DatabaseRequest from './DatabaseRequest'
+import Command from './Command'
+
+async function runCommand(command: Command | undefined) {
+    try {
+        await DatabaseRequest.ConnectToCassandraNode()
+        await command?.Execute()
+    } catch (e) {
+        Logger.Error(`Miner exited with error ${e}. Restarting after 2 seconds...`, Logger.GetCallerLocation())
+        setTimeout(async () => {
+            await runCommand(command)
+        }, 2000)
+    }
+}
 
 export default class Miner {
     private _id: string
@@ -28,22 +41,8 @@ export default class Miner {
         else if (input.Flags.Version)
             console.log("v1.0.0")
         else {
-            // Try to run the command. If an error occurs, restart after 2 seconds.
-            const command = commandFactory.GetCommand(input.Command, this._id, input.Flags)
-
-            async function RunCommand() {
-                try {
-                    await DatabaseRequest.ConnectToCassandraNode()
-                    await command?.Execute()
-                } catch (e) {
-                    Logger.Error(`Miner exited with error ${e}. Restarting after 2 seconds...`, Logger.GetCallerLocation())
-                    setTimeout(async () => {
-                        await RunCommand()
-                    }, 2000)
-                }
-            }
-            
-            await RunCommand()
+            // Try to run the command. If an error occurs, restart after 2 seconds.          
+            await runCommand(commandFactory.GetCommand(input.Command, this._id, input.Flags))
         }
     }
 }

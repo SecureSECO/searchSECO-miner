@@ -125,7 +125,9 @@ export default abstract class Command {
             return
         }
 
-        await ModuleFacade.DownloadRepository(this._flags.MandatoryArgument, this._flags)        
+        const success = await ModuleFacade.DownloadRepository(this._flags.MandatoryArgument, this._flags)
+        if (!success) 
+            return      
         metadata.versionHash = await ModuleFacade.GetCurrentVersion(DOWNLOAD_LOCATION(this._minerId))
 
         const vulnCommits = await ModuleFacade.GetVulnerabilityCommits(DOWNLOAD_LOCATION(this._minerId))

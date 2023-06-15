@@ -10,6 +10,7 @@
     "build-ts": "tsc",
     "start-win": "npm run build-win && node dist/main.js start",
     "start-unix": "npm run build-unix && node dist/main.js start",
+    "update": "git pull origin main && git submodule update --init --recursive",
     "lint": "eslint . --ext .ts"
   },
   "author": "Wouter Beffers",
