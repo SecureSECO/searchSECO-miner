@@ -36,3 +36,12 @@ The miner can be set to be more or less verbose. The specific verbosity values a
 - `3`: Errors and warnings only
 - `4`: Everything
 - `5`: Everything including `[DEBUG]` statements
+
+
+## License
+
+This project is licensed under the MIT license. See [LICENSE](/LICENSE) for more info.
+
+This program has been developed by students from the bachelor Computer Science at
+Utrecht University within the Software Project course. © Copyright Utrecht University
+(Department of Information and Computing Sciences)
