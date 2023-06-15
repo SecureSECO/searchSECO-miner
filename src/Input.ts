@@ -1,5 +1,7 @@
 
-
+/**
+ * The different flag options
+ */
 enum FlagName {
     HELP = "Help",
     VERSION = "Version",
@@ -7,6 +9,9 @@ enum FlagName {
     COMMAND = "Command"
 }
 
+/**
+ * Maps the short hand flags to their long counterparts
+ */
 const shorthandToLongMapping: Map<string, FlagName> = new Map<string, FlagName>([
     ["h", FlagName.HELP],
     ["v", FlagName.VERSION],
@@ -14,20 +19,20 @@ const shorthandToLongMapping: Map<string, FlagName> = new Map<string, FlagName>(
 ])
 
 export class Flags {
-    public MandatoryArgument: string = ""
-    public CPU: number = 1
-    public Verbose: number = 4
-    public Help: boolean = false
-    public Version: boolean = false
-    public GithubUser: string = ""
-    public GithubToken: string = ""
-    public Branch: string = ""
-    public WorkerName: string = ""
-    public VulnerabilityCode: string = ""
-    public Lines: string = ""
-    public ProjectCommit: string = ""
-    public Code: string = ""
-    public Commit: string = ""
+    public MandatoryArgument = ""
+    public CPU = 1
+    public Verbose = 4
+    public Help = false
+    public Version = false
+    public GithubUser = ""
+    public GithubToken = ""
+    public Branch = ""
+    public WorkerName = ""
+    public VulnerabilityCode = ""
+    public Lines = ""
+    public ProjectCommit = ""
+    public Code = ""
+    public Commit = ""
 }
 
 export class ParsedInput {
@@ -42,20 +47,21 @@ export class ParsedInput {
 }
 
 type UserInput = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any
 }
 
 export class InputParser {
     static Parse(input: UserInput): ParsedInput {
 
-        const flags: any = {...new Flags()}
+        const flags = JSON.parse(JSON.stringify(new Flags()))
 
         Object.keys(input).forEach((key: keyof UserInput) => {
             if (key.toString() === "$0")
                 return
 
             if (key.toString() === "_") {
-                flags.MandatoryArgument = input[key][0]
+                flags.MandatoryArgument = (input[key.toString() as keyof UserInput] as string[])[0]
                 return
             }
 

@@ -8,8 +8,10 @@
     "build-win": "npm run build-ts && copyfiles -f .\\src\\config\\.env .\\dist\\config",
     "build-unix": "npm run build-ts && cp ./src/config/.env ./dist/config/.env",
     "build-ts": "tsc",
-    "start-win": "npm run build-win && node dist/main.js start -V 5",
-    "start-unix": "npm run build-unix && node dist/main.js start -V 5"
+    "start-win": "npm run build-win && node dist/main.js start",
+    "start-unix": "npm run build-unix && node dist/main.js start",
+    "update": "git pull origin main && git submodule update --init --recursive",
+    "lint": "eslint . --ext .ts"
   },
   "author": "Wouter Beffers",
   "license": "MIT",
@@ -28,6 +30,9 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.1",
-    "@types/yargs": "^17.0.24"
+    "@types/yargs": "^17.0.24",
+    "@typescript-eslint/eslint-plugin": "^5.59.11",
+    "@typescript-eslint/parser": "^5.59.11",
+    "eslint": "^8.42.0"
   }
 }

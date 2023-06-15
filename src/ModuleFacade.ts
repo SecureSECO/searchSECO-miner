@@ -17,14 +17,14 @@ export default class ModuleFacade {
         this._filePath = path
     }
 
-    public static async DownloadRepository(repo: string, flags: Flags): Promise<void> {
+    public static async DownloadRepository(repo: string, flags: Flags): Promise<boolean> {
         return new Promise(resolve => {
             Logger.Debug("Deleting previously downloaded project", Logger.GetCallerLocation())
             this.Spider.clearDirectory(this._filePath).then(async () => {
                 Logger.Debug("Calling the spider to download a repository", Logger.GetCallerLocation())
-                this.Spider.downloadRepo(repo, this._filePath, flags.Branch).then(() => {
+                this.Spider.downloadRepo(repo, this._filePath, flags.Branch).then((success: boolean) => {
                     Logger.Debug("Download finished", Logger.GetCallerLocation())
-                    resolve()
+                    resolve(success)
                 })
             })
         })
@@ -79,21 +79,21 @@ export default class ModuleFacade {
         return await this.Spider.getVersionTime(repo, version)
     }
 
-    public static async ParseRepository(repo: string, flags: Flags): Promise<HashData[]> {
+    public static async ParseRepository(repo: string): Promise<HashData[]> {
         Logger.Debug("Calling the parser to parse a repository", Logger.GetCallerLocation())
         const hashes = (await Parser.ParseFiles(repo, Logger.GetVerbosity())).result
         Logger.Debug("Parsing finished", Logger.GetCallerLocation())
         return hashes
     }
 
-    public static async GetProjectMetadata(url: string, flags: Flags): Promise<ProjectMetadata> {
+    public static async GetProjectMetadata(url: string): Promise<ProjectMetadata> {
         Logger.Debug("Calling the crawler to get project metadata", Logger.GetCallerLocation())
         const metadata = this.Crawler.getProjectMetadata(url)
         Logger.Debug("Project metadata succesfully fetched", Logger.GetCallerLocation())
         return metadata
     }
 
-    public static async CrawlRepositories(startID: number, flags: Flags): Promise<CrawlData> {
+    public static async CrawlRepositories(): Promise<CrawlData> {
         Logger.Debug("Calling the crawler to crawl a repository", Logger.GetCallerLocation())
         const crawldata = this.Crawler.crawl()
         Logger.Debug("Crawling complete", Logger.GetCallerLocation())

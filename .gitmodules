@@ -3,7 +3,7 @@
 	url = https://github.com/SecureSECODAO/searchSECO-spider
 [submodule "src/modules/searchSECO-databaseAPI"]
 	path = src/modules/searchSECO-databaseAPI
-	url = https://github.com/SecureSECODAO/searchSECO-databaseAPI
+	url = https://github.com/SecureSECODAO/searchSECO-databaseAPI	
 [submodule "src/modules/searchSECO-parser"]
 	path = src/modules/searchSECO-parser
 	url = https://github.com/SecureSECODAO/searchSECO-parser
