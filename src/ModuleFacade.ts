@@ -18,16 +18,10 @@ export default class ModuleFacade {
     }
 
     public static async DownloadRepository(repo: string, flags: Flags): Promise<boolean> {
-        return new Promise(resolve => {
-            Logger.Debug("Deleting previously downloaded project", Logger.GetCallerLocation())
-            this.Spider.clearDirectory(this._filePath).then(async () => {
-                Logger.Debug("Calling the spider to download a repository", Logger.GetCallerLocation())
-                this.Spider.downloadRepo(repo, this._filePath, flags.Branch).then((success: boolean) => {
-                    Logger.Debug("Download finished", Logger.GetCallerLocation())
-                    resolve(success)
-                })
-            })
-        })
+        Logger.Debug("Deleting previously downloaded project", Logger.GetCallerLocation())
+        await this.Spider.clearDirectory(this._filePath)
+        Logger.Debug("Calling the spider to download a repository", Logger.GetCallerLocation())
+        return await this.Spider.downloadRepo(repo, this._filePath, flags.Branch)
     }
 
     public static async UpdateVersion(repo: string, prevTag: string, newTag: string, prevUnchangedFiles: string[]): Promise<string[]> {

@@ -5,14 +5,14 @@ import CommandFactory from './CommandFactory'
 import DatabaseRequest from './DatabaseRequest'
 import Command from './Command'
 
-async function runCommand(command: Command | undefined) {
+async function Run(command: Command | undefined) {
     try {
         await DatabaseRequest.ConnectToCassandraNode()
         await command?.Execute()
     } catch (e) {
         Logger.Error(`Miner exited with error ${e}. Restarting after 2 seconds...`, Logger.GetCallerLocation())
         setTimeout(async () => {
-            await runCommand(command)
+            await Run(command)
         }, 2000)
     }
 }
@@ -42,7 +42,7 @@ export default class Miner {
             console.log("v1.0.0")
         else {
             // Try to run the command. If an error occurs, restart after 2 seconds.          
-            await runCommand(commandFactory.GetCommand(input.Command, this._id, input.Flags))
+            await Run(commandFactory.GetCommand(input.Command, this._id, input.Flags))
         }
     }
 }

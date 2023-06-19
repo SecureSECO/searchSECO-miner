@@ -159,7 +159,7 @@ export default class DatabaseRequest {
 
     public static async ConnectToCassandraNode() {
         await this._cassandraClient.connect()
-        Logger.Debug('"Successfully connected to Cassandra', Logger.GetCallerLocation())
+        Logger.Debug('Successfully connected to Cassandra', Logger.GetCallerLocation())
     }
 
     public static async UploadHashes(
@@ -198,7 +198,7 @@ export default class DatabaseRequest {
 
     public static async UpdateJob(jobID: string, jobTime: string): Promise<string> {
         const { response } = await this._client.Execute(RequestType.UPDATE_JOB, [`${jobID}?${jobTime}`])
-        return response[0] as string
+        return (response[0] as { raw: string }).raw as string
     }
 
     public static async FinishJob(jobID: string, jobTime: string, code: FinishReason, message: string) {

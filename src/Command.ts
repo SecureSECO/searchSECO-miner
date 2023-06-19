@@ -121,7 +121,6 @@ export default abstract class Command {
         const startingTime = await DatabaseRequest.GetProjectVersion(metadata.id.toString(), metadata.versionTime)
         if (parseInt(metadata.versionTime) <= startingTime) {
             Logger.Info("Most recent version already in database", Logger.GetCallerLocation())
-            Logger.Warning("This needs to be logged to a file!", Logger.GetCallerLocation())
             return
         }
 
@@ -132,21 +131,26 @@ export default abstract class Command {
 
         const vulnCommits = await ModuleFacade.GetVulnerabilityCommits(DOWNLOAD_LOCATION(this._minerId))
         Logger.Info(`${vulnCommits.length} vulnerabilities found in project`, Logger.GetCallerLocation())
-        Logger.Warning("This needs to be logged to a file!", Logger.GetCallerLocation())
 
-        vulnCommits.forEach(async commit => {
-            Logger.Debug(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation())
-            jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime)
-            startTime = Date.now()
-            await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata)
-        })
+        vulnCommits.reduce(async (prevPromise, commit) => {
+            return new Promise(resolve => {
+                prevPromise.then(async () => {
+                    Logger.Debug(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation())
+                    jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime)
+                    startTime = Date.now()
+                    await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata)
+                    resolve()
+                })
+            })
 
-        await ModuleFacade.SwitchVersion(DOWNLOAD_LOCATION(this._minerId), this._flags.Branch)
+        }, Promise.resolve())
+
+        if (metadata.defaultBranch !== this._flags.Branch)
+            await ModuleFacade.SwitchVersion(DOWNLOAD_LOCATION(this._minerId), this._flags.Branch)
         let tags = await ModuleFacade.GetRepositoryTags(DOWNLOAD_LOCATION(this._minerId))
         let tagc = tags.length
 
         Logger.Info(`Project has ${tagc} tag(s)`, Logger.GetCallerLocation())
-        Logger.Warning("This needs to be logged to a file!", Logger.GetCallerLocation())
 
         if (tagc > TAGS_COUNT) {
             const newTags: [string, number, string][] = []
@@ -163,7 +167,6 @@ export default abstract class Command {
         else if (tagc != 0) {
             if (tags[tagc-1][1] <= startingTime) {
                 Logger.Info("Latest tag of project already in database", Logger.GetCallerLocation())
-                Logger.Warning("This needs to be logged to a file!", Logger.GetCallerLocation())
                 return
             }
             await this.loopThroughTags(tags, metadata, startingTime, jobID, jobTime, startTime)
@@ -228,7 +231,6 @@ export default abstract class Command {
             metadata.versionHash = versionHash
 
             Logger.Info(`Processing tag: ${currTag} (${i+1}/${tags.length})`, Logger.GetCallerLocation())
-            Logger.Warning("This needs to be logged to a file!", Logger.GetCallerLocation())
             Logger.Debug(`Comparing tags: ${prevTag} and ${currTag}.`, Logger.GetCallerLocation())
 
             await DatabaseRequest.UpdateJob(jobID, jobTime)
