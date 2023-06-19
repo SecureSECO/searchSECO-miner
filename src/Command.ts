@@ -86,14 +86,23 @@ export default abstract class Command {
     protected async parseAndBlame() 
         : Promise<[HashData[], AuthorData]>
     {
-        const hashes = await ModuleFacade.ParseRepository(DOWNLOAD_LOCATION(this._minerId))
+        const [filenames, hashes] = await ModuleFacade.ParseRepository(DOWNLOAD_LOCATION(this._minerId))
+        const filteredFileNames: string[] = []
+
+        hashes.forEach(hash => {
+            const idx = filenames.findIndex(file => file === hash.FileName)
+            if (idx < 0)
+                return
+            filteredFileNames.push(filenames[idx])
+            filenames.splice(idx, 1)
+        })
 
         if (hashes.length == 0) {
             Logger.Debug("No methods found, skipping authors", Logger.GetCallerLocation())
             return [hashes, new Map() as AuthorData]
         }
 
-        const authorData = await ModuleFacade.GetAuthors(DOWNLOAD_LOCATION(this._minerId))
+        const authorData = await ModuleFacade.GetAuthors(DOWNLOAD_LOCATION(this._minerId), filteredFileNames)
         return [hashes, authorData]
     }
 
@@ -183,20 +192,25 @@ export default abstract class Command {
         await ModuleFacade.SwitchVersion(DOWNLOAD_LOCATION(this._minerId), version),
         await ModuleFacade.TrimFiles(lines, DOWNLOAD_LOCATION(this._minerId))
 
-        let hashes = await ModuleFacade.ParseRepository(DOWNLOAD_LOCATION(this._minerId))
-        hashes = this.trimHashes(hashes, lines)
-        if (hashes.length == 0) {
-            Logger.Debug("No methods present, skipping authors", Logger.GetCallerLocation())
+        const [filenames, hashes] = await ModuleFacade.ParseRepository(DOWNLOAD_LOCATION(this._minerId))
+        const trimmedHashes = this.trimHashes(hashes, lines)
+        if (trimmedHashes.length == 0) {
+            Logger.Debug("No methods present after trim, skipping authors", Logger.GetCallerLocation())
             return
         }
-        hashes.forEach(hash => {
+        trimmedHashes.forEach(hash => {
             hash.VulnCode = vulnCode
         })
-
-        const authorData = await ModuleFacade.GetAuthors(DOWNLOAD_LOCATION(this._minerId))
+        const filteredFileNames: string[] = []
+        trimmedHashes.forEach(hash => {
+            filteredFileNames.push(filenames[filenames.findIndex(file => {
+                file.includes(hash.FileName)
+            })])
+        })
+        const authorData = await ModuleFacade.GetAuthors(DOWNLOAD_LOCATION(this._minerId), filteredFileNames)
         metadata.versionTime = await ModuleFacade.GetVersionTime(DOWNLOAD_LOCATION(this._minerId), version)
         metadata.versionHash = version
-        await DatabaseRequest.UploadHashes(hashes, metadata, authorData, "", [])
+        await DatabaseRequest.UploadHashes(trimmedHashes, metadata, authorData, "", [])
     }
 
     private async parseLatest(metadata: ProjectMetadata) {

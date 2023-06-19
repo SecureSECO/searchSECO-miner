@@ -43,11 +43,11 @@ export default class ModuleFacade {
         Logger.Debug("Trimming finished", Logger.GetCallerLocation())
     }
 
-    public static async GetAuthors(repo: string): Promise<AuthorData> {
+    public static async GetAuthors(repo: string, files: string[]): Promise<AuthorData> {
         Logger.Debug("Calling the spider to download author data", Logger.GetCallerLocation())
         let authorData: AuthorData = new Map()
         try {
-            authorData = await this.Spider.downloadAuthor(repo)
+            authorData = await this.Spider.downloadAuthor(repo, files)
         }
         catch (e) {
             Logger.Warning(`Error getting authors: ${e}`, Logger.GetCallerLocation())
@@ -73,11 +73,11 @@ export default class ModuleFacade {
         return await this.Spider.getVersionTime(repo, version)
     }
 
-    public static async ParseRepository(repo: string): Promise<HashData[]> {
+    public static async ParseRepository(repo: string): Promise<[string[], HashData[]]> {
         Logger.Debug("Calling the parser to parse a repository", Logger.GetCallerLocation())
-        const hashes = (await Parser.ParseFiles(repo, Logger.GetVerbosity())).result
+        const { filenames, result } = await Parser.ParseFiles(repo, Logger.GetVerbosity())
         Logger.Debug("Parsing finished", Logger.GetCallerLocation())
-        return hashes
+        return [filenames, result]
     }
 
     public static async GetProjectMetadata(url: string): Promise<ProjectMetadata> {
