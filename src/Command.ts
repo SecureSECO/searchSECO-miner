@@ -141,18 +141,12 @@ export default abstract class Command {
         const vulnCommits = await ModuleFacade.GetVulnerabilityCommits(DOWNLOAD_LOCATION(this._minerId))
         Logger.Info(`${vulnCommits.length} vulnerabilities found in project`, Logger.GetCallerLocation())
 
-        vulnCommits.reduce(async (prevPromise, commit) => {
-            return new Promise(resolve => {
-                prevPromise.then(async () => {
-                    Logger.Debug(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation())
-                    jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime)
-                    startTime = Date.now()
-                    await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata)
-                    resolve()
-                })
-            })
-
-        }, Promise.resolve())
+        for (const commit of vulnCommits) {
+            Logger.Debug(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation())
+            jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime)
+            startTime = Date.now()
+            await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata)
+        }
 
         if (metadata.defaultBranch !== this._flags.Branch)
             await ModuleFacade.SwitchVersion(DOWNLOAD_LOCATION(this._minerId), this._flags.Branch)
@@ -251,6 +245,9 @@ export default abstract class Command {
             /* eslint-disable @typescript-eslint/no-unused-vars */
             _startTime = Date.now()
             await this.downloadTagged(prevTag, currTag, metadata, prevVersionTime, prevUnchangedFiles)
+
+            prevTag = currTag
+            prevVersionTime = versionTime.toString()
         }
     }
 

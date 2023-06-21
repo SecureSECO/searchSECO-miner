@@ -100,11 +100,11 @@ function hashDataToString(hashData: HashData[], authors: Map<HashData, string[]>
         return [
             item.Hash,
             item.FunctionName,
-            item.FileName.split(/\\|\//).pop(),
+            item.FileName.replace(/\\/g, '/'),
             item.LineNumber,
-            `${(authors.get(item) || []).length}${(authors.get(item) || []).join('')}`.replace(/&lt;/, '<').replace(/&gt;/g, '>'),
+            `${(authors.get(item) || []).length}${(authors.get(item) || []).join('')}`.replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
             `${item.VulnCode || ''}`
-        ].join('?')
+        ].filter(s => s !== '').join('?')
     })
 }
 
