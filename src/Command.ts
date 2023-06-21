@@ -142,7 +142,7 @@ export default abstract class Command {
         Logger.Info(`${vulnCommits.length} vulnerabilities found in project`, Logger.GetCallerLocation())
 
         for (const commit of vulnCommits) {
-            Logger.Debug(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation())
+            Logger.Info(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation())
             jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime)
             startTime = Date.now()
             await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata)
@@ -150,19 +150,8 @@ export default abstract class Command {
 
         if (metadata.defaultBranch !== this._flags.Branch)
             await ModuleFacade.SwitchVersion(DOWNLOAD_LOCATION(this._minerId), this._flags.Branch)
-        let tags = await ModuleFacade.GetRepositoryTags(DOWNLOAD_LOCATION(this._minerId))
-        let tagc = tags.length
-
-        Logger.Info(`Project has ${tagc} tag(s)`, Logger.GetCallerLocation())
-
-        if (tagc > TAGS_COUNT) {
-            const newTags: [string, number, string][] = []
-            const fraction = (tagc - 1) / (TAGS_COUNT - 1)
-            for (let i = 0; i < TAGS_COUNT; i++)
-                newTags[i] = tags[fraction * i]
-            tags = JSON.parse(JSON.stringify(newTags))
-            tagc = TAGS_COUNT
-        }
+        const tags = await ModuleFacade.GetRepositoryTags(DOWNLOAD_LOCATION(this._minerId))
+        const tagc = tags.length
 
         if (parseInt(metadata.versionTime) > startingTime && tagc == 0) {
             await this.parseLatest(metadata)
@@ -230,6 +219,7 @@ export default abstract class Command {
             prevVersionTime = tags[i-1][1].toString()
         }
 
+        let jobUpdated = false
         for (; i < tags.length; i++) {
             const currTag = tags[i][0]
             const versionTime = tags[i][1]
@@ -241,21 +231,28 @@ export default abstract class Command {
             Logger.Info(`Processing tag: ${currTag} (${i+1}/${tags.length})`, Logger.GetCallerLocation())
             Logger.Debug(`Comparing tags: ${prevTag} and ${currTag}.`, Logger.GetCallerLocation())
 
-            await DatabaseRequest.UpdateJob(jobID, jobTime)
+            if (!jobUpdated) {
+                await DatabaseRequest.UpdateJob(jobID, jobTime)
+                jobUpdated = true
+            }
+
             /* eslint-disable @typescript-eslint/no-unused-vars */
             _startTime = Date.now()
-            await this.downloadTagged(prevTag, currTag, metadata, prevVersionTime, prevUnchangedFiles)
+            const success = await this.downloadTagged(prevTag, currTag, metadata, prevVersionTime, prevUnchangedFiles)
+            if (!success)
+                break;
 
             prevTag = currTag
             prevVersionTime = versionTime.toString()
         }
     }
 
-    private async downloadTagged(prevTag: string, currTag: string, metadata: ProjectMetadata, prevVersionTime: string, prevUnchangedFiles: string[]) {
+    private async downloadTagged(prevTag: string, currTag: string, metadata: ProjectMetadata, prevVersionTime: string, prevUnchangedFiles: string[]): Promise<boolean> {
         const unchangedFiles = await ModuleFacade.UpdateVersion(DOWNLOAD_LOCATION(this._minerId), prevTag, currTag, prevUnchangedFiles)
         const  [hashes, authorData] = await this.parseAndBlame()
-        await DatabaseRequest.UploadHashes(hashes, metadata, authorData, prevVersionTime, unchangedFiles)
+        const success = await DatabaseRequest.UploadHashes(hashes, metadata, authorData, prevVersionTime, unchangedFiles)
         prevUnchangedFiles = unchangedFiles
+        return success
     }
 
     private trimHashes(hashes: HashData[], lines: Map<string, number[]>) {

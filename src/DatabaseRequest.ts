@@ -18,7 +18,12 @@ function serializeData(
 ): string[] {
     const transformedHashList = transformHashList(data)
     const authorSendData = getAuthors(transformedHashList, authors)
-    return [header, prevCommitTime, unchangedFiles.join('?'), ...hashDataToString(data, authorSendData)]
+    return [
+        header, 
+        prevCommitTime, 
+        unchangedFiles.join('?').replace(/\\/g, '/').replace(/.\//g, ''), 
+        ...hashDataToString(data, authorSendData)
+    ]
 }
 
 function transformHashList(data: HashData[]): Map<string, HashData[]>{
@@ -89,7 +94,7 @@ function getAuthors(hashes: Map<string, HashData[]>, rawData: AuthorData): Map<H
 const PARSER_VERSION = 1
 function generateHeaderFromMetadata(metadata: ProjectMetadata) {
     const arr = Object.keys(metadata).filter(key => key !== "defaultBranch").map(key => {
-        return metadata[key as keyof ProjectMetadata] || '-'
+        return metadata[key as keyof ProjectMetadata] || ''
     })
     arr.push(PARSER_VERSION)
     return arr.join('?')
@@ -97,12 +102,15 @@ function generateHeaderFromMetadata(metadata: ProjectMetadata) {
 
 function hashDataToString(hashData: HashData[], authors: Map<HashData, string[]>): string[] {    
     return hashData.map(item => {
+
+        const authorArray = authors.get(item) || []
+
         return [
             item.Hash,
-            item.FunctionName,
-            item.FileName.replace(/\\/g, '/'),
+            item.FunctionName || '-',
+            item.FileName.replace(/\\/g, '/').replace('./', ''),
             item.LineNumber,
-            `${(authors.get(item) || []).length}${(authors.get(item) || []).join('')}`.replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
+            `${authorArray.length}${authorArray.join('')}`.replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
             `${item.VulnCode || ''}`
         ].filter(s => s !== '').join('?')
     })
@@ -168,14 +176,14 @@ export default class DatabaseRequest {
         authordata: AuthorData,
         prevCommitTime: string,
         unchangedFiles: string[]
-    ) {
+    ): Promise<boolean> {
         const raw = serializeData(hashes, generateHeaderFromMetadata(metadata), authordata, prevCommitTime, unchangedFiles)
         Logger.Info(`Uploading ${hashes.length} methods to the database`, Logger.GetCallerLocation())
-        Logger.Warning("This needs to be logged to a file!", Logger.GetCallerLocation())
         const { responseCode } = await this._client.Execute(RequestType.UPLOAD, raw)
         if (responseCode == 200) 
             await this.incrementClaimableHashes(hashes.length)
         else Logger.Warning(`Skipping addition of ${hashes.length} hashes to the claimable hashcount`, Logger.GetCallerLocation())
+        return responseCode === 200
     }
 
     public static async AddCrawledJobs(crawled: CrawlData, id: string): Promise<TCPResponse> {
