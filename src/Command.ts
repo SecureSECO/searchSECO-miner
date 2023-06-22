@@ -113,6 +113,7 @@ export default abstract class Command {
         }
 
         const authorData = await this._moduleFacade.GetAuthors(DOWNLOAD_LOCATION(this._minerId), filteredFileNames)
+        this._moduleFacade.ResetState()
         return [hashes, authorData]
     }
 
@@ -289,11 +290,11 @@ export class StartCommand extends Command {
     public async Execute(verbosity: Verbosity): Promise<void> {
         Logger.SetVerbosity(verbosity)
         DatabaseRequest.SetMinerId(this._minerId)
+        DatabaseRequest.ConnectToCassandraNode()
 
         while (!SigInt.Stop) {
-            this._moduleFacade = new ModuleFacade(DOWNLOAD_LOCATION(this._minerId), verbosity)
-
-            DatabaseRequest.ConnectToCassandraNode()
+            
+            this._moduleFacade.ResetState()
 
             this._flags.Branch = ""
             const job = await DatabaseRequest.GetNextJob()

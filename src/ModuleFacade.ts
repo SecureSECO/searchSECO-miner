@@ -19,13 +19,19 @@ export default class ModuleFacade {
     private _spider: Spider
     private _crawler: Crawler
     private _parser: Parser 
+    private _verbosity: Verbosity
     private _filePath: string
 
     constructor(filePath: string, verbosity: Verbosity) {
-        this._spider = new Spider(verbosity)
-        this._crawler = new Crawler(config.GITHUB_TOKEN)
-        this._parser = new Parser(verbosity)
+        this._verbosity = verbosity
         this._filePath = filePath
+        this.ResetState()
+    }
+
+    public ResetState() {
+        this._spider = new Spider(this._verbosity)
+        this._crawler = new Crawler(config.GITHUB_TOKEN)
+        this._parser = new Parser(this._verbosity)
     }
 
     public async DownloadRepository(repo: string, flags: Flags): Promise<boolean> {
