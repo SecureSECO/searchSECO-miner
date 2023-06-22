@@ -25,10 +25,16 @@ export default class ModuleFacade {
     constructor(filePath: string, verbosity: Verbosity) {
         this._verbosity = verbosity
         this._filePath = filePath
-        this.ResetState()
+        this._spider = new Spider(this._verbosity)
+        this._crawler = new Crawler(config.GITHUB_TOKEN)
+        this._parser = new Parser(this._verbosity)
     }
 
     public ResetState() {
+        this._spider = undefined
+        this._crawler = undefined
+        this._parser = undefined
+
         this._spider = new Spider(this._verbosity)
         this._crawler = new Crawler(config.GITHUB_TOKEN)
         this._parser = new Parser(this._verbosity)
