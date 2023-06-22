@@ -11,51 +11,54 @@ import Spider, { AuthorData, VulnerabilityData } from "./modules/searchSECO-spid
 import Crawler, { CrawlData, ProjectMetadata } from "./modules/searchSECO-crawler/src/Crawler";
 import Parser from "./modules/searchSECO-parser/src/Parser";
 import { Flags } from "./Input";
-import Logger from "./modules/searchSECO-logger/src/Logger";
-import path from 'path'
+import Logger, { Verbosity } from "./modules/searchSECO-logger/src/Logger";
 import HashData from "./modules/searchSECO-parser/src/HashData";
 import config from './config/config'
 
 export default class ModuleFacade {
-    public static Spider: Spider = new Spider(Logger.GetVerbosity())
-    public static Crawler: Crawler = new Crawler(config.GITHUB_TOKEN)
-    private static _filePath = path.join(__dirname, '../.tmp')
+    private _spider: Spider
+    private _crawler: Crawler
+    private _parser: Parser 
+    private _filePath: string
 
-    public static async SetFilePath(path: string) {
-        this._filePath = path
+    constructor(filePath: string, verbosity: Verbosity) {
+        this._spider = new Spider(verbosity)
+        this._crawler = new Crawler(config.GITHUB_TOKEN)
+        this._parser = new Parser(verbosity)
+        this._filePath = filePath
     }
 
-    public static async DownloadRepository(repo: string, flags: Flags): Promise<boolean> {
+    public async DownloadRepository(repo: string, flags: Flags): Promise<boolean> {
         Logger.Debug("Deleting previously downloaded project", Logger.GetCallerLocation())
-        await this.Spider.clearDirectory(this._filePath)
+        await this._spider.clearDirectory(this._filePath)
         Logger.Debug("Calling the spider to download a repository", Logger.GetCallerLocation())
-        return await this.Spider.downloadRepo(repo, this._filePath, flags.Branch)
+        return await this._spider.downloadRepo(repo, this._filePath, flags.Branch)
     }
 
-    public static async UpdateVersion(repo: string, prevTag: string, newTag: string, prevUnchangedFiles: string[]): Promise<string[]> {
+    public async UpdateVersion(repo: string, prevTag: string, newTag: string, prevUnchangedFiles: string[]): Promise<string[]> {
         Logger.Debug(`Calling the spider to switch from ${prevTag} to ${newTag}`, Logger.GetCallerLocation())
-        const output = await this.Spider.updateVersion(prevTag, newTag, repo, prevUnchangedFiles)
+        const output = await this._spider.updateVersion(prevTag, newTag, repo, prevUnchangedFiles)
         Logger.Debug("Updating finished", Logger.GetCallerLocation())
         return output
     }
 
-    public static async SwitchVersion(repo: string, tag: string) {
+    public async SwitchVersion(repo: string, tag: string) {
         Logger.Debug(`Calling the spider to switch to version ${tag}`, Logger.GetCallerLocation())
-        await this.Spider.switchVersion(tag, repo)
+        await this._spider.switchVersion(tag, repo)
         Logger.Debug("Switching finished", Logger.GetCallerLocation())
     }
 
-    public static async TrimFiles(lines: Map<string, number[]>, repo: string) {
+    public async TrimFiles(lines: Map<string, number[]>, repo: string) {
         Logger.Debug("Calling the spider to trim files", Logger.GetCallerLocation())
-        await this.Spider.trimFiles(repo, lines)
+        await this._spider.trimFiles(repo, lines)
         Logger.Debug("Trimming finished", Logger.GetCallerLocation())
     }
 
-    public static async GetAuthors(repo: string, files: string[]): Promise<AuthorData> {
+    public async GetAuthors(repo: string, files: string[]): Promise<AuthorData> {
         Logger.Debug("Calling the spider to download author data", Logger.GetCallerLocation())
         let authorData: AuthorData = new Map()
         try {
-            authorData = await this.Spider.downloadAuthor(repo, files)
+            authorData = await this._spider.downloadAuthor(repo, files)
         }
         catch (e) {
             Logger.Warning(`Error getting authors: ${e}`, Logger.GetCallerLocation())
@@ -66,45 +69,45 @@ export default class ModuleFacade {
         return authorData
     }
 
-    public static async GetCurrentVersion(repo: string) {
+    public async GetCurrentVersion(repo: string) {
         Logger.Debug("Calling the spider to get the commit hash", Logger.GetCallerLocation())
-        return await this.Spider.getCommitHash(repo, "HEAD")
+        return await this._spider.getCommitHash(repo, "HEAD")
     }
 
-    public static async GetRepositoryTags(repo: string) {
+    public async GetRepositoryTags(repo: string) {
         Logger.Debug("Calling the spider to get the tags of previous versions", Logger.GetCallerLocation())
-        return await this.Spider.getTags(repo)
+        return await this._spider.getTags(repo)
     }
 
-    public static async GetVersionTime(repo: string, version: string) {
+    public async GetVersionTime(repo: string, version: string) {
         Logger.Debug("Calling the spider to get the version time", Logger.GetCallerLocation())
-        return await this.Spider.getVersionTime(repo, version)
+        return await this._spider.getVersionTime(repo, version)
     }
 
-    public static async ParseRepository(repo: string): Promise<[string[], HashData[]]> {
+    public async ParseRepository(repo: string): Promise<[string[], HashData[]]> {
         Logger.Debug("Calling the parser to parse a repository", Logger.GetCallerLocation())
-        const { filenames, result } = await Parser.ParseFiles(repo, Logger.GetVerbosity())
+        const { filenames, result } = await this._parser.ParseFiles(repo)
         Logger.Debug("Parsing finished", Logger.GetCallerLocation())
         return [filenames, result]
     }
 
-    public static async GetProjectMetadata(url: string): Promise<ProjectMetadata> {
-        Logger.Debug("Calling the crawler to get project metadata", Logger.GetCallerLocation())
-        const metadata = this.Crawler.getProjectMetadata(url)
+    public async GetProjectMetadata(url: string): Promise<ProjectMetadata> {
+        Logger.Debug("Calling the crawer to get project metadata", Logger.GetCallerLocation())
+        const metadata = this._crawler.getProjectMetadata(url)
         Logger.Debug("Project metadata succesfully fetched", Logger.GetCallerLocation())
         return metadata
     }
 
-    public static async CrawlRepositories(): Promise<CrawlData> {
-        Logger.Debug("Calling the crawler to crawl a repository", Logger.GetCallerLocation())
-        const crawldata = this.Crawler.crawl()
+    public async CrawlRepositories(): Promise<CrawlData> {
+        Logger.Debug("Calling the crawer to crawl a repository", Logger.GetCallerLocation())
+        const crawldata = this._crawler.crawl()
         Logger.Debug("Crawling complete", Logger.GetCallerLocation())
         return crawldata
     }
 
-    public static async GetVulnerabilityCommits(downloadPath: string): Promise<VulnerabilityData[]> {
+    public async GetVulnerabilityCommits(downloadPath: string): Promise<VulnerabilityData[]> {
         Logger.Debug("Calling the spider to get vulnerability commits", Logger.GetCallerLocation())
-        return await this.Spider.getVulns(downloadPath)
+        return await this._spider.getVulns(downloadPath)
     }
 
 }

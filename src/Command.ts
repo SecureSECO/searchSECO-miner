@@ -1,6 +1,6 @@
 /**
  * This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course.
- * © Copyright Utrecht University (Department of Information and Computing Sciences)
+ * ï¿½ Copyright Utrecht University (Department of Information and Computing Sciences)
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -11,7 +11,7 @@ import HashData from "./modules/searchSECO-parser/src/HashData";
 import { AuthorData } from "./modules/searchSECO-spider/src/Spider";
 import ModuleFacade from "./ModuleFacade";
 import path from 'path'
-import Logger from "./modules/searchSECO-logger/src/Logger";
+import Logger, { Verbosity } from "./modules/searchSECO-logger/src/Logger";
 import DatabaseRequest from "./DatabaseRequest";
 import { ProjectMetadata } from "./modules/searchSECO-crawler/src/Crawler";
 
@@ -21,8 +21,6 @@ import { ProjectMetadata } from "./modules/searchSECO-crawler/src/Crawler";
  * @returns a path string representing the repo download location for the current miner.
  */ 
 const DOWNLOAD_LOCATION = (minerId: string) => path.join(__dirname, `../.tmp/${minerId}`)
-
-const TAGS_COUNT = 20
 
 /**
  * Static class storing SIGINT signals. 
@@ -69,9 +67,13 @@ export default abstract class Command {
     protected _flags: Flags
     protected _minerId: string
 
+    protected _moduleFacade: ModuleFacade
+
     constructor(minerId: string, flags: Flags) {
         this._flags = flags
         this._minerId = minerId
+
+        this._moduleFacade = new ModuleFacade(DOWNLOAD_LOCATION(this._minerId), Logger.GetVerbosity())
     }
 
     /**
@@ -85,7 +87,7 @@ export default abstract class Command {
     /**
      * Executes the command.
      */
-    public abstract Execute(): Promise<void>;
+    public abstract Execute(verbosity: Verbosity): Promise<void>;
 
     /**
      * Parses a project and retrieves author data.
@@ -94,7 +96,7 @@ export default abstract class Command {
     protected async parseAndBlame() 
         : Promise<[HashData[], AuthorData]>
     {
-        const [filenames, hashes] = await ModuleFacade.ParseRepository(DOWNLOAD_LOCATION(this._minerId))
+        const [filenames, hashes] = await this._moduleFacade.ParseRepository(DOWNLOAD_LOCATION(this._minerId))
         const filteredFileNames: string[] = []
 
         hashes.forEach(hash => {
@@ -110,7 +112,7 @@ export default abstract class Command {
             return [hashes, new Map() as AuthorData]
         }
 
-        const authorData = await ModuleFacade.GetAuthors(DOWNLOAD_LOCATION(this._minerId), filteredFileNames)
+        const authorData = await this._moduleFacade.GetAuthors(DOWNLOAD_LOCATION(this._minerId), filteredFileNames)
         return [hashes, authorData]
     }
 
@@ -123,7 +125,7 @@ export default abstract class Command {
     protected async uploadProject(jobID: string, jobTime: string, startTime: number): Promise<void> {
         Logger.Info("Uploading project to database", Logger.GetCallerLocation())
 
-        const metadata = await ModuleFacade.GetProjectMetadata(this._flags.MandatoryArgument)
+        const metadata = await this._moduleFacade.GetProjectMetadata(this._flags.MandatoryArgument)
 
         if (!metadata) {
             Logger.Warning("Error getting project metadata. Moving on", Logger.GetCallerLocation())
@@ -141,12 +143,12 @@ export default abstract class Command {
             return
         }
 
-        const success = await ModuleFacade.DownloadRepository(this._flags.MandatoryArgument, this._flags)
+        const success = await this._moduleFacade.DownloadRepository(this._flags.MandatoryArgument, this._flags)
         if (!success) 
             return      
-        metadata.versionHash = await ModuleFacade.GetCurrentVersion(DOWNLOAD_LOCATION(this._minerId))
+        metadata.versionHash = await this._moduleFacade.GetCurrentVersion(DOWNLOAD_LOCATION(this._minerId))
 
-        const vulnCommits = await ModuleFacade.GetVulnerabilityCommits(DOWNLOAD_LOCATION(this._minerId))
+        const vulnCommits = await this._moduleFacade.GetVulnerabilityCommits(DOWNLOAD_LOCATION(this._minerId))
         Logger.Info(`${vulnCommits.length} vulnerabilities found in project`, Logger.GetCallerLocation())
 
         for (const commit of vulnCommits) {
@@ -157,8 +159,8 @@ export default abstract class Command {
         }
 
         if (metadata.defaultBranch !== this._flags.Branch)
-            await ModuleFacade.SwitchVersion(DOWNLOAD_LOCATION(this._minerId), this._flags.Branch)
-        const tags = await ModuleFacade.GetRepositoryTags(DOWNLOAD_LOCATION(this._minerId))
+            await this._moduleFacade.SwitchVersion(DOWNLOAD_LOCATION(this._minerId), this._flags.Branch)
+        const tags = await this._moduleFacade.GetRepositoryTags(DOWNLOAD_LOCATION(this._minerId))
         const tagc = tags.length
 
         if (parseInt(metadata.versionTime) > startingTime && tagc == 0) {
@@ -175,15 +177,15 @@ export default abstract class Command {
 
     protected async uploadPartialProject(version: string, lines: Map<string, number[]>, vulnCode: string, metadata: ProjectMetadata) {
         if (!metadata.id) {
-            const newMetadata = await ModuleFacade.GetProjectMetadata(this._flags.MandatoryArgument)
+            const newMetadata = await this._moduleFacade.GetProjectMetadata(this._flags.MandatoryArgument)
             if (!this._flags.Branch)
                 this._flags.Branch = newMetadata.defaultBranch
         }
 
-        await ModuleFacade.SwitchVersion(DOWNLOAD_LOCATION(this._minerId), version),
-        await ModuleFacade.TrimFiles(lines, DOWNLOAD_LOCATION(this._minerId))
+        await this._moduleFacade.SwitchVersion(DOWNLOAD_LOCATION(this._minerId), version),
+        await this._moduleFacade.TrimFiles(lines, DOWNLOAD_LOCATION(this._minerId))
 
-        const [filenames, hashes] = await ModuleFacade.ParseRepository(DOWNLOAD_LOCATION(this._minerId))
+        const [filenames, hashes] = await this._moduleFacade.ParseRepository(DOWNLOAD_LOCATION(this._minerId))
         const trimmedHashes = this.trimHashes(hashes, lines)
         if (trimmedHashes.length == 0) {
             Logger.Debug("No methods present after trim, skipping authors", Logger.GetCallerLocation())
@@ -198,8 +200,8 @@ export default abstract class Command {
                 file.includes(hash.FileName)
             })])
         })
-        const authorData = await ModuleFacade.GetAuthors(DOWNLOAD_LOCATION(this._minerId), filteredFileNames)
-        metadata.versionTime = await ModuleFacade.GetVersionTime(DOWNLOAD_LOCATION(this._minerId), version)
+        const authorData = await this._moduleFacade.GetAuthors(DOWNLOAD_LOCATION(this._minerId), filteredFileNames)
+        metadata.versionTime = await this._moduleFacade.GetVersionTime(DOWNLOAD_LOCATION(this._minerId), version)
         metadata.versionHash = version
         await DatabaseRequest.UploadHashes(trimmedHashes, metadata, authorData, "", [])
     }
@@ -256,7 +258,7 @@ export default abstract class Command {
     }
 
     private async downloadTagged(prevTag: string, currTag: string, metadata: ProjectMetadata, prevVersionTime: string, prevUnchangedFiles: string[]): Promise<boolean> {
-        const unchangedFiles = await ModuleFacade.UpdateVersion(DOWNLOAD_LOCATION(this._minerId), prevTag, currTag, prevUnchangedFiles)
+        const unchangedFiles = await this._moduleFacade.UpdateVersion(DOWNLOAD_LOCATION(this._minerId), prevTag, currTag, prevUnchangedFiles)
         const  [hashes, authorData] = await this.parseAndBlame()
         const success = await DatabaseRequest.UploadHashes(hashes, metadata, authorData, prevVersionTime, unchangedFiles)
         prevUnchangedFiles = unchangedFiles
@@ -284,10 +286,15 @@ export class StartCommand extends Command {
         super(minerId, flags)
     }
 
-    public async Execute(): Promise<void> {
+    public async Execute(verbosity: Verbosity): Promise<void> {
+        Logger.SetVerbosity(verbosity)
         DatabaseRequest.SetMinerId(this._minerId)
-        ModuleFacade.SetFilePath(DOWNLOAD_LOCATION(this._minerId))
+
         while (!SigInt.Stop) {
+            this._moduleFacade = new ModuleFacade(DOWNLOAD_LOCATION(this._minerId), verbosity)
+
+            DatabaseRequest.ConnectToCassandraNode()
+
             this._flags.Branch = ""
             const job = await DatabaseRequest.GetNextJob()
             const splitted = job.split('?')
@@ -322,7 +329,7 @@ export class StartCommand extends Command {
     }
 
     private async handleCrawlRequest(splitted: string[]) {
-        const crawled = await ModuleFacade.CrawlRepositories()
+        const crawled = await this._moduleFacade.CrawlRepositories()
         await DatabaseRequest.AddCrawledJobs(crawled, splitted[2])
     }
 
@@ -339,7 +346,7 @@ export class StartCommand extends Command {
 export class ClaimCommand extends Command {
     protected static _helpMessageText: string
 
-    public Execute(): Promise<void> {
+    public Execute(verbosity: Verbosity): Promise<void> {
         return Promise.resolve()
     }
 

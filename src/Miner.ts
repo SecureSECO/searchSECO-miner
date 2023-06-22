@@ -1,6 +1,6 @@
 /**
  * This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course.
- * © Copyright Utrecht University (Department of Information and Computing Sciences)
+ * ï¿½ Copyright Utrecht University (Department of Information and Computing Sciences)
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -10,13 +10,11 @@ import yargs from 'yargs'
 import { InputParser } from './Input'
 import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger'
 import CommandFactory from './CommandFactory'
-import DatabaseRequest from './DatabaseRequest'
 import Command from './Command'
 
 async function Run(command: Command | undefined) {
     try {
-        await DatabaseRequest.ConnectToCassandraNode()
-        await command?.Execute()
+        await command?.Execute(Logger.GetVerbosity())
     } catch (e) {
         Logger.Error(`Miner exited with error ${e}. Restarting after 2 seconds...`, Logger.GetCallerLocation())
         setTimeout(async () => {

@@ -1,6 +1,6 @@
 /**
  * This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course.
- * © Copyright Utrecht University (Department of Information and Computing Sciences)
+ * ï¿½ Copyright Utrecht University (Department of Information and Computing Sciences)
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -11,7 +11,7 @@ import { CrawlData, ProjectMetadata } from './modules/searchSECO-crawler/src/Cra
 import config from './config/config'
 import { AuthorData } from "./modules/searchSECO-spider/src/Spider";
 import HashData from "./modules/searchSECO-parser/src/HashData";
-import Logger from "./modules/searchSECO-logger/src/Logger";
+import Logger, { Verbosity } from "./modules/searchSECO-logger/src/Logger";
 import { RequestType } from "./modules/searchSECO-databaseAPI/src/Request";
 import Error, { ErrorCode } from "./Error";
 import { TCPResponse } from "./modules/searchSECO-databaseAPI/src/Response";
@@ -173,6 +173,10 @@ export default class DatabaseRequest {
         this._minerId = id
     }
 
+    public static SetVerbosity(verbosity: Verbosity) {
+        Logger.SetVerbosity(verbosity)
+    }
+
     public static async ConnectToCassandraNode() {
         await this._cassandraClient.connect()
         Logger.Debug('Successfully connected to Cassandra', Logger.GetCallerLocation())
@@ -191,6 +195,7 @@ export default class DatabaseRequest {
         if (responseCode == 200) 
             await this.incrementClaimableHashes(hashes.length)
         else Logger.Warning(`Skipping addition of ${hashes.length} hashes to the claimable hashcount`, Logger.GetCallerLocation())
+
         return responseCode === 200
     }
 
