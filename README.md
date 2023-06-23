@@ -12,7 +12,10 @@ Below is a list of the specified environment variables that need to be specified
 - `GITHUB_TOKEN`: The github token supplied by the user. Used to fetch author and project data from Github. The github token can have the minimal amount of access rights.
 - `PERSONAL_WALLET_ADDRESS`: The wallet address of the user. In order to successfully link to the DAO, the same address must be used as the one linked to the DAO.
 #### Dependencies
-The miner uses [srcML](https://www.srcml.org/#home) to parse some languages to XML. Install the [relevant executable](https://www.srcml.org/#download) and run `srcml` in a terminal to check whether the installation was successful.
+- The miner uses [srcML](https://www.srcml.org/#home) to parse some languages to XML. Install the [relevant executable](https://www.srcml.org/#download) and run `srcml` in a terminal to check whether the installation was successful.
+- The miner also uses [Git](https://git-scm.com/) to interface with github. Make sure it is installed and run the following commands in a terminal with admin rights:
+  - `git config --system core.longpaths true` - Some filenames are too long to be accessed with git, and this flag enables long filenames.
+  - `git config --system core.protectNTFS false` - Some filepaths are incorrectly formatted (e.g have symbols such as `:` or `*` in them) for NTFS filesystems, and this flag disables a check for those filepaths.
 ## Installing and running the miner
 Download this repository, make a `.env` file, fill in the relevant variables and run the following commands to install the miner:
 ```
