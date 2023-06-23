@@ -20,7 +20,7 @@ Below is a list of the specified environment variables that need to be specified
 Download this repository, make a `.env` file, fill in the relevant variables and run the following commands to install the miner:
 ```
 npm i
-git submodule update --init --recursive
+npm run update
 ```
 Then use the following command to run the miner for Windows:
 ```
