@@ -15,12 +15,22 @@ import Logger, { Verbosity } from "./modules/searchSECO-logger/src/Logger";
 import DatabaseRequest from "./DatabaseRequest";
 import { ProjectMetadata } from "./modules/searchSECO-crawler/src/Crawler";
 
+import { memoryUsage } from 'node:process'
+
 /**
  * Makes a designated repo download location for the current miner.
  * @param minerId The ID of the current miner
  * @returns a path string representing the repo download location for the current miner.
  */ 
 const DOWNLOAD_LOCATION = (minerId: string) => path.join(__dirname, `../.tmp/${minerId}`)
+
+function freeMemory() {
+    // const before = Object.values(memoryUsage()).reduce((prev, curr) => prev+curr,0)
+    if (global.gc)
+        global.gc()
+    // const after = Object.values(memoryUsage()).reduce((prev, curr) => prev+curr,0)
+    // Logger.Debug(`${(before - after)/1000_000} MB of memory freed`, Logger.GetCallerLocation())
+}
 
 /**
  * Static class storing SIGINT signals. 
@@ -113,7 +123,9 @@ export default abstract class Command {
         }
 
         const authorData = await this._moduleFacade.GetAuthors(DOWNLOAD_LOCATION(this._minerId), filteredFileNames)
+
         this._moduleFacade.ResetState()
+        
         return [hashes, authorData]
     }
 
@@ -255,6 +267,8 @@ export default abstract class Command {
 
             prevTag = currTag
             prevVersionTime = versionTime.toString()
+
+            freeMemory()
         }
     }
 
@@ -295,6 +309,7 @@ export class StartCommand extends Command {
         while (!SigInt.Stop) {
             
             this._moduleFacade.ResetState()
+            freeMemory()
 
             this._flags.Branch = ""
             const job = await DatabaseRequest.GetNextJob()
