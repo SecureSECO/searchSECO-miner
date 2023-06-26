@@ -1,6 +1,6 @@
 /**
  * This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course.
- * © Copyright Utrecht University (Department of Information and Computing Sciences)
+ * ï¿½ Copyright Utrecht University (Department of Information and Computing Sciences)
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -12,31 +12,35 @@ import Logger from './modules/searchSECO-logger/src/Logger'
 import config from './config/config'
 import DatabaseRequest from './DatabaseRequest'
 import { v4 as uuidv4 } from 'uuid'
+import cassandra from 'cassandra-driver'
+
+
+async function createNewMiner(minerId: string) {
+    await DatabaseRequest.AddMinerToDatabase(minerId, config.PERSONAL_WALLET_ADDRESS)
+    Logger.Info(`New miner with id ${minerId} added to database`, Logger.GetCallerLocation())
+}
 
 (async () => {
 
     // Check if a miner associated with the current wallet is idle.
     // If there is, assign the idle miner ID to this miner
     // If it is not, create a new miner
+
+    await DatabaseRequest.TruncateZombieMiners(config.PERSONAL_WALLET_ADDRESS)
+
     let minerId: string = uuidv4()
-
-    async function createNewMiner() {
-        await DatabaseRequest.AddMinerToDatabase(minerId, config.PERSONAL_WALLET_ADDRESS)
-        Logger.Info(`New miner with id ${minerId} added to database`, Logger.GetCallerLocation())
-    }
-
-    const miners = await DatabaseRequest.ListMinersAssociatedWithWallet(config.PERSONAL_WALLET_ADDRESS)
+    const existingMiners = await DatabaseRequest.ListMinersAssociatedWithWallet(config.PERSONAL_WALLET_ADDRESS)
     
-    if (miners.length > 0) {
-        const allRunning = miners.every(({ status }) => status === 'running')
-        if (allRunning) createNewMiner()
+    if (existingMiners.length > 0) {
+        const allRunning = existingMiners.every(({ status }) => status === 'running')
+        if (allRunning) createNewMiner(minerId)
         else {
-            const { id } = miners.find(({ status }) => status === 'idle')
+            const { id } = existingMiners.find(({ status }) => status === 'idle')
             minerId = id
             await DatabaseRequest.SetMinerStatus(id, 'running')
         }
     }
-    else createNewMiner()
+    else createNewMiner(minerId)
 
     // Define a custom signal interrupt.
     // When the environment is production, wait until the current process has finished.

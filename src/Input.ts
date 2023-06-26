@@ -1,10 +1,12 @@
 /**
  * This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course.
- * © Copyright Utrecht University (Department of Information and Computing Sciences)
+ * ï¿½ Copyright Utrecht University (Department of Information and Computing Sciences)
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+
+import { Verbosity } from "./modules/searchSECO-logger/src/Logger"
 
 
 /**
@@ -29,7 +31,7 @@ const shorthandToLongMapping: Map<string, FlagName> = new Map<string, FlagName>(
 export class Flags {
     public MandatoryArgument = ""
     public CPU = 1
-    public Verbose = 4
+    public Verbose = Verbosity.SILENT
     public Help = false
     public Version = false
     public GithubUser = ""

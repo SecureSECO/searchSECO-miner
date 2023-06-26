@@ -160,7 +160,7 @@ export enum FinishReason {
 }
 
 export default class DatabaseRequest {
-    private static _client = new TCPClient("client", config.DB_HOST, config.DB_PORT, Logger.GetVerbosity())
+    private static _client = new TCPClient("client", config.DB_HOST, config.DB_PORT)
     private static _minerId = ''
     private static _cassandraClient = new cassandra.Client({
         contactPoints: [ `${config.DB_HOST}:8002` ],
@@ -175,6 +175,11 @@ export default class DatabaseRequest {
 
     public static SetVerbosity(verbosity: Verbosity) {
         Logger.SetVerbosity(verbosity)
+        this.updateClientVerbosity(verbosity)
+    }
+
+    private static updateClientVerbosity(verbosity: Verbosity) {
+        this._client = new TCPClient("client", config.DB_HOST, config.DB_PORT, verbosity)
     }
 
     public static async ConnectToCassandraNode() {
@@ -246,9 +251,10 @@ export default class DatabaseRequest {
         Logger.Debug(`Incrementing claimable hash count by ${amount}`, Logger.GetCallerLocation())
         const currentCount = await this.RetrieveClaimableHashCount()
         const newCount = currentCount.add(cassandra.types.Long.fromNumber(amount))
-        const query = "UPDATE rewarding.miners SET claimable_hashes=? WHERE id=? AND wallet=?;"
+        const query = "UPDATE rewarding.miners SET claimable_hashes=?, last_hashes_update=? WHERE id=? AND wallet=?;"
         await this._cassandraClient.execute(query, [ 
             newCount, 
+            cassandra.types.Long.fromNumber(Date.now()),
             cassandra.types.Uuid.fromString(this._minerId),
             config.PERSONAL_WALLET_ADDRESS 
         ], { prepare: true })
@@ -276,10 +282,11 @@ export default class DatabaseRequest {
     }
 
     public static async SetMinerStatus(id: string, status: string) {
-        const query = "UPDATE rewarding.miners SET status=? WHERE id=? AND wallet=?;"
+        const query = 'UPDATE rewarding.miners SET status=?, last_startup=? WHERE id=? AND wallet=?;'
         Logger.Debug(`Setting miner status to ${status}`, Logger.GetCallerLocation())
         await this._cassandraClient.execute(query, [ 
-            status, 
+            status,
+            Date.now(),
             cassandra.types.Uuid.fromString(id), 
             config.PERSONAL_WALLET_ADDRESS 
         ], { prepare: true })
@@ -293,5 +300,30 @@ export default class DatabaseRequest {
         ])
 
         return response.rows.map((row) => ({ id: row.id.toString(), status: row.status.toString() }))
+    }
+
+    public static async TruncateZombieMiners(wallet: string): Promise<void> {
+        let query = "SELECT id, claimable_hashes, last_hashes_update, last_startup FROM rewarding.miners WHERE wallet=? AND status=? ALLOW FILTERING;"
+        const response = await this._cassandraClient.execute(query, [
+            wallet,
+            'running'
+        ])
+
+        const dayInMilis = 86_400_000
+        const deadMinerIds = response.rows.filter(({
+            last_hashes_update,
+            last_startup
+        }) => {
+            const isOneDayOld = parseInt(last_startup) + dayInMilis >= Date.now()
+            const hasUpdatedWithinOneDay = parseInt(last_hashes_update) + dayInMilis <= Date.now()
+            return isOneDayOld && !hasUpdatedWithinOneDay
+        }).map(({ id }) => id)
+
+        query = `UPDATE rewarding.miners SET status=? WHERE id IN (${new Array(deadMinerIds.length).fill('?').join(',')}) AND wallet=?;`
+        await this._cassandraClient.execute(query, [
+            'idle',
+            ...deadMinerIds,
+            wallet,
+        ])
     }
 }
