@@ -271,11 +271,12 @@ export default class DatabaseRequest {
     }
 
     public static async AddMinerToDatabase(id: string, wallet: string): Promise<boolean> {
-        const query = "INSERT INTO rewarding.miners (id, wallet, claimable_hashes, status) VALUES (?, ?, ?, ?) IF NOT EXISTS;"
+        const query = "INSERT INTO rewarding.miners (id, wallet, claimable_hashes, last_startup, status) VALUES (?, ?, ?, ?, ?) IF NOT EXISTS;"
         const result = await this._cassandraClient.execute(query, [ 
             cassandra.types.Uuid.fromString(id),
             wallet,
             cassandra.types.Long.fromNumber(0),
+            cassandra.types.Long.fromNumber(Date.now()),
             'running'
         ], { prepare: true })
         return result.rows[0]['[applied]']
