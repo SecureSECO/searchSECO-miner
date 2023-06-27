@@ -304,7 +304,7 @@ export default class DatabaseRequest {
     }
 
     public static async TruncateZombieMiners(wallet: string): Promise<void> {
-        let query = "SELECT id, claimable_hashes, last_hashes_update, last_startup FROM rewarding.miners WHERE wallet=? AND status=? ALLOW FILTERING;"
+        let query = "SELECT id, claimable_hashes, last_hashes_update, last_startup, status FROM rewarding.miners WHERE wallet=? AND status=? ALLOW FILTERING;"
         const response = await this._cassandraClient.execute(query, [
             wallet,
             'running'
@@ -313,12 +313,16 @@ export default class DatabaseRequest {
         const dayInMilis = 86_400_000
         const deadMinerIds = response.rows.filter(({
             last_hashes_update,
-            last_startup
+            last_startup,
+            status
         }) => {
             const isOneDayOld = parseInt(last_startup) + dayInMilis >= Date.now()
-            const hasUpdatedWithinOneDay = parseInt(last_hashes_update) + dayInMilis <= Date.now()
-            return isOneDayOld && !hasUpdatedWithinOneDay
+            const hasUpdatedWithinOneDay = Math.abs(parseInt(last_hashes_update) - Date.now()) <= dayInMilis
+            return isOneDayOld && !hasUpdatedWithinOneDay && status === 'running'
         }).map(({ id }) => id)
+
+        if (deadMinerIds.length == 0)
+            return
 
         query = `UPDATE rewarding.miners SET status=? WHERE id IN (${new Array(deadMinerIds.length).fill('?').join(',')}) AND wallet=?;`
         await this._cassandraClient.execute(query, [
