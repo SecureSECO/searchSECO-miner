@@ -10,7 +10,7 @@
     "build-ts": "tsc",
     "start-win": "npm run build-win && node --max-old-space-size=8192 dist/main.js start",
     "start-unix": "npm run build-unix && node --max-old-space-size=8192 dist/main.js start",
-    "update": "git pull origin main && git submodule update --init --recursive --remote",
+    "update": "git checkout main && git pull origin main && git submodule update --init --recursive --remote",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"
   },
