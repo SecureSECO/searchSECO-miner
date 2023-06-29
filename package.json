@@ -11,7 +11,8 @@
     "start-win": "npm run build-win && node --max-old-space-size=8192 dist/main.js start",
     "start-unix": "npm run build-unix && node --max-old-space-size=8192 dist/main.js start",
     "update": "git pull origin main && git submodule update --init --recursive --remote",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint src/**/*.ts",
+    "format": "eslint src/**/*.ts --fix"
   },
   "author": "Wouter Beffers",
   "license": "MIT",
@@ -33,6 +34,15 @@
     "@types/yargs": "^17.0.24",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
-    "eslint": "^8.42.0"
+    "eslint": "^8.42.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "prettier": "^2.8.8"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format"
+    }
   }
 }
