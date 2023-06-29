@@ -2,11 +2,34 @@
     "root": true,
     "parser": "@typescript-eslint/parser",
     "plugins": [
-      "@typescript-eslint"
+      "@typescript-eslint",
+      "prettier"
     ],
     "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended"
-    ]
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "overrides": [],
+    "ignorePatterns": [
+      "node_modules",
+      "dist",
+      ".tmp",
+      "src/modules/searchSECO-parser/src/languages/*/lib"
+    ],
+    "rules": {
+      "no-undef": "off",
+      "prettier/prettier": [
+        "warn",
+        {
+          "printWidth": 120,
+          "endOfLine": "auto",
+          "singleQuote": true,
+          "semi": true,
+          "useTabs": true,
+          "bracketSpacing": true
+        }
+      ]
+    }
   }

@@ -6,49 +6,50 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import yargs from 'yargs'
-import { InputParser } from './Input'
-import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger'
-import CommandFactory from './CommandFactory'
-import Command from './Command'
+import yargs from 'yargs';
+import { InputParser } from './Input';
+import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
+import CommandFactory from './CommandFactory';
+import Command from './Command';
 
+/**
+ * Try to run a command. If an error orccured, print it to stdout and retry.
+ * @param command The command to run
+ */
 async function Run(command: Command | undefined) {
-    try {
-        await command?.Execute(Logger.GetVerbosity())
-    } catch (e) {
-        Logger.Error(`Miner exited with error ${e}. Restarting after 2 seconds...`, Logger.GetCallerLocation())
-        setTimeout(async () => {
-            await Run(command)
-        }, 2000)
-    }
+	try {
+		await command?.Execute(Logger.GetVerbosity());
+	} catch (e) {
+		Logger.Error(`Miner exited with error ${e}. Restarting after 2 seconds...`, Logger.GetCallerLocation());
+		setTimeout(async () => {
+			await Run(command);
+		}, 2000);
+	}
 }
 
 export default class Miner {
-    private _id: string
+	private _id: string;
 
-    constructor(id: string) {
-        this._id = id
-    }
+	constructor(id: string) {
+		this._id = id;
+	}
 
-    /**
-     * Starts the miner. Essentially does not resolve, as the miner is desinged to run indefinitly
-     */
-    public async Start() {
+	/**
+	 * Starts the miner. Essentially does not resolve, as the miner is desinged to run indefinitly
+	 */
+	public async Start() {
+		// Sanitize input and setup logger
+		const input = InputParser.Parse(yargs.argv);
+		Logger.SetModule('miner');
+		Logger.SetVerbosity(input.Flags.Verbose || Verbosity.SILENT);
+		Logger.Debug('Sanitized and parsed user input', Logger.GetCallerLocation());
 
-        // Sanitize input and setup logger
-        const input = InputParser.Parse(yargs.argv)
-        Logger.SetModule("miner")
-        Logger.SetVerbosity(input.Flags.Verbose || Verbosity.SILENT)
-        Logger.Debug("Sanitized and parsed user input", Logger.GetCallerLocation())
-    
-        const commandFactory = new CommandFactory()
-        if (input.Flags.Help)
-            commandFactory.PrintHelpMessage(input.Command)
-        else if (input.Flags.Version)
-            console.log("v1.0.0")
-        else {
-            // Try to run the command. If an error occurs, restart after 2 seconds.          
-            await Run(commandFactory.GetCommand(input.Command, this._id, input.Flags))
-        }
-    }
+		const commandFactory = new CommandFactory();
+		if (input.Flags.Help) commandFactory.PrintHelpMessage(input.Command);
+		else if (input.Flags.Version) console.log('v1.0.0');
+		else {
+			// Try to run the command. If an error occurs, restart after 2 seconds.
+			await Run(commandFactory.GetCommand(input.Command, this._id, input.Flags));
+		}
+	}
 }
