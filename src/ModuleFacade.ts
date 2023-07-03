@@ -1,6 +1,6 @@
 /**
  * This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course.
- * ÔøΩ Copyright Utrecht University (Department of Information and Computing Sciences)
+ * ù Copyright Utrecht University (Department of Information and Computing Sciences)
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -58,7 +58,7 @@ export default class ModuleFacade {
 	 * @returns A list of updated unchanged files
 	 */
 	public async UpdateVersion(prevTag: string, newTag: string, prevUnchangedFiles: string[]): Promise<string[]> {
-		Logger.Debug(`Calling the spider to switch from ${prevTag} to ${newTag}`, Logger.GetCallerLocation());
+		Logger.Debug(`Calling the spider to switch from ${prevTag} to ${newTag}`, Logger.GetCallerLocation(), true);
 		const output = await this._spider.updateVersion(prevTag, newTag, this._filePath, prevUnchangedFiles);
 		Logger.Debug('Updating finished', Logger.GetCallerLocation());
 		return output;
