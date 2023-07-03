@@ -149,10 +149,10 @@ export default abstract class Command {
         metadata.versionHash = await this._moduleFacade.GetCurrentVersion(DOWNLOAD_LOCATION(this._minerId))
 
         const vulnCommits = await this._moduleFacade.GetVulnerabilityCommits(DOWNLOAD_LOCATION(this._minerId))
-        Logger.Info(`${vulnCommits.length} vulnerabilities found in project`, Logger.GetCallerLocation())
+        Logger.Info(`${vulnCommits.length} vulnerabilities found in project`, Logger.GetCallerLocation(), true)
 
         for (const commit of vulnCommits) {
-            Logger.Info(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation())
+            Logger.Info(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation(), true)
             jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime)
             startTime = Date.now()
             await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata)
@@ -300,18 +300,18 @@ export class StartCommand extends Command {
             const splitted = job.split('?')
             switch (splitted[0]) {
                 case "Spider": {
-                    Logger.Info(`New Job: Download and parse ${splitted[2]}`, Logger.GetCallerLocation())
+                    Logger.Info(`New Job: Download and parse ${splitted[2]}`, Logger.GetCallerLocation(), true)
                     const startTime = Date.now()
                     await this.processVersion(splitted, startTime)
                     break;
                 }
                 case "Crawl":
-                    Logger.Info("New Job: Crawl for more URLs", Logger.GetCallerLocation())
+                    Logger.Info("New Job: Crawl for more URLs", Logger.GetCallerLocation(), true)
                     await this.handleCrawlRequest(splitted)
                     break;
                 
                 case "NoJob":
-                    Logger.Info("Waiting for a new job", Logger.GetCallerLocation())
+                    Logger.Info("Waiting for a new job", Logger.GetCallerLocation(), true)
                     await new Promise(resolve => setTimeout(resolve, 5000))
                     break;
 

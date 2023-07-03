@@ -48,14 +48,14 @@ export default class ModuleFacade {
     }
 
     public async UpdateVersion(repo: string, prevTag: string, newTag: string, prevUnchangedFiles: string[]): Promise<string[]> {
-        Logger.Debug(`Calling the spider to switch from ${prevTag} to ${newTag}`, Logger.GetCallerLocation())
+        Logger.Debug(`Calling the spider to switch from ${prevTag} to ${newTag}`, Logger.GetCallerLocation(), true)
         const output = await this._spider.updateVersion(prevTag, newTag, repo, prevUnchangedFiles)
         Logger.Debug("Updating finished", Logger.GetCallerLocation())
         return output
     }
 
     public async SwitchVersion(repo: string, tag: string) {
-        Logger.Debug(`Calling the spider to switch to version ${tag}`, Logger.GetCallerLocation())
+        Logger.Debug(`Calling the spider to switch to version ${tag}`, Logger.GetCallerLocation(), true)
         await this._spider.switchVersion(tag, repo)
         Logger.Debug("Switching finished", Logger.GetCallerLocation())
     }
