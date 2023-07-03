@@ -206,7 +206,7 @@ export default class DatabaseRequest {
 		unchangedFiles: string[]
 	): Promise<boolean> {
 		const raw = serializeData(hashes, metadata, authordata, prevCommitTime, unchangedFiles);
-		Logger.Info(`Uploading ${hashes.length} methods to the database`, Logger.GetCallerLocation());
+		Logger.Info(`Uploading ${hashes.length} methods to the database`, Logger.GetCallerLocation(), true);
 		const { responseCode } = await this._client.Execute(RequestType.UPLOAD, raw);
 		if (responseCode == 200) await this.incrementClaimableHashes(hashes.length);
 		else
@@ -304,15 +304,16 @@ export default class DatabaseRequest {
 		return result.rows[0]['[applied]'];
 	}
 
-	public static async SetMinerStatus(id: string, status: string) {
-		const query = 'UPDATE rewarding.miners SET status=?, last_startup=? WHERE id=? AND wallet=?;';
-		Logger.Debug(`Setting miner status to ${status}`, Logger.GetCallerLocation());
-		await this._cassandraClient.execute(
-			query,
-			[status, Date.now(), cassandra.types.Uuid.fromString(id), config.PERSONAL_WALLET_ADDRESS],
-			{ prepare: true }
-		);
-	}
+    public static async SetMinerStatus(id: string, status: string) {
+        const query = 'UPDATE rewarding.miners SET status=?, last_startup=? WHERE id=? AND wallet=?;'
+        Logger.Debug(`Setting miner status to ${status}`, Logger.GetCallerLocation())
+        await this._cassandraClient.execute(query, [ 
+            status,
+            cassandra.types.Long.fromNumber(Date.now()),
+            cassandra.types.Uuid.fromString(id), 
+            config.PERSONAL_WALLET_ADDRESS 
+        ], { prepare: true })
+    }
 
 	public static async ListMinersAssociatedWithWallet(wallet: string): Promise<{ id: string; status: string }[]> {
 		const query = 'SELECT id, status FROM rewarding.miners WHERE wallet=? ALLOW FILTERING;';
