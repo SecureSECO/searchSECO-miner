@@ -1,0 +1,4 @@
+node_modules
+dist
+.tmp
+src/modules/searchSECO-parser/src/languages/*/lib

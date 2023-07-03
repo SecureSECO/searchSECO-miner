@@ -6,56 +6,52 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import Miner from './Miner'
-import { SigInt } from './Command'
-import Logger from './modules/searchSECO-logger/src/Logger'
-import config from './config/config'
-import DatabaseRequest from './DatabaseRequest'
-import { v4 as uuidv4 } from 'uuid'
-import cassandra from 'cassandra-driver'
-
+import Miner from './Miner';
+import { SigInt } from './Command';
+import Logger from './modules/searchSECO-logger/src/Logger';
+import config from './config/config';
+import DatabaseRequest from './DatabaseRequest';
+import { v4 as uuidv4 } from 'uuid';
 
 async function createNewMiner(minerId: string) {
-    await DatabaseRequest.AddMinerToDatabase(minerId, config.PERSONAL_WALLET_ADDRESS)
-    Logger.Info(`New miner with id ${minerId} added to database`, Logger.GetCallerLocation())
+	await DatabaseRequest.AddMinerToDatabase(minerId, config.PERSONAL_WALLET_ADDRESS);
+	Logger.Info(`New miner with id ${minerId} added to database`, Logger.GetCallerLocation());
 }
 
 (async () => {
+	// Check if a miner associated with the current wallet is idle.
+	// If there is, assign the idle miner ID to this miner
+	// If it is not, create a new miner
 
-    // Check if a miner associated with the current wallet is idle.
-    // If there is, assign the idle miner ID to this miner
-    // If it is not, create a new miner
+	await DatabaseRequest.TruncateZombieMiners(config.PERSONAL_WALLET_ADDRESS);
 
-    await DatabaseRequest.TruncateZombieMiners(config.PERSONAL_WALLET_ADDRESS)
+	let minerId: string = uuidv4();
+	const existingMiners = await DatabaseRequest.ListMinersAssociatedWithWallet(config.PERSONAL_WALLET_ADDRESS);
 
-    let minerId: string = uuidv4()
-    const existingMiners = await DatabaseRequest.ListMinersAssociatedWithWallet(config.PERSONAL_WALLET_ADDRESS)
-    
-    if (existingMiners.length > 0) {
-        const allRunning = existingMiners.every(({ status }) => status === 'running')
-        if (allRunning) createNewMiner(minerId)
-        else {
-            const { id } = existingMiners.find(({ status }) => status === 'idle')
-            minerId = id
-            await DatabaseRequest.SetMinerStatus(id, 'running')
-        }
-    }
-    else createNewMiner(minerId)
+	if (existingMiners.length > 0) {
+		const allRunning = existingMiners.every(({ status }) => status === 'running');
+		if (allRunning) createNewMiner(minerId);
+		else {
+			const { id } = existingMiners.find(({ status }) => status === 'idle');
+			minerId = id;
+			await DatabaseRequest.SetMinerStatus(id, 'running');
+		}
+	} else createNewMiner(minerId);
 
-    // Define a custom signal interrupt.
-    // When the environment is production, wait until the current process has finished.
-    // Else, set the miner to idle and exit immediately.
-    process.on('SIGINT', async () => {
-        if (config.NODE_ENV === "development") {
-            Logger.Info("Detected signal interrupt, exiting immediately", Logger.GetCallerLocation())
-            SigInt.StopProcessImmediately(minerId)
-        } else {
-            Logger.Info("Detected signal interrupt, finishing current job and exiting", Logger.GetCallerLocation())
-            await SigInt.StopProcess(minerId)
-        }
-    })
+	// Define a custom signal interrupt.
+	// When the environment is production, wait until the current process has finished.
+	// Else, set the miner to idle and exit immediately.
+	process.on('SIGINT', async () => {
+		if (config.NODE_ENV === 'development') {
+			Logger.Info('Detected signal interrupt, exiting immediately', Logger.GetCallerLocation());
+			SigInt.StopProcessImmediately(minerId);
+		} else {
+			Logger.Info('Detected signal interrupt, finishing current job and exiting', Logger.GetCallerLocation());
+			await SigInt.StopProcess(minerId);
+		}
+	});
 
-    const miner = new Miner(minerId)
-    Logger.Info("Starting miner...", Logger.GetCallerLocation())
-    miner.Start()
-})()
+	const miner = new Miner(minerId);
+	Logger.Info('Starting miner...', Logger.GetCallerLocation());
+	miner.Start();
+})();
