@@ -22,18 +22,19 @@ Download this repository, make a `.env` file, fill in the relevant variables and
 npm i
 npm run update
 ```
-Then use the following command to run the miner for Windows:
+Build the miner for the target operating sytem:
 ```
-npm run start-win
+npm run build-win
+or
+npm run build-unix
 ```
-For Unix:
+Then run the miner with a specified command:
 ```
-npm run start-unix
+npm run start
+npm run check -- [URL]
 ```
-When running the start command, the verbosity can be specified by adding `-- -V [verbosity_number]` at the end of the command.
-After the start command has been run, the miner will automatically scrape github and upload hashes. The hash count the miner has uploaded can be viewed in the DAO. This is also the place where rewards can be claimed.
 #### Verbosity
-The miner can be set to be more or less verbose. The specific verbosity values are listed below.
+The miner can be set to be more or less verbose. Each command can be suffixed with a `--verbose [VERBOSITY]` flag. The specific verbosity values are listed below.
 - `1`: Silent. Only `[INFO]` messages are shown
 - `2`: Errors only
 - `3`: Errors and warnings only
