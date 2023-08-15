@@ -14,6 +14,7 @@ import path from 'path';
 import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import DatabaseRequest from './DatabaseRequest';
 import { ProjectMetadata } from './modules/searchSECO-crawler/src/Crawler';
+import MatchPrinter from './Print';
 
 /**
  * Makes a designated repo download location for the current miner.
@@ -21,6 +22,8 @@ import { ProjectMetadata } from './modules/searchSECO-crawler/src/Crawler';
  * @returns a path string representing the repo download location for the current miner.
  */
 const DOWNLOAD_LOCATION = (minerId: string) => path.join(__dirname, `../.tmp/${minerId}`);
+
+const REPORT_OUTPUT_FILE = './report.txt'
 
 /**
  * Static class storing SIGINT signals.
@@ -57,6 +60,7 @@ export class SigInt {
 		process.exit(0);
 	}
 }
+
 
 /**
  * The base Command class. This class holds most of the functionalities for modifying repositories
@@ -110,6 +114,27 @@ export default abstract class Command {
 
 		const authorData = await this._moduleFacade.GetAuthors(filteredFileNames);
 		return [hashes, authorData];
+	}
+
+	protected async checkProject(): Promise<void> {
+		const url = this._flags.MandatoryArgument
+		Logger.Info(`Checking ${url} against the SearchSECO database`, Logger.GetCallerLocation())
+
+		const metadata = await this._moduleFacade.GetProjectMetadata(url)
+		if (!this._flags.Branch)
+			this._flags.Branch = metadata.defaultBranch
+		
+		await this._moduleFacade.DownloadRepository(url, this._flags.Branch)
+
+		if (this._flags.ProjectCommit !== "")
+			await this._moduleFacade.SwitchVersion(this._flags.ProjectCommit)
+		
+		const [hashes, authorData] = await this.parseAndBlame()
+		const databaseResponse = await DatabaseRequest.FindMatches(hashes)
+
+		const printer = new MatchPrinter(REPORT_OUTPUT_FILE)
+		await printer.PrintHashMatches(hashes, databaseResponse, authorData, url, metadata.id)
+		printer.Close()
 	}
 
 	/**
@@ -372,5 +397,29 @@ export class StartCommand extends Command {
 		}
 		this._flags.MandatoryArgument = splitted[2];
 		await this.uploadProject(splitted[1], splitted[3], startTime);
+	}
+}
+
+export class CheckCommand extends Command {
+	protected static _helpMessageText = 'Checks a project URL against the SearchSECO database and prints the results.';
+	constructor(minerId: string, flags: Flags) {
+		super(minerId, flags);
+	}
+
+	public async Execute(verbosity: Verbosity): Promise<void> {
+		DatabaseRequest.SetVerbosity(verbosity);
+		await this.checkProject()
+		await SigInt.StopProcessImmediately(this._minerId)
+	}
+}
+
+export class CheckUploadCommand extends Command {
+	protected static _helpMessageText = 'Checks a project URL against the SearchSECO database, and if the project does not exist, uploads it.';
+	constructor(minerId: string, flags: Flags) {
+		super(minerId, flags);
+	}
+
+	public async Execute(verbosity: Verbosity): Promise<void> {
+		DatabaseRequest.SetVerbosity(verbosity);
 	}
 }

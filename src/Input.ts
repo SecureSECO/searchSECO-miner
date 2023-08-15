@@ -6,6 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import yargs from 'yargs';
 import { Verbosity } from './modules/searchSECO-logger/src/Logger';
 
 /**
@@ -54,33 +55,54 @@ export class ParsedInput {
 	}
 }
 
-type UserInput = {
-	[key: string]: any;
-};
 
 export class InputParser {
-	static Parse(input: UserInput): ParsedInput {
+	static Parse(): ParsedInput {
 		const flags = JSON.parse(JSON.stringify(new Flags()));
 
-		Object.keys(input).forEach((key: keyof UserInput) => {
-			if (key.toString() === '$0') return;
+		let command: string
+		yargs.option('verbose', {
+			describe: 'set miner verbosity',
+			type: 'number'
+		}).argv
 
-			if (key.toString() === '_') {
-				flags.MandatoryArgument = (input[key.toString() as keyof UserInput] as string[])[0];
-				return;
-			}
+		yargs.command('start', 'starts the miner', () => {
+			command = 'start'
+		}).argv
 
-			if (key.toString().length == 1 && shorthandToLongMapping.has(key.toString())) {
-				const flagName = shorthandToLongMapping.get(key.toString());
-				flags[flagName] = input[key];
-				return;
-			}
+		yargs.command('check', 'checks a url against the SecureSECO database', yargs => {
+			yargs.positional('url', {
+				describe: 'The url to check',
+				type: 'string',
+				demandOption: true
+			})
+		}, argv => {
+			command = 'check'
+			flags.MandatoryArgument = argv._[1]
+			flags.Verbose = argv._[2] || Verbosity.SILENT
+		}).argv
+		
+		// Object.keys(argv).forEach((key: keyof typeof argv) => {
+		// 	if (key.toString() === '$0') return;
 
-			const formattedFlagName = `${key.toString()[0].toUpperCase()}${key.toString().substring(1)}`;
-			if (Object.keys(flags).includes(`${key.toString()[0].toUpperCase()}${key.toString().substring(1)}`))
-				flags[formattedFlagName] = input[key];
-		});
+		// 	// // primary argument
+		// 	// if (key.toString() === '_') {
+		// 	// 	command = argv[key][0]
+		// 	// 	flags.MandatoryArgument = (input[key.toString() as keyof typeof argv])[command === 'check' ? 1 : 0];
+		// 	// 	return;
+		// 	// }
 
-		return new ParsedInput(flags.MandatoryArgument, flags, '');
+		// 	// if (key.toString().length == 1 && shorthandToLongMapping.has(key.toString())) {
+		// 	// 	const flagName = shorthandToLongMapping.get(key.toString());
+		// 	// 	flags[flagName] = input[key];
+		// 	// 	return;
+		// 	// }
+
+		// 	const formattedFlagName = `${key.toString()[0].toUpperCase()}${key.toString().substring(1)}`;
+		// 	if (Object.keys(flags).includes(`${key.toString()[0].toUpperCase()}${key.toString().substring(1)}`))
+		// 		flags[formattedFlagName] = argv[key];
+		// });
+
+		return new ParsedInput(command, flags, '');
 	}
 }

@@ -6,7 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import Command, { StartCommand } from './Command';
+import Command, { 
+	StartCommand,
+	CheckCommand,
+	CheckUploadCommand
+} from './Command';
 import { Flags } from './Input';
 
 export default class CommandFactory {
@@ -37,6 +41,10 @@ export default class CommandFactory {
 		switch (cmd) {
 			case 'start':
 				return new StartCommand(id, flags);
+			case 'check':
+				return new CheckCommand(id, flags)
+			case 'checkupload':
+				return new CheckUploadCommand(id, flags)
 			default:
 				return undefined;
 		}
