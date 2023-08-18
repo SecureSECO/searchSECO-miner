@@ -15,6 +15,7 @@ import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import DatabaseRequest from './DatabaseRequest';
 import { ProjectMetadata } from './modules/searchSECO-crawler/src/Crawler';
 import MatchPrinter from './Print';
+import config from './config/config'
 
 /**
  * Makes a designated repo download location for the current miner.
@@ -176,8 +177,12 @@ export default abstract class Command {
 
 		for (const commit of vulnCommits) {
 			Logger.Info(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation(), true);
-			jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
-			startTime = Date.now();
+
+			if (config.COMMAND === "start") {
+				jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
+				startTime = Date.now();
+			}
+
 			await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata);
 		}
 
@@ -291,7 +296,8 @@ export default abstract class Command {
 			Logger.Info(`Processing tag: ${currTag} (${i + 1}/${tags.length})`, Logger.GetCallerLocation());
 			Logger.Debug(`Comparing tags: ${prevTag} and ${currTag}.`, Logger.GetCallerLocation());
 
-			jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
+			if (config.COMMAND === 'start')
+				jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
 
 			const success = await this.downloadTagged(prevTag, currTag, metadata, prevVersionTime, prevUnchangedFiles);
 			if (!success) break;
@@ -345,10 +351,9 @@ export class StartCommand extends Command {
 	}
 
 	public async Execute(verbosity: Verbosity): Promise<void> {
-		DatabaseRequest.SetVerbosity(verbosity);
 		DatabaseRequest.SetMinerId(this._minerId);
 		DatabaseRequest.ConnectToCassandraNode();
-
+		DatabaseRequest.SetVerbosity(verbosity);
 		while (!SigInt.Stop) {
 			this._moduleFacade.ResetState();
 
@@ -421,5 +426,12 @@ export class CheckUploadCommand extends Command {
 
 	public async Execute(verbosity: Verbosity): Promise<void> {
 		DatabaseRequest.SetVerbosity(verbosity);
+		DatabaseRequest.SetMinerId(this._minerId);
+		DatabaseRequest.ConnectToCassandraNode();
+
+		await this.checkProject()
+		await this.uploadProject('', '', 0)
+
+		await SigInt.StopProcessImmediately(this._minerId)
 	}
 }

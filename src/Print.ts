@@ -21,6 +21,27 @@ type Method = {
 	authorIds: string[]
 }
 
+export class ObjectSet<T extends Object> {
+    private _set: Set<string>
+    constructor() {
+        this._set = new Set()
+    }
+
+    public add(value: T): this {
+        this._set.add(JSON.stringify(value))
+        return this
+    }
+
+    public has(value: T): boolean {
+        return this._set.has(JSON.stringify(value))
+    }
+
+    public forEach(callback: (value: T, index: number, array: T[]) => void) {
+        const parsed: T[] = Array.from(this._set).map(x => JSON.parse(x))
+        parsed.forEach(callback)
+    }
+}
+
 function getLongestStringLength(array: string[]): number {
     return array.reduce((currentLongest, str) => str.length > currentLongest ? str.length : currentLongest, 0)
 }
@@ -53,7 +74,7 @@ function parseDatabaseHashes(
     entries: Method[],
     receivedHashes: Map<string, Method[]>,
     projectMatches: Map<string, number>,
-    projectVersions: Set<[string, string]>,
+    projectVersions: ObjectSet<[string, string]>,
     authors: Map<string, number>
 ) {
     entries.forEach(method => {
@@ -62,12 +83,15 @@ function parseDatabaseHashes(
         receivedHashes.get(method.method_hash).push(method)
 
         for (let i = 0; i < parseInt(method.authorTotal); i++) {
-            if (!authors.get(method.authorIds[i]))
+            if (!/^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$/.test(method.authorIds[i]))
+                continue
+
+            if (!authors.has(method.authorIds[i]))
                 authors.set(method.authorIds[i], 0)
             authors.set(method.authorIds[i], authors.get(method.authorIds[i]) + 1)
         }
 
-        if (!projectMatches.get(method.projectID))
+        if (!projectMatches.has(method.projectID))
             projectMatches.set(method.projectID, 0)
         projectMatches.set(method.projectID, projectMatches.get(method.projectID) + 1)
 
@@ -115,7 +139,7 @@ export default class MatchPrinter {
 
         const receivedHashes = new Map<string, Method[]>()
         const projectMatches = new Map<string, number>()
-        const projectVersions = new Set<[string, string]>()
+        const projectVersions = new ObjectSet<[string, string]>()
         const dbAuthors = new Map<string, number>()
         const dbProjects = new Map<string, ProjectResponseData>()
         const authorIdToName = new Map<string, AuthorResponseData>()
@@ -168,9 +192,10 @@ export default class MatchPrinter {
                     authorIdToName,
                     matchesReport
                 )
-                this._printAndWriteToFile(matchesReport)
             }
         })
+
+        this._printAndWriteToFile(matchesReport)
 
         this._printSummary(
             authorCopiedForm,
@@ -180,7 +205,8 @@ export default class MatchPrinter {
             hashes.length,
             dbProjects,
             authorIdToName,
-            projectMatches
+            projectMatches,
+            url
         )
     }
 
@@ -206,8 +232,8 @@ export default class MatchPrinter {
 
         hashes.forEach(hash => {
             currentReport += `  * Method ${hash.FunctionName} in file ${hash.FileName}, line ${hash.LineNumber}\n`
-            currentReport += `    Authors of local function: \n`
-            authors.get(hash) || [].forEach(s => {
+            currentReport += `    Authors of local function: \n`;
+            (authors.get(hash) || []).forEach(s => {
                 const formatted = s.replace(/\?/g, '\t')
                 currentReport += `  ${formatted}\n`
                 authorsCopied.set(s, (authorsCopied.get(s) || 0) + 1)
@@ -215,7 +241,7 @@ export default class MatchPrinter {
             currentReport += '\n'
         })
 
-        currentReport += 'DATABASE\n'
+        currentReport += '\nDATABASE\n'
         dbEntries.forEach(method => {
             if (method.projectID === projectID)
                 return
@@ -257,8 +283,10 @@ export default class MatchPrinter {
         dbProjects: Map<string, ProjectResponseData>,
         authorIdToName: Map<string, AuthorResponseData>,
         projectMatches: Map<string, number>,
+        url: string
     ) {
         this._printAndWriteToFile(`\nSummary:`)
+        this._printAndWriteToFile(`Checked project url: ${url}`)
         this._printAndWriteToFile(`Methods in checked project: ${methods}`)
 
         this._printAndWriteToFile(`Matches: ${matches} (${(matches * 100 / methods).toFixed(2)}%)`)
@@ -324,6 +352,7 @@ export default class MatchPrinter {
                 `\t${authorName}${' '.repeat(longestAuthorName - authorName.length - matchCount.toString().length + 5)}${matchCount} ${authorEmail}`
             )
         })
+        this._printAndWriteToFile('\n')
     }
 
     private _writeLineToFile(str: string) {

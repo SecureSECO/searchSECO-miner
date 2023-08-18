@@ -9,7 +9,7 @@
 import { InputParser } from './Input';
 import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import CommandFactory from './CommandFactory';
-import Command from './Command';
+import Command, { SigInt } from './Command';
 
 /**
  * Try to run a command. If an error orccured, print it to stdout and retry.
@@ -43,6 +43,11 @@ export default class Miner {
 	public async Start() {
 		// Sanitize input and setup logger
 		const input = InputParser.Parse();
+		if (!input) {
+			await SigInt.StopProcessImmediately(this._id)
+			return
+		}
+
 		Logger.SetModule('miner');
 		Logger.SetVerbosity(input.Flags.Verbose || Verbosity.SILENT);
 		Logger.Debug('Sanitized and parsed user input', Logger.GetCallerLocation());

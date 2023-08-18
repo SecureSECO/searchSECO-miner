@@ -8,6 +8,7 @@
     "build-win": "npm run build-ts && copyfiles -f .\\src\\config\\.env .\\dist\\config",
     "build-unix": "npm run build-ts && cp ./src/config/.env ./dist/config/.env",
     "build-ts": "tsc",
+    "execute": "node dist/main.js",
     "start": "node dist/main.js start",
     "check": "node dist/main.js check",
     "check-upload": "node dist/main.js checkupload",

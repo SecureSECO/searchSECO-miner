@@ -15,6 +15,7 @@ import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import { RequestType } from './modules/searchSECO-databaseAPI/src/Request';
 import Error, { ErrorCode } from './Error';
 import { MethodResponseData, TCPResponse } from './modules/searchSECO-databaseAPI/src/Response';
+import { ObjectSet } from './Print';
 import cassandra from 'cassandra-driver';
 
 /**
@@ -157,7 +158,7 @@ function serializeAuthorData(authors: Map<string, number>): string[] {
 	return Array.from(authors.keys())
 }
 
-function serializeProjectData(projects: Set<[string, string]>): string[] {
+function serializeProjectData(projects: ObjectSet<[string, string]>): string[] {
 	const result: string[] = []
 	projects.forEach(([ first, second ]) => result.push(`${first}?${second}`))
 	return result
@@ -232,7 +233,7 @@ export default class DatabaseRequest {
 		return await this._client.Execute(RequestType.GET_AUTHOR, serializeAuthorData(authors))
 	}
 
-	public static async GetProjectData(projectVersions: Set<[string, string]>) {
+	public static async GetProjectData(projectVersions: ObjectSet<[string, string]>) {
 		return await this._client.Execute(RequestType.EXTRACT_PROJECTS, serializeProjectData(projectVersions))
 	}
 
@@ -271,7 +272,7 @@ export default class DatabaseRequest {
 	}
 
 	public static async FindMatches(hashes: HashData[]): Promise<MethodResponseData[]> {
-		const data = hashes.map(hash => hash.Hash)
+		const data = Array.from(new Set<string>(hashes.map(hash => hash.Hash)))
 		const { response, responseCode } = await this._client.Execute(RequestType.CHECK, data)
 		if (responseCode == 200) 
 			return response as MethodResponseData[]
