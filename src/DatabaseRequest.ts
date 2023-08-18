@@ -14,7 +14,8 @@ import HashData from './modules/searchSECO-parser/src/HashData';
 import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import { RequestType } from './modules/searchSECO-databaseAPI/src/Request';
 import Error, { ErrorCode } from './Error';
-import { TCPResponse } from './modules/searchSECO-databaseAPI/src/Response';
+import { MethodResponseData, TCPResponse } from './modules/searchSECO-databaseAPI/src/Response';
+import { ObjectSet } from './Print';
 import cassandra from 'cassandra-driver';
 
 /**
@@ -44,7 +45,7 @@ function serializeData(
 	];
 }
 
-function transformHashList(data: HashData[]): Map<string, HashData[]> {
+export function transformHashList(data: HashData[]): Map<string, HashData[]> {
 	const output = new Map<string, HashData[]>();
 	data.forEach((hash) => {
 		if (!hash) return;
@@ -67,7 +68,7 @@ function transformHashList(data: HashData[]): Map<string, HashData[]> {
 	return output;
 }
 
-function getAuthors(hashes: Map<string, HashData[]>, rawData: AuthorData): Map<HashData, string[]> {
+export function getAuthors(hashes: Map<string, HashData[]>, rawData: AuthorData): Map<HashData, string[]> {
 	const output = new Map<HashData, string[]>();
 	rawData.forEach((_, key) => {
 		let currentEnd = -1,
@@ -153,6 +154,16 @@ function serializeCrawlData(urls: CrawlData, id: string): string[] {
 	return result;
 }
 
+function serializeAuthorData(authors: Map<string, number>): string[] {
+	return Array.from(authors.keys())
+}
+
+function serializeProjectData(projects: ObjectSet<[string, string]>): string[] {
+	const result: string[] = []
+	projects.forEach(([ first, second ]) => result.push(`${first}?${second}`))
+	return result
+}
+
 export enum FinishReason {
 	SUCCESS,
 	UNKNOWN,
@@ -218,6 +229,14 @@ export default class DatabaseRequest {
 		return responseCode === 200;
 	}
 
+	public static async GetAuthor(authors: Map<string, number>) {
+		return await this._client.Execute(RequestType.GET_AUTHOR, serializeAuthorData(authors))
+	}
+
+	public static async GetProjectData(projectVersions: ObjectSet<[string, string]>) {
+		return await this._client.Execute(RequestType.EXTRACT_PROJECTS, serializeProjectData(projectVersions))
+	}
+
 	public static async AddCrawledJobs(crawled: CrawlData, id: string): Promise<TCPResponse> {
 		return await this._client.Execute(RequestType.UPLOAD_CRAWL_DATA, serializeCrawlData(crawled, id));
 	}
@@ -250,6 +269,14 @@ export default class DatabaseRequest {
 				Error.Code = ErrorCode.HANDLED_ERRNO;
 			}
 		}
+	}
+
+	public static async FindMatches(hashes: HashData[]): Promise<MethodResponseData[]> {
+		const data = Array.from(new Set<string>(hashes.map(hash => hash.Hash)))
+		const { response, responseCode } = await this._client.Execute(RequestType.CHECK, data)
+		if (responseCode == 200) 
+			return response as MethodResponseData[]
+		return []
 	}
 
 	public static async RetrieveClaimableHashCount(): Promise<cassandra.types.Long> {

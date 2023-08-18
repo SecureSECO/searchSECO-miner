@@ -8,8 +8,11 @@
     "build-win": "npm run build-ts && copyfiles -f .\\src\\config\\.env .\\dist\\config",
     "build-unix": "npm run build-ts && cp ./src/config/.env ./dist/config/.env",
     "build-ts": "tsc",
-    "start-win": "npm run build-win && node --max-old-space-size=8192 dist/main.js start",
-    "start-unix": "npm run build-unix && node --max-old-space-size=8192 dist/main.js start",
+    "execute": "node dist/main.js",
+    "start": "node dist/main.js start",
+    "check": "node dist/main.js check",
+    "check-upload": "node dist/main.js checkupload",
+    
     "update": "git checkout main && git pull origin main && git submodule update --init --recursive --remote",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"

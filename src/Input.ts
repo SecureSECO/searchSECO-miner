@@ -6,26 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import yargs, { Argv } from 'yargs';
 import { Verbosity } from './modules/searchSECO-logger/src/Logger';
-
-/**
- * The different flag options
- */
-enum FlagName {
-	HELP = 'Help',
-	VERSION = 'Version',
-	VERBOSE = 'Verbose',
-	COMMAND = 'Command',
-}
-
-/**
- * Maps the short hand flags to their long counterparts
- */
-const shorthandToLongMapping: Map<string, FlagName> = new Map<string, FlagName>([
-	['h', FlagName.HELP],
-	['v', FlagName.VERSION],
-	['V', FlagName.VERBOSE],
-]);
+import { setCommandInConfig } from './config/config';
 
 export class Flags {
 	public MandatoryArgument = '';
@@ -44,6 +27,14 @@ export class Flags {
 	public Commit = '';
 }
 
+function checkCommands(yargs: any, argv: any, numRequired: number): boolean {
+	if (argv._.length < numRequired) {
+		yargs.showHelp()
+		return false
+	}
+	return true
+}
+
 export class ParsedInput {
 	public Command: string;
 	public Flags: Flags;
@@ -54,33 +45,76 @@ export class ParsedInput {
 	}
 }
 
-type UserInput = {
-	[key: string]: any;
-};
+
 
 export class InputParser {
-	static Parse(input: UserInput): ParsedInput {
-		const flags = JSON.parse(JSON.stringify(new Flags()));
+	static Parse(): ParsedInput | undefined {
+		const flags = JSON.parse(JSON.stringify(new Flags())) as Flags
 
-		Object.keys(input).forEach((key: keyof UserInput) => {
-			if (key.toString() === '$0') return;
+		let command: string
+		let validCommand = true
 
-			if (key.toString() === '_') {
-				flags.MandatoryArgument = (input[key.toString() as keyof UserInput] as string[])[0];
-				return;
-			}
+		var argv = yargs(process.argv.slice(2))
+			.option('verbose', {
+				describe: 'set miner verbosity',
+				type: 'number',
+				alias: 'V'
+			})
+			.usage('Usage: $0 <command>')
+			.command('start', 'starts the miner', () => {
+				command = 'start'
+			})
+			.command('check', 'checks a url against the SearchSECO database', yargs => {
+				const argv = yargs
+					.usage('usage: $0 check <url> [options]')
+					.positional('url', {
+						describe: 'The url to check',
+						type: 'string',
+						demand: true
+					})
+					.help('help')
+					.updateStrings({
+						'Commands:': 'item:'
+					  })
+					.wrap(null)
+					.parseSync()
+				validCommand = validCommand && checkCommands(yargs, argv, 2)
+				if (validCommand) {
+					command = 'check'
+					flags.MandatoryArgument = argv.url || argv._[1].toString()
+				}
+			})
+			.command('checkupload', 'checks a url against the SearchSECO database and uploads the project', yargs => {
+				const argv = yargs
+					.usage('usage: $0 checkupload <url> [options]')
+					.positional('url', {
+						describe: 'The url to check',
+						type: 'string',
+						demand: true
+					})
+					.help('help')
+					.updateStrings({
+						'Commands:': 'item:'
+					  })
+					.wrap(null)
+					.parseSync()
+				validCommand = validCommand && checkCommands(yargs, argv, 2)
+				if (validCommand) {
+					command = 'checkupload'
+					flags.MandatoryArgument = argv.url || argv._[1].toString()
+				}
+			})
+			.help('help')
+			.wrap(null)
+			.parseSync()
 
-			if (key.toString().length == 1 && shorthandToLongMapping.has(key.toString())) {
-				const flagName = shorthandToLongMapping.get(key.toString());
-				flags[flagName] = input[key];
-				return;
-			}
+		validCommand = validCommand && checkCommands(yargs, argv, 1)
+		if (!validCommand)
+			return
 
-			const formattedFlagName = `${key.toString()[0].toUpperCase()}${key.toString().substring(1)}`;
-			if (Object.keys(flags).includes(`${key.toString()[0].toUpperCase()}${key.toString().substring(1)}`))
-				flags[formattedFlagName] = input[key];
-		});
+		setCommandInConfig(command)
+		flags.Verbose = argv.verbose || Number(argv._[2]) || Verbosity.SILENT
 
-		return new ParsedInput(flags.MandatoryArgument, flags, '');
+		return new ParsedInput(command, flags, '');
 	}
 }
