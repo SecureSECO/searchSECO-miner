@@ -14,6 +14,8 @@ import path from 'path';
 import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import DatabaseRequest from './DatabaseRequest';
 import { ProjectMetadata } from './modules/searchSECO-crawler/src/Crawler';
+import MatchPrinter from './Print';
+import config from './config/config'
 
 /**
  * Makes a designated repo download location for the current miner.
@@ -21,6 +23,8 @@ import { ProjectMetadata } from './modules/searchSECO-crawler/src/Crawler';
  * @returns a path string representing the repo download location for the current miner.
  */
 const DOWNLOAD_LOCATION = (minerId: string) => path.join(__dirname, `../.tmp/${minerId}`);
+
+const REPORT_OUTPUT_FILE = './report.txt'
 
 /**
  * Static class storing SIGINT signals.
@@ -57,6 +61,7 @@ export class SigInt {
 		process.exit(0);
 	}
 }
+
 
 /**
  * The base Command class. This class holds most of the functionalities for modifying repositories
@@ -112,6 +117,27 @@ export default abstract class Command {
 		return [hashes, authorData];
 	}
 
+	protected async checkProject(): Promise<void> {
+		const url = this._flags.MandatoryArgument
+		Logger.Info(`Checking ${url} against the SearchSECO database`, Logger.GetCallerLocation())
+
+		const metadata = await this._moduleFacade.GetProjectMetadata(url)
+		if (!this._flags.Branch)
+			this._flags.Branch = metadata.defaultBranch
+		
+		await this._moduleFacade.DownloadRepository(url, this._flags.Branch)
+
+		if (this._flags.ProjectCommit !== "")
+			await this._moduleFacade.SwitchVersion(this._flags.ProjectCommit)
+		
+		const [hashes, authorData] = await this.parseAndBlame()
+		const databaseResponse = await DatabaseRequest.FindMatches(hashes)
+
+		const printer = new MatchPrinter(REPORT_OUTPUT_FILE)
+		await printer.PrintHashMatches(hashes, databaseResponse, authorData, url, metadata.id)
+		printer.Close()
+	}
+
 	/**
 	 * Processes a project and uploads it to the database.
 	 * @param jobID The current job ID
@@ -151,8 +177,12 @@ export default abstract class Command {
 
 		for (const commit of vulnCommits) {
 			Logger.Info(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation(), true);
-			jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
-			startTime = Date.now();
+
+			if (config.COMMAND === "start") {
+				jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
+				startTime = Date.now();
+			}
+
 			await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata);
 		}
 
@@ -266,7 +296,8 @@ export default abstract class Command {
 			Logger.Info(`Processing tag: ${currTag} (${i + 1}/${tags.length})`, Logger.GetCallerLocation());
 			Logger.Debug(`Comparing tags: ${prevTag} and ${currTag}.`, Logger.GetCallerLocation());
 
-			jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
+			if (config.COMMAND === 'start')
+				jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
 
 			const success = await this.downloadTagged(prevTag, currTag, metadata, prevVersionTime, prevUnchangedFiles);
 			if (!success) break;
@@ -320,10 +351,9 @@ export class StartCommand extends Command {
 	}
 
 	public async Execute(verbosity: Verbosity): Promise<void> {
-		DatabaseRequest.SetVerbosity(verbosity);
 		DatabaseRequest.SetMinerId(this._minerId);
 		DatabaseRequest.ConnectToCassandraNode();
-
+		DatabaseRequest.SetVerbosity(verbosity);
 		while (!SigInt.Stop) {
 			this._moduleFacade.ResetState();
 
@@ -372,5 +402,36 @@ export class StartCommand extends Command {
 		}
 		this._flags.MandatoryArgument = splitted[2];
 		await this.uploadProject(splitted[1], splitted[3], startTime);
+	}
+}
+
+export class CheckCommand extends Command {
+	protected static _helpMessageText = 'Checks a project URL against the SearchSECO database and prints the results.';
+	constructor(minerId: string, flags: Flags) {
+		super(minerId, flags);
+	}
+
+	public async Execute(verbosity: Verbosity): Promise<void> {
+		DatabaseRequest.SetVerbosity(verbosity);
+		await this.checkProject()
+		await SigInt.StopProcessImmediately(this._minerId)
+	}
+}
+
+export class CheckUploadCommand extends Command {
+	protected static _helpMessageText = 'Checks a project URL against the SearchSECO database, and if the project does not exist, uploads it.';
+	constructor(minerId: string, flags: Flags) {
+		super(minerId, flags);
+	}
+
+	public async Execute(verbosity: Verbosity): Promise<void> {
+		DatabaseRequest.SetVerbosity(verbosity);
+		DatabaseRequest.SetMinerId(this._minerId);
+		DatabaseRequest.ConnectToCassandraNode();
+
+		await this.checkProject()
+		await this.uploadProject('', '', 0)
+
+		await SigInt.StopProcessImmediately(this._minerId)
 	}
 }
