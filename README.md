@@ -25,13 +25,23 @@ npm run update
 Build the miner for the target operating sytem:
 ```
 npm run build-win
+```
 or
+```
 npm run build-unix
 ```
 Then run the miner with a specified command:
 ```
-npm run start
-npm run check -- [URL]
+npm run execute -- <command> [options]
+
+Commands:
+  start             - starts the miner
+  check       [url] - checks a url against the SearchSECO database
+  checkupload [url] - checks a url against the SearchSECO database and uploads it
+
+Options:
+  -V, --verbose [1|2|3|4|5] - sets the verbosity of the miner, as explained below
+
 ```
 #### Verbosity
 The miner can be set to be more or less verbose. Each command can be suffixed with a `--verbose [VERBOSITY]` flag. The specific verbosity values are listed below.
