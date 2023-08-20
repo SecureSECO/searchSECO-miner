@@ -113,7 +113,7 @@ export class InputParser {
 			return
 
 		setCommandInConfig(command)
-		flags.Verbose = argv.verbose || Number(argv._[2]) || Verbosity.SILENT
+		flags.Verbose = argv.verbose || Number(argv._[command === 'start' ? 1 : 2]) || Verbosity.SILENT
 
 		return new ParsedInput(command, flags, '');
 	}

@@ -15,7 +15,8 @@ import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import { RequestType } from './modules/searchSECO-databaseAPI/src/Request';
 import Error, { ErrorCode } from './Error';
 import { MethodResponseData, TCPResponse } from './modules/searchSECO-databaseAPI/src/Response';
-import { ObjectSet } from './Print';
+import { ObjectMap, ObjectSet } from './Utility';
+import { PARSER_VERSION } from './modules/searchSECO-parser/src/Parser';
 import cassandra from 'cassandra-driver';
 
 /**
@@ -40,7 +41,7 @@ function serializeData(
 	return [
 		header,
 		prevCommitTime,
-		unchangedFiles.join('?').replace(/\\/g, '/').replace(/.\//g, ''),
+		unchangedFiles.join('?').replace(/\\|\\\\/g, '/').replace(/.\//g, ''),
 		...hashDataToString(data, authorSendData),
 	];
 }
@@ -48,67 +49,85 @@ function serializeData(
 export function transformHashList(data: HashData[]): Map<string, HashData[]> {
 	const output = new Map<string, HashData[]>();
 	data.forEach((hash) => {
-		if (!hash) return;
+		if (!output.has(hash.FileName)) 
+			output.set(hash.FileName, []);
+		output.get(hash.FileName).push(hash);
 
-		if (!output.has(hash.FileName)) output.set(hash.FileName, []);
-
-		if (output.get(hash.FileName)) output.get(hash.FileName).push(hash);
-
-		if (
-			output.get(hash.FileName).length > 1 &&
-			output.get(hash.FileName)[output.get(hash.FileName).length - 1].LineNumber <
-				output.get(hash.FileName)[output.get(hash.FileName).length - 2].LineNumber
-		) {
-			const j = output.get(hash.FileName).length - 1;
-			const temp = JSON.parse(JSON.stringify(output.get(hash.FileName)[j]));
-			output.get(hash.FileName)[j] = JSON.parse(JSON.stringify(output.get(hash.FileName)[j - 1]));
-			output.get(hash.FileName)[j - 1] = temp;
+		if (output.get(hash.FileName).length > 1) {
+			const lastLineNumber = output.get(hash.FileName)[output.get(hash.FileName).length - 1].LineNumber
+			const beforeLastLineNumber = output.get(hash.FileName)[output.get(hash.FileName).length - 2].LineNumber
+			if (lastLineNumber < beforeLastLineNumber) {
+				const smaller = output.get(hash.FileName).pop();
+				const bigger = output.get(hash.FileName).pop();
+				output.get(hash.FileName).push(smaller, bigger)
+			}
 		}
 	});
+
 	return output;
 }
 
-export function getAuthors(hashes: Map<string, HashData[]>, rawData: AuthorData): Map<HashData, string[]> {
-	const output = new Map<HashData, string[]>();
+export function getAuthors(hashes: Map<string, HashData[]>, rawData: AuthorData): ObjectMap<HashData, string[]> {
+	const output = new ObjectMap<HashData, string[]>();
+
 	rawData.forEach((_, key) => {
 		let currentEnd = -1,
 			hashesIndex = -1,
 			authorIndex = 0;
-		let dupes: Map<string, number>;
+		const dupes = new Map<string, number>();
 
-		const h = hashes.get(key) || [];
-		const raw = rawData.get(key) || [];
+		const hashesFromFile = hashes.get(key);
+		const rawAuthorData = rawData.get(key);
 
-		while (h.length > 0 && raw.length > 0 && (hashesIndex < h.length || authorIndex < raw.length)) {
-			if (authorIndex == raw.length || (raw[authorIndex] && currentEnd < raw[authorIndex].line)) {
+		while (hashesIndex < hashesFromFile.length || authorIndex < rawAuthorData.length) {
+			if (authorIndex == rawAuthorData.length || currentEnd < rawAuthorData[authorIndex].line) {
 				hashesIndex++;
-				if (hashesIndex >= h.length) break;
-				if (authorIndex > 0) authorIndex--;
-				currentEnd = h[hashesIndex].LineNumberEnd;
-				dupes = new Map<string, number>();
+				if (hashesIndex >= hashesFromFile.length) 
+					break;
+				if (authorIndex > 0) 
+					authorIndex--;
+				currentEnd = hashesFromFile[hashesIndex].LineNumberEnd;
+				dupes.clear()
 			}
-			if (
-				h[hashesIndex] &&
-				raw[authorIndex] &&
-				h[hashesIndex].LineNumber <= raw[authorIndex].line + raw[authorIndex].numLines
-			) {
-				const cd = raw[authorIndex];
-				const author = cd.commit.author;
-				const mail = cd.commit.authorMail;
-				const toAdd = `?${author.replace('?', '')}?${mail.replace('?', '')}`;
-				if (!dupes.get(toAdd) || dupes.get(toAdd) == 0) {
-					if (!output.has(h[hashesIndex])) output.set(h[hashesIndex], []);
-					output.get(h[hashesIndex]).push(toAdd);
+			if (hashesFromFile[hashesIndex].LineNumber <= rawAuthorData[authorIndex].line + rawAuthorData[authorIndex].numLines) {
+				const cd = rawAuthorData[authorIndex];
+				const author = cd.commit.author.replace(/\?/g, '');
+				const mail = cd.commit.authorMail.replace(/\?/g, '');
+				const toAdd = `?${author}?${mail}`;
+
+				if ((dupes.get(toAdd) || 0) == 0) {
+					if (!output.has(hashesFromFile[hashesIndex])) 
+						output.set(hashesFromFile[hashesIndex], []);
+					output.get(hashesFromFile[hashesIndex]).push(toAdd);
 					dupes.set(toAdd, 1);
 				}
 			}
 			authorIndex++;
 		}
 	});
+
+	const targetHashes = 
+		Array.from(output.GetPrimitive().keys())
+			 .flat()
+			 .map(str => JSON.parse(str))
+			 .map((obj: Object) => new HashData(...(Object.values(obj).slice(1))))
+	const hashArray = Array.from(hashes.values()).flat()
+
+	let faultyHash: HashData;
+	if (!targetHashes.every(hash => {
+		for (let i = 0; i < hashArray.length; i++)
+			if (hash.Equals(hashArray[i]))
+				return true
+		faultyHash = hash
+		return false
+	})) {
+		debugger
+	}
+		
+
 	return output;
 }
 
-const PARSER_VERSION = 1;
 function generateHeaderFromMetadata(metadata: ProjectMetadata) {
 	const arr = Object.keys(metadata)
 		.filter((key) => key !== 'defaultBranch')
@@ -119,13 +138,16 @@ function generateHeaderFromMetadata(metadata: ProjectMetadata) {
 	return arr.join('?');
 }
 
-function hashDataToString(hashData: HashData[], authors: Map<HashData, string[]>): string[] {
+function hashDataToString(hashData: HashData[], authors: ObjectMap<HashData, string[]>): string[] {
 	return hashData.map((item) => {
-		const authorArray = authors.get(item) || [];
+		let authorArray = authors.get(item) || [];
+
+		if (authorArray.length === 0)
+			debugger
 
 		return [
 			item.Hash,
-			item.FunctionName || '-',
+			item.MethodName || '-',
 			item.FileName.replace(/\\/g, '/').replace('./', ''),
 			item.LineNumber,
 			`${authorArray.length}${authorArray.join('')}`.replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
@@ -375,3 +397,4 @@ export default class DatabaseRequest {
 		await this._cassandraClient.execute(query, ['idle', ...deadMinerIds, wallet]);
 	}
 }
+
