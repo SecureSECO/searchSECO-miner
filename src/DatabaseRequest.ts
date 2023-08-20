@@ -106,25 +106,6 @@ export function getAuthors(hashes: Map<string, HashData[]>, rawData: AuthorData)
 		}
 	});
 
-	const targetHashes = 
-		Array.from(output.GetPrimitive().keys())
-			 .flat()
-			 .map(str => JSON.parse(str))
-			 .map((obj: Object) => new HashData(...(Object.values(obj).slice(1))))
-	const hashArray = Array.from(hashes.values()).flat()
-
-	let faultyHash: HashData;
-	if (!targetHashes.every(hash => {
-		for (let i = 0; i < hashArray.length; i++)
-			if (hash.Equals(hashArray[i]))
-				return true
-		faultyHash = hash
-		return false
-	})) {
-		debugger
-	}
-		
-
 	return output;
 }
 
@@ -140,11 +121,7 @@ function generateHeaderFromMetadata(metadata: ProjectMetadata) {
 
 function hashDataToString(hashData: HashData[], authors: ObjectMap<HashData, string[]>): string[] {
 	return hashData.map((item) => {
-		let authorArray = authors.get(item) || [];
-
-		if (authorArray.length === 0)
-			debugger
-
+		const authorArray = authors.get(item) || [];
 		return [
 			item.Hash,
 			item.MethodName || '-',
