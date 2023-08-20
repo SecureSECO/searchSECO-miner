@@ -4,6 +4,7 @@ import { AuthorData } from "./modules/searchSECO-spider/src/Spider";
 import path from 'path'
 import { AuthorResponseData, MethodResponseData, ProjectResponseData } from "./modules/searchSECO-databaseAPI/src/Response";
 import DatabaseRequest, { getAuthors, transformHashList } from "./DatabaseRequest";
+import { ObjectMap, ObjectSet } from "./Utility";
 
 type Method = {
 	method_hash: string
@@ -21,54 +22,11 @@ type Method = {
 	authorIds: string[]
 }
 
-export class ObjectSet<T extends Object> {
-    private _set: Set<string>
-    constructor() {
-        this._set = new Set()
-    }
-
-    public add(value: T): this {
-        this._set.add(JSON.stringify(value))
-        return this
-    }
-
-    public has(value: T): boolean {
-        return this._set.has(JSON.stringify(value))
-    }
-
-    public forEach(callback: (value: T, index: number, array: T[]) => void) {
-        const parsed: T[] = Array.from(this._set).map(x => JSON.parse(x))
-        parsed.forEach(callback)
-    }
-}
-
 function getLongestStringLength(array: string[]): number {
     return array.reduce((currentLongest, str) => str.length > currentLongest ? str.length : currentLongest, 0)
 }
 
-function lessThan(lhs: HashData, rhs: HashData): boolean {
-    if (lhs.Hash !== rhs.Hash)
-        return lhs.Hash < rhs.Hash
-    if (lhs.FileName !== rhs.FileName)
-        return lhs.FileName < rhs.FileName
-    if (lhs.FunctionName !== rhs.FunctionName)
-        return lhs.FunctionName < rhs.FunctionName
-    if (lhs.LineNumber != rhs.LineNumber)
-        return lhs.LineNumber < rhs.LineNumber
-    return lhs.LineNumberEnd < rhs.LineNumberEnd
-}
-
 function line(str: string) { return `${str}\n` }
-function tab(n: number) {
-    let r = ''
-    for (let i = 0; i < n; i++)
-        r += '\t'
-    return r
-}
-function encapsulate(str: string, c: string) { return `${c}${str}${c}` }
-function quote(str: string) { return encapsulate(str, '\"') }
-function plural(singular: string, n: number) { return n === 1 ? singular : `${singular}s` }
-
 
 function parseDatabaseHashes(
     entries: Method[],
@@ -213,7 +171,7 @@ export default class MatchPrinter {
     private _printMatch(
         hashes: HashData[],
         dbEntries: Method[],
-        authors: Map<HashData, string[]>,
+        authors: ObjectMap<HashData, string[]>,
         projectID: string,
         authorCopiedForm: Map<string, number>,
         authorsCopied: Map<string, number>,
@@ -231,8 +189,8 @@ export default class MatchPrinter {
         currentReport += `${'-'.repeat(header.length)}\n\n`
 
         hashes.forEach(hash => {
-            currentReport += `  * Method ${hash.FunctionName} in file ${hash.FileName}, line ${hash.LineNumber}\n`
-            currentReport += `    Authors of local function: \n`;
+            currentReport += `  * Method ${hash.MethodName} in file ${hash.FileName}, line ${hash.LineNumber}\n`
+            currentReport += `    Authors of local method: \n`;
             (authors.get(hash) || []).forEach(s => {
                 const formatted = s.replace(/\?/g, '\t')
                 currentReport += `  ${formatted}\n`
@@ -261,11 +219,11 @@ export default class MatchPrinter {
             }
 
             if (Number(method.authorTotal) > 0) {
-                currentReport += `   Authors of function found in database: \n`
+                currentReport += `   Authors of method found in database: \n`
                 method.authorIds.forEach(id => {
                     if (!authorIdToName.has(id)) return
                     authorCopiedForm.set(id, (authorCopiedForm.get(id) || 0) + 1)
-                    currentReport += `   \t${authorIdToName.get(id).username}\t${authorIdToName.get(id).username}`
+                    currentReport += `   \t${authorIdToName.get(id).username}\t${authorIdToName.get(id).email}\n`
                 })
             }
             currentReport += '\n'
