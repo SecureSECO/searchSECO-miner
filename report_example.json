@@ -1,0 +1,35 @@
+
+
+{
+    "projectURL": "string",
+    "methodCount": 0,
+    "matches": 0,
+    "matchPercentage": 12,
+
+    "hashes": [
+        {
+            "hash": "string",
+            "methods": [
+                {
+                    "project": {
+                        "id": "string",
+                        "name": "string",
+                        "url": "string"
+                    },
+                    "isLocal": true,
+                    "name": "string",
+                    "file": "string",
+                    "url": "string",
+                    "vulnCode": "string",
+                    "authors": [
+                        {
+                            "username": "string",
+                            "email": "string"
+                        }
+                    ],
+                    "lineNumber": 0
+                }
+            ]
+        }
+    ]
+}

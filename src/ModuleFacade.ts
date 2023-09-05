@@ -1,6 +1,6 @@
 /**
  * This program has been developed by students from the bachelor Computer Science at Utrecht University within the Software Project course.
- * ù Copyright Utrecht University (Department of Information and Computing Sciences)
+ * ÔøΩ Copyright Utrecht University (Department of Information and Computing Sciences)
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -12,6 +12,7 @@ import Parser from './modules/searchSECO-parser/src/Parser';
 import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import HashData from './modules/searchSECO-parser/src/HashData';
 import config from './config/config';
+import { Flags } from './Input';
 
 export default class ModuleFacade {
 	private _spider: Spider;
@@ -19,13 +20,15 @@ export default class ModuleFacade {
 	private _parser: Parser;
 	private _verbosity: Verbosity;
 	private _filePath: string;
+	private _flags: Flags;
 
-	constructor(filePath: string, verbosity: Verbosity) {
+	constructor(filePath: string, flags: Flags, verbosity: Verbosity) {
 		this._verbosity = verbosity;
 		this._filePath = filePath;
+		this._flags = flags;
 		this._spider = new Spider(this._verbosity);
 		this._crawler = new Crawler(config.GITHUB_TOKEN);
-		this._parser = new Parser(this._verbosity);
+		this._parser = new Parser(this._verbosity, flags.Threads);
 	}
 
 	/**
@@ -34,7 +37,7 @@ export default class ModuleFacade {
 	public ResetState() {
 		this._spider = new Spider(this._verbosity);
 		this._crawler = new Crawler(config.GITHUB_TOKEN);
-		this._parser = new Parser(this._verbosity);
+		this._parser = new Parser(this._verbosity, this._flags.Threads);
 	}
 
 	/**

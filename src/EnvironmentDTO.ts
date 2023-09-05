@@ -6,6 +6,4 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export default class EnvironmentDTO {
-    
-}
+export default class EnvironmentDTO {}

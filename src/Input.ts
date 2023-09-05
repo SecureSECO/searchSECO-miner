@@ -12,6 +12,7 @@ import { setCommandInConfig } from './config/config';
 
 export class Flags {
 	public MandatoryArgument = '';
+	public Threads = 4;
 	public CPU = 1;
 	public Verbose = Verbosity.SILENT;
 	public Help = false;
@@ -29,10 +30,10 @@ export class Flags {
 
 function checkCommands(yargs: any, argv: any, numRequired: number): boolean {
 	if (argv._.length < numRequired) {
-		yargs.showHelp()
-		return false
+		yargs.showHelp();
+		return false;
 	}
-	return true
+	return true;
 }
 
 export class ParsedInput {
@@ -45,75 +46,85 @@ export class ParsedInput {
 	}
 }
 
-
+type Input = {
+	verbose?: Verbosity;
+	url?: string;
+	branch?: string;
+	tag?: string;
+	threads?: number;
+	_: (string | number)[];
+	$0: string;
+};
 
 export class InputParser {
 	static Parse(): ParsedInput | undefined {
-		const flags = JSON.parse(JSON.stringify(new Flags())) as Flags
+		const flags = JSON.parse(JSON.stringify(new Flags())) as Flags;
 
-		let command: string
-		let validCommand = true
+		let command: string;
+		const validCommand = true;
 
-		var argv = yargs(process.argv.slice(2))
+		const argv: Argv<Input> = yargs(process.argv.slice(2))
 			.option('verbose', {
 				describe: 'set miner verbosity',
 				type: 'number',
-				alias: 'V'
+				alias: 'V',
+			})
+			.option('branch', {
+				type: 'string',
+				description: 'The branch to check',
+				alias: 'b',
+			})
+			.option('tag', {
+				type: 'string',
+				description: 'The project version to check.',
+				alias: 'T',
+			})
+			.option('threads', {
+				type: 'number',
+				description: 'How many threads to use during parsing',
+				alias: 't',
 			})
 			.usage('Usage: $0 <command>')
 			.command('start', 'starts the miner', () => {
-				command = 'start'
+				command = 'start';
 			})
-			.command('check', 'checks a url against the SearchSECO database', yargs => {
-				const argv = yargs
+			.command('check', 'checks a url against the SearchSECO database', (yargs) => {
+				yargs
 					.usage('usage: $0 check <url> [options]')
 					.positional('url', {
 						describe: 'The url to check',
 						type: 'string',
-						demand: true
+						demand: true,
 					})
 					.help('help')
-					.updateStrings({
-						'Commands:': 'item:'
-					  })
-					.wrap(null)
-					.parseSync()
-				validCommand = validCommand && checkCommands(yargs, argv, 2)
-				if (validCommand) {
-					command = 'check'
-					flags.MandatoryArgument = argv.url || argv._[1].toString()
-				}
+					.wrap(null);
+				command = 'check';
 			})
-			.command('checkupload', 'checks a url against the SearchSECO database and uploads the project', yargs => {
-				const argv = yargs
+			.command('checkupload', 'checks a url against the SearchSECO database and uploads the project', (yargs) => {
+				yargs
 					.usage('usage: $0 checkupload <url> [options]')
 					.positional('url', {
 						describe: 'The url to check',
 						type: 'string',
-						demand: true
+						demand: true,
 					})
 					.help('help')
-					.updateStrings({
-						'Commands:': 'item:'
-					  })
-					.wrap(null)
-					.parseSync()
-				validCommand = validCommand && checkCommands(yargs, argv, 2)
-				if (validCommand) {
-					command = 'checkupload'
-					flags.MandatoryArgument = argv.url || argv._[1].toString()
-				}
+					.wrap(null);
+				command = 'checkupload';
 			})
 			.help('help')
-			.wrap(null)
-			.parseSync()
+			.wrap(null);
 
-		validCommand = validCommand && checkCommands(yargs, argv, 1)
-		if (!validCommand)
-			return
+		const parsed = argv.parseSync();
+		if (!validCommand) return;
 
-		setCommandInConfig(command)
-		flags.Verbose = argv.verbose || Number(argv._[command === 'start' ? 1 : 2]) || Verbosity.SILENT
+		if (parsed.url || parsed._[1]?.toString()) flags.MandatoryArgument = parsed.url || parsed._[1].toString();
+		if (parsed.branch) flags.Branch = parsed.branch;
+		if (parsed.tag) flags.ProjectCommit = parsed.tag;
+		if (parsed.verbose) flags.Verbose = Number(parsed.verbose);
+		if (parsed.threads) flags.Threads = Number(parsed.threads);
+
+		setCommandInConfig(command);
 
 		return new ParsedInput(command, flags, '');
 	}

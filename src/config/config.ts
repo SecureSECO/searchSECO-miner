@@ -9,7 +9,8 @@
 import path from 'path';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: path.join(__dirname, '../config/.env') });
+const WORKING_DIR = (process as any).pkg ? process.cwd() : __dirname;
+dotenv.config({ path: path.resolve(WORKING_DIR, './.env') });
 
 interface ENV {
 	NODE_ENV: string | undefined;
@@ -17,7 +18,7 @@ interface ENV {
 	DB_HOST: string | undefined;
 	PERSONAL_WALLET_ADDRESS: `0x${string}` | undefined;
 	GITHUB_TOKEN: string | undefined;
-	COMMAND: string | undefined
+	COMMAND: string | undefined;
 }
 
 interface Config {
@@ -26,7 +27,7 @@ interface Config {
 	DB_HOST: string | undefined;
 	PERSONAL_WALLET_ADDRESS: `0x${string}` | undefined;
 	GITHUB_TOKEN: string | undefined;
-	COMMAND: string | undefined
+	COMMAND: string | undefined;
 }
 
 function getConfig(): ENV {
@@ -36,7 +37,7 @@ function getConfig(): ENV {
 		DB_HOST: process.env.DB_HOST,
 		PERSONAL_WALLET_ADDRESS: process.env.PERSONAL_WALLET_ADDRESS as `0x${string}`,
 		GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-		COMMAND: ''
+		COMMAND: '',
 	};
 }
 
@@ -52,7 +53,6 @@ const sanitizedConfig = getSanitizedConfig(config);
 
 export default sanitizedConfig;
 
-
 export function setCommandInConfig(command: string) {
-	sanitizedConfig.COMMAND = command
+	sanitizedConfig.COMMAND = command;
 }

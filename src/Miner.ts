@@ -27,7 +27,7 @@ async function Run(command: Command | undefined) {
 }
 
 async function RunWithoutErrorHandling(command: Command | undefined) {
-	await command?.Execute(Logger.GetVerbosity())
+	await command?.Execute(Logger.GetVerbosity());
 }
 
 export default class Miner {
@@ -44,8 +44,8 @@ export default class Miner {
 		// Sanitize input and setup logger
 		const input = InputParser.Parse();
 		if (!input) {
-			await SigInt.StopProcessImmediately(this._id)
-			return
+			await SigInt.StopProcessImmediately(this._id);
+			return;
 		}
 
 		Logger.SetModule('miner');
@@ -58,7 +58,9 @@ export default class Miner {
 		else {
 			// Try to run the command. If an error occurs, restart after 2 seconds.
 			//await Run(commandFactory.GetCommand(input.Command, this._id, input.Flags));
+
 			await RunWithoutErrorHandling(commandFactory.GetCommand(input.Command, this._id, input.Flags));
+			await SigInt.StopProcessImmediately(this._id);
 		}
 	}
 }

@@ -2,6 +2,7 @@
 *.d
 
 .tmp/
+.bin/
 
 # Compiled Object files
 *.slo

@@ -15,16 +15,16 @@ import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import DatabaseRequest from './DatabaseRequest';
 import { ProjectMetadata } from './modules/searchSECO-crawler/src/Crawler';
 import MatchPrinter from './Print';
-import config from './config/config'
+import config from './config/config';
 
 /**
  * Makes a designated repo download location for the current miner.
  * @param minerId The ID of the current miner
  * @returns a path string representing the repo download location for the current miner.
  */
-const DOWNLOAD_LOCATION = (minerId: string) => path.join(__dirname, `../.tmp/${minerId}`);
 
-const REPORT_OUTPUT_FILE = './report.txt'
+const WORKING_DIR = (process as any).pkg ? process.cwd() : __dirname;
+const DOWNLOAD_LOCATION = (minerId: string) => path.resolve(WORKING_DIR, `../.tmp/${minerId}`);
 
 /**
  * Static class storing SIGINT signals.
@@ -62,7 +62,6 @@ export class SigInt {
 	}
 }
 
-
 /**
  * The base Command class. This class holds most of the functionalities for modifying repositories
  */
@@ -77,7 +76,7 @@ export default abstract class Command {
 		this._flags = flags;
 		this._minerId = minerId;
 
-		this._moduleFacade = new ModuleFacade(DOWNLOAD_LOCATION(this._minerId), Logger.GetVerbosity());
+		this._moduleFacade = new ModuleFacade(DOWNLOAD_LOCATION(this._minerId), flags, Logger.GetVerbosity());
 	}
 
 	/**
@@ -118,24 +117,22 @@ export default abstract class Command {
 	}
 
 	protected async checkProject(): Promise<void> {
-		const url = this._flags.MandatoryArgument
-		Logger.Info(`Checking ${url} against the SearchSECO database`, Logger.GetCallerLocation())
+		const url = this._flags.MandatoryArgument;
+		Logger.Info(`Checking ${url} against the SearchSECO database`, Logger.GetCallerLocation());
 
-		const metadata = await this._moduleFacade.GetProjectMetadata(url)
-		if (!this._flags.Branch)
-			this._flags.Branch = metadata.defaultBranch
-		
-		await this._moduleFacade.DownloadRepository(url, this._flags.Branch)
+		const metadata = await this._moduleFacade.GetProjectMetadata(url);
+		if (!this._flags.Branch) this._flags.Branch = metadata.defaultBranch;
 
-		if (this._flags.ProjectCommit !== "")
-			await this._moduleFacade.SwitchVersion(this._flags.ProjectCommit)
-		
-		const [hashes, authorData] = await this.parseAndBlame()
-		const databaseResponse = await DatabaseRequest.FindMatches(hashes)
+		await this._moduleFacade.DownloadRepository(url, this._flags.Branch);
 
-		const printer = new MatchPrinter(REPORT_OUTPUT_FILE)
-		await printer.PrintHashMatches(hashes, databaseResponse, authorData, url, metadata.id)
-		printer.Close()
+		if (this._flags.ProjectCommit !== '') await this._moduleFacade.SwitchVersion(this._flags.ProjectCommit);
+
+		const [hashes, authorData] = await this.parseAndBlame();
+		const databaseResponse = await DatabaseRequest.FindMatches(hashes);
+
+		const printer = new MatchPrinter();
+		await printer.PrintHashMatches(hashes, databaseResponse, authorData, url, metadata.id);
+		printer.Close();
 	}
 
 	/**
@@ -178,7 +175,7 @@ export default abstract class Command {
 		for (const commit of vulnCommits) {
 			Logger.Info(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation(), true);
 
-			if (config.COMMAND === "start") {
+			if (config.COMMAND === 'start') {
 				jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
 				startTime = Date.now();
 			}
@@ -296,8 +293,7 @@ export default abstract class Command {
 			Logger.Info(`Processing tag: ${currTag} (${i + 1}/${tags.length})`, Logger.GetCallerLocation());
 			Logger.Debug(`Comparing tags: ${prevTag} and ${currTag}.`, Logger.GetCallerLocation());
 
-			if (config.COMMAND === 'start')
-				jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
+			if (config.COMMAND === 'start') jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
 
 			const success = await this.downloadTagged(prevTag, currTag, metadata, prevVersionTime, prevUnchangedFiles);
 			if (!success) break;
@@ -307,15 +303,15 @@ export default abstract class Command {
 		}
 	}
 
-    /**
-     * Switches the project to another version
-     * @param prevTag The previous tag of the project
-     * @param currTag The tag to switch to
-     * @param metadata the project metadata
-     * @param prevVersionTime The time of the previous version
-     * @param prevUnchangedFiles All unchanged files of the previous version
-     * @returns True when the switching has finished successfully
-     */
+	/**
+	 * Switches the project to another version
+	 * @param prevTag The previous tag of the project
+	 * @param currTag The tag to switch to
+	 * @param metadata the project metadata
+	 * @param prevVersionTime The time of the previous version
+	 * @param prevUnchangedFiles All unchanged files of the previous version
+	 * @returns True when the switching has finished successfully
+	 */
 	private async downloadTagged(
 		prevTag: string,
 		currTag: string,
@@ -413,13 +409,13 @@ export class CheckCommand extends Command {
 
 	public async Execute(verbosity: Verbosity): Promise<void> {
 		DatabaseRequest.SetVerbosity(verbosity);
-		await this.checkProject()
-		await SigInt.StopProcessImmediately(this._minerId)
+		await this.checkProject();
 	}
 }
 
 export class CheckUploadCommand extends Command {
-	protected static _helpMessageText = 'Checks a project URL against the SearchSECO database, and if the project does not exist, uploads it.';
+	protected static _helpMessageText =
+		'Checks a project URL against the SearchSECO database, and if the project does not exist, uploads it.';
 	constructor(minerId: string, flags: Flags) {
 		super(minerId, flags);
 	}
@@ -429,9 +425,9 @@ export class CheckUploadCommand extends Command {
 		DatabaseRequest.SetMinerId(this._minerId);
 		DatabaseRequest.ConnectToCassandraNode();
 
-		await this.checkProject()
-		await this.uploadProject('', '', 0)
+		await this.checkProject();
+		await this.uploadProject('', '', 0);
 
-		await SigInt.StopProcessImmediately(this._minerId)
+		await SigInt.StopProcessImmediately(this._minerId);
 	}
 }
