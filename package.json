@@ -13,7 +13,9 @@
     "update": "git checkout main && git pull origin main && git submodule update --init --recursive --remote",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
-    "package-win": "npm run build-win && pkg . -t node18-win-x64 -o bin/miner -C Gzip"
+    "package-win": "npm run build-win && pkg . -t node18-win-x64 -o bin/miner -C Gzip",
+    "package-linux": "npm run build-unix && pkg . -t node18-linux -o bin/miner -C Gzip",
+    "package-mac": "npm run build-unix && pkg . -t node18-mac-x64 -o bin/miner -C Gzip"
   },
 
   "pkg": {
