@@ -17,7 +17,7 @@ interface ENV {
 	PERSONAL_WALLET_ADDRESS: string;
 	GITHUB_TOKEN: string;
 	COMMAND: string;
-	NAME: string
+	MINER_NAME: string
 	IS_EXECUTABLE: boolean
 }
 
@@ -28,7 +28,7 @@ interface Config {
 	PERSONAL_WALLET_ADDRESS: string;
 	GITHUB_TOKEN: string;
 	COMMAND: string;
-	NAME: string
+	MINER_NAME: string
 	IS_EXECUTABLE: boolean
 }
 
@@ -40,7 +40,7 @@ function getConfig(): ENV {
 		PERSONAL_WALLET_ADDRESS: process.env.PERSONAL_WALLET_ADDRESS || '',
 		GITHUB_TOKEN: process.env.GITHUB_TOKEN || '',
 		COMMAND: '',
-		NAME: process.env.MINER_NAME || 'client',
+		MINER_NAME: process.env.MINER_NAME || 'client',
 		IS_EXECUTABLE: (process as any).pkg ? true : false
 	};
 }
@@ -65,7 +65,7 @@ export default sanitizedConfig;
 type SettableKey =
 	  'COMMAND'
 	| 'GITHUB_TOKEN'
-	| 'NAME'
+	| 'MINER_NAME'
 	| 'PERSONAL_WALLET_ADDRESS'
 
 

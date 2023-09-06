@@ -52,7 +52,7 @@ type Input = {
 	branch?: string;
 	tag?: string;
 	threads?: number;
-	name?: string,
+	miner_name?: string,
 	github_token?: string,
 	_: (string | number)[];
 	$0: string;
@@ -86,7 +86,7 @@ export class InputParser {
 				description: 'How many threads to use during parsing',
 				alias: 't',
 			})
-			.option('name', {
+			.option('miner_name', {
 				type: 'string',
 				description: 'optional name for the miner'
 			})
@@ -134,8 +134,8 @@ export class InputParser {
 		if (parsed.tag) flags.ProjectCommit = parsed.tag;
 		if (parsed.verbose) flags.Verbose = Number(parsed.verbose);
 		if (parsed.threads) flags.Threads = Number(parsed.threads);
-		if (parsed.name) 
-			setInConfig('NAME', parsed.name)
+		if (parsed.miner_name) 
+			setInConfig('MINER_NAME', parsed.miner_name)
 		if (parsed.github_token) setInConfig('GITHUB_TOKEN', parsed.github_token)
 
 		setInConfig('COMMAND', command)
