@@ -52,7 +52,7 @@ type Input = {
 	branch?: string;
 	tag?: string;
 	threads?: number;
-	worker_name?: string,
+	miner_name?: string,
 	github_token?: string,
 	_: (string | number)[];
 	$0: string;
@@ -134,8 +134,10 @@ export class InputParser {
 		if (parsed.tag) flags.ProjectCommit = parsed.tag;
 		if (parsed.verbose) flags.Verbose = Number(parsed.verbose);
 		if (parsed.threads) flags.Threads = Number(parsed.threads);
-		if (parsed.worker_name) setInConfig('WORKER_NAME', parsed.worker_name)
-		if (parsed.github_token) setInConfig('GITHUB_TOKEN', parsed.github_token)
+		if (parsed.miner_name) 
+			setInConfig('MINER_NAME', parsed.miner_name)
+		if (parsed.github_token) 
+			setInConfig('GITHUB_TOKEN', parsed.github_token)
 
 		setInConfig('COMMAND', command)
 
