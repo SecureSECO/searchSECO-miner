@@ -7,9 +7,13 @@
  */
 
 export enum ErrorCode {
-	HANDLED_ERRNO = 69,
+	OK,
+	HANDLED_ERRNO,
+	NO_INTERNET_CONN,
+	SRCML_NOT_INSTALLED,
 }
 
 export default class Error {
-	public static Code = 0;
+	public static Code: ErrorCode = ErrorCode.OK;
+	
 }

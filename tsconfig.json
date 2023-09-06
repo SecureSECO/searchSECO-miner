@@ -23,6 +23,7 @@
   "exclude": [
     "**/tests/*",
     "**/jest.config.ts",
-    "src/modules/*/main.ts"
+    "src/modules/*/main.ts",
+    ".tmp/**/*"
   ]
 }

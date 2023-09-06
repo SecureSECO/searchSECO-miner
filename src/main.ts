@@ -18,7 +18,7 @@ async function createNewMiner(minerId: string) {
 	Logger.Info(`New miner with id ${minerId} added to database`, Logger.GetCallerLocation());
 }
 
-(async () => {
+export default async function start() {
 	// Check if a miner associated with the current wallet is idle.
 	// If there is, assign the idle miner ID to this miner
 	// If it is not, create a new miner
@@ -53,5 +53,9 @@ async function createNewMiner(minerId: string) {
 
 	const miner = new Miner(minerId);
 	Logger.Info('Starting miner...', Logger.GetCallerLocation());
-	miner.Start();
-})();
+	await miner.Start();
+	await SigInt.StopProcessImmediately(minerId);
+}
+
+start();
+

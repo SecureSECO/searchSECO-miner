@@ -41,7 +41,10 @@ function serializeData(
 	return [
 		header,
 		prevCommitTime,
-		unchangedFiles.join('?').replace(/\\|\\\\/g, '/').replace(/.\//g, ''),
+		unchangedFiles
+			.join('?')
+			.replace(/\\|\\\\/g, '/')
+			.replace(/.\//g, ''),
 		...hashDataToString(data, authorSendData),
 	];
 }
@@ -49,17 +52,16 @@ function serializeData(
 export function transformHashList(data: HashData[]): Map<string, HashData[]> {
 	const output = new Map<string, HashData[]>();
 	data.forEach((hash) => {
-		if (!output.has(hash.FileName)) 
-			output.set(hash.FileName, []);
+		if (!output.has(hash.FileName)) output.set(hash.FileName, []);
 		output.get(hash.FileName).push(hash);
 
 		if (output.get(hash.FileName).length > 1) {
-			const lastLineNumber = output.get(hash.FileName)[output.get(hash.FileName).length - 1].LineNumber
-			const beforeLastLineNumber = output.get(hash.FileName)[output.get(hash.FileName).length - 2].LineNumber
+			const lastLineNumber = output.get(hash.FileName)[output.get(hash.FileName).length - 1].LineNumber;
+			const beforeLastLineNumber = output.get(hash.FileName)[output.get(hash.FileName).length - 2].LineNumber;
 			if (lastLineNumber < beforeLastLineNumber) {
 				const smaller = output.get(hash.FileName).pop();
 				const bigger = output.get(hash.FileName).pop();
-				output.get(hash.FileName).push(smaller, bigger)
+				output.get(hash.FileName).push(smaller, bigger);
 			}
 		}
 	});
@@ -82,22 +84,22 @@ export function getAuthors(hashes: Map<string, HashData[]>, rawData: AuthorData)
 		while (hashesIndex < hashesFromFile.length || authorIndex < rawAuthorData.length) {
 			if (authorIndex == rawAuthorData.length || currentEnd < rawAuthorData[authorIndex].line) {
 				hashesIndex++;
-				if (hashesIndex >= hashesFromFile.length) 
-					break;
-				if (authorIndex > 0) 
-					authorIndex--;
+				if (hashesIndex >= hashesFromFile.length) break;
+				if (authorIndex > 0) authorIndex--;
 				currentEnd = hashesFromFile[hashesIndex].LineNumberEnd;
-				dupes.clear()
+				dupes.clear();
 			}
-			if (hashesFromFile[hashesIndex].LineNumber <= rawAuthorData[authorIndex].line + rawAuthorData[authorIndex].numLines) {
+			if (
+				hashesFromFile[hashesIndex].LineNumber <=
+				rawAuthorData[authorIndex].line + rawAuthorData[authorIndex].numLines
+			) {
 				const cd = rawAuthorData[authorIndex];
 				const author = cd.commit.author.replace(/\?/g, '');
 				const mail = cd.commit.authorMail.replace(/\?/g, '');
 				const toAdd = `?${author}?${mail}`;
 
 				if ((dupes.get(toAdd) || 0) == 0) {
-					if (!output.has(hashesFromFile[hashesIndex])) 
-						output.set(hashesFromFile[hashesIndex], []);
+					if (!output.has(hashesFromFile[hashesIndex])) output.set(hashesFromFile[hashesIndex], []);
 					output.get(hashesFromFile[hashesIndex]).push(toAdd);
 					dupes.set(toAdd, 1);
 				}
@@ -154,13 +156,13 @@ function serializeCrawlData(urls: CrawlData, id: string): string[] {
 }
 
 function serializeAuthorData(authors: Map<string, number>): string[] {
-	return Array.from(authors.keys())
+	return Array.from(authors.keys());
 }
 
 function serializeProjectData(projects: ObjectSet<[string, string]>): string[] {
-	const result: string[] = []
-	projects.forEach(([ first, second ]) => result.push(`${first}?${second}`))
-	return result
+	const result: string[] = [];
+	projects.forEach(([first, second]) => result.push(`${first}?${second}`));
+	return result;
 }
 
 export enum FinishReason {
@@ -181,7 +183,7 @@ export enum FinishReason {
 }
 
 export default class DatabaseRequest {
-	private static _client = new TCPClient('client', config.DB_HOST, config.DB_PORT);
+	private static _client = new TCPClient(config.MINER_NAME, config.DB_HOST, config.DB_PORT);
 	private static _minerId = '';
 	private static _cassandraClient = new cassandra.Client({
 		contactPoints: [`${config.DB_HOST}:8002`],
@@ -200,7 +202,7 @@ export default class DatabaseRequest {
 	}
 
 	private static updateClientVerbosity(verbosity: Verbosity) {
-		this._client = new TCPClient('client', config.DB_HOST, config.DB_PORT, verbosity);
+		this._client = new TCPClient(config.MINER_NAME, config.DB_HOST, config.DB_PORT, verbosity);
 	}
 
 	public static async ConnectToCassandraNode() {
@@ -229,11 +231,11 @@ export default class DatabaseRequest {
 	}
 
 	public static async GetAuthor(authors: Map<string, number>) {
-		return await this._client.Execute(RequestType.GET_AUTHOR, serializeAuthorData(authors))
+		return await this._client.Execute(RequestType.GET_AUTHOR, serializeAuthorData(authors));
 	}
 
 	public static async GetProjectData(projectVersions: ObjectSet<[string, string]>) {
-		return await this._client.Execute(RequestType.EXTRACT_PROJECTS, serializeProjectData(projectVersions))
+		return await this._client.Execute(RequestType.EXTRACT_PROJECTS, serializeProjectData(projectVersions));
 	}
 
 	public static async AddCrawledJobs(crawled: CrawlData, id: string): Promise<TCPResponse> {
@@ -271,11 +273,10 @@ export default class DatabaseRequest {
 	}
 
 	public static async FindMatches(hashes: HashData[]): Promise<MethodResponseData[]> {
-		const data = Array.from(new Set<string>(hashes.map(hash => hash.Hash)))
-		const { response, responseCode } = await this._client.Execute(RequestType.CHECK, data)
-		if (responseCode == 200) 
-			return response as MethodResponseData[]
-		return []
+		const data = Array.from(new Set<string>(hashes.map((hash) => hash.Hash)));
+		const { response, responseCode } = await this._client.Execute(RequestType.CHECK, data);
+		if (responseCode == 200) return response as MethodResponseData[];
+		return [];
 	}
 
 	public static async RetrieveClaimableHashCount(): Promise<cassandra.types.Long> {
@@ -286,7 +287,7 @@ export default class DatabaseRequest {
 			[cassandra.types.Uuid.fromString(this._minerId), config.PERSONAL_WALLET_ADDRESS],
 			{ prepare: true }
 		);
-		return result.rows[0]?.claimable_hashes || 0;
+		return result.rows[0]?.claimable_hashes || cassandra.types.Long.fromNumber(0);
 	}
 
 	private static async incrementClaimableHashes(amount: number) {
@@ -330,16 +331,20 @@ export default class DatabaseRequest {
 		return result.rows[0]['[applied]'];
 	}
 
-    public static async SetMinerStatus(id: string, status: string) {
-        const query = 'UPDATE rewarding.miners SET status=?, last_startup=? WHERE id=? AND wallet=?;'
-        Logger.Debug(`Setting miner status to ${status}`, Logger.GetCallerLocation())
-        await this._cassandraClient.execute(query, [ 
-            status,
-            cassandra.types.Long.fromNumber(Date.now()),
-            cassandra.types.Uuid.fromString(id), 
-            config.PERSONAL_WALLET_ADDRESS 
-        ], { prepare: true })
-    }
+	public static async SetMinerStatus(id: string, status: string) {
+		const query = 'UPDATE rewarding.miners SET status=?, last_startup=? WHERE id=? AND wallet=?;';
+		Logger.Debug(`Setting miner status to ${status}`, Logger.GetCallerLocation());
+		await this._cassandraClient.execute(
+			query,
+			[
+				status,
+				cassandra.types.Long.fromNumber(Date.now()),
+				cassandra.types.Uuid.fromString(id),
+				config.PERSONAL_WALLET_ADDRESS,
+			],
+			{ prepare: true }
+		);
+	}
 
 	public static async ListMinersAssociatedWithWallet(wallet: string): Promise<{ id: string; status: string }[]> {
 		const query = 'SELECT id, status FROM rewarding.miners WHERE wallet=? ALLOW FILTERING;';
@@ -374,4 +379,3 @@ export default class DatabaseRequest {
 		await this._cassandraClient.execute(query, ['idle', ...deadMinerIds, wallet]);
 	}
 }
-

@@ -20,6 +20,7 @@
     ],
     "rules": {
       "no-undef": "off",
+      "@typescript-eslint/no-this-alias": "off",
       "prettier/prettier": [
         "warn",
         {

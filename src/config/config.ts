@@ -7,9 +7,8 @@
  */
 
 import path from 'path';
-import dotenv from 'dotenv';
 
-dotenv.config({ path: path.join(__dirname, '../config/.env') });
+require('dotenv').config({ path: path.join(__dirname, './.env') });
 
 interface ENV {
 	NODE_ENV: string | undefined;
@@ -17,7 +16,8 @@ interface ENV {
 	DB_HOST: string | undefined;
 	PERSONAL_WALLET_ADDRESS: `0x${string}` | undefined;
 	GITHUB_TOKEN: string | undefined;
-	COMMAND: string | undefined
+	COMMAND: string | undefined;
+	MINER_NAME: string | undefined
 }
 
 interface Config {
@@ -26,17 +26,19 @@ interface Config {
 	DB_HOST: string | undefined;
 	PERSONAL_WALLET_ADDRESS: `0x${string}` | undefined;
 	GITHUB_TOKEN: string | undefined;
-	COMMAND: string | undefined
+	COMMAND: string | undefined;
+	MINER_NAME: string | undefined
 }
 
 function getConfig(): ENV {
 	return {
 		NODE_ENV: process.env.NODE_ENV,
-		DB_PORT: process.env.DB_PORT,
-		DB_HOST: process.env.DB_HOST,
+		DB_PORT: 8003,
+		DB_HOST: '131.211.31.209',
 		PERSONAL_WALLET_ADDRESS: process.env.PERSONAL_WALLET_ADDRESS as `0x${string}`,
-		GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-		COMMAND: ''
+		GITHUB_TOKEN: process.env.GITHUB_TOKEN || '',
+		COMMAND: '',
+		MINER_NAME: process.env.MINER_NAME || 'client'
 	};
 }
 
@@ -52,7 +54,11 @@ const sanitizedConfig = getSanitizedConfig(config);
 
 export default sanitizedConfig;
 
+export function setInConfig(key: any, value: any) {
+	if (Object.keys(config).includes(key))
+		return
+	if (typeof value !== typeof sanitizedConfig[key as keyof typeof config])
+		return
 
-export function setCommandInConfig(command: string) {
-	sanitizedConfig.COMMAND = command
+	sanitizedConfig[key as keyof typeof config] = value
 }

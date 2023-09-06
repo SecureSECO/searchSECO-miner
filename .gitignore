@@ -2,6 +2,7 @@
 *.d
 
 .tmp/
+bin
 
 # Compiled Object files
 *.slo
@@ -125,6 +126,9 @@ out
 # Nuxt.js build / generate output
 .nuxt
 dist
+build
+
+.vscode
 
 # Gatsby files
 .cache/
