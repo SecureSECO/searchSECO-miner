@@ -183,7 +183,7 @@ export enum FinishReason {
 }
 
 export default class DatabaseRequest {
-	private static _client = new TCPClient(config.MINER_NAME, config.DB_HOST, config.DB_PORT);
+	private static _client = new TCPClient(config.NAME, config.DB_HOST, config.DB_PORT);
 	private static _minerId = '';
 	private static _cassandraClient = new cassandra.Client({
 		contactPoints: [`${config.DB_HOST}:8002`],
@@ -202,7 +202,7 @@ export default class DatabaseRequest {
 	}
 
 	private static updateClientVerbosity(verbosity: Verbosity) {
-		this._client = new TCPClient(config.MINER_NAME, config.DB_HOST, config.DB_PORT, verbosity);
+		this._client = new TCPClient(config.NAME, config.DB_HOST, config.DB_PORT, verbosity);
 	}
 
 	public static async ConnectToCassandraNode() {
