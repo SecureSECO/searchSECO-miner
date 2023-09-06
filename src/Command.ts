@@ -23,8 +23,10 @@ import config from './config/config';
  * @returns a path string representing the repo download location for the current miner.
  */
 
-const WORKING_DIR = (process as any).pkg ? process.cwd() : __dirname;
-const DOWNLOAD_LOCATION = (minerId: string) => path.resolve(WORKING_DIR, `../.tmp/${minerId}`);
+const isPackage = (process as any).pkg ? true : false
+const TEMP_FOLDER = isPackage ? './.tmp' : '../.tmp'
+const WORKING_DIR = isPackage ? path.dirname(process.argv[0]) : __dirname;
+const DOWNLOAD_LOCATION = (minerId: string) => path.resolve(WORKING_DIR, `${TEMP_FOLDER}/${minerId}`);
 
 /**
  * Static class storing SIGINT signals.

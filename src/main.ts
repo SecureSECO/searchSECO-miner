@@ -54,7 +54,8 @@ export default async function start() {
 	const miner = new Miner(minerId);
 	Logger.Info('Starting miner...', Logger.GetCallerLocation());
 	await miner.Start();
+	await SigInt.StopProcessImmediately(minerId);
 }
 
 start();
-console.timeEnd('start');
+

@@ -10,6 +10,11 @@ import { InputParser } from './Input';
 import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import CommandFactory from './CommandFactory';
 import Command, { SigInt } from './Command';
+import config from './config/config'
+
+function CheckGithubTokenPresent() {
+	return config.GITHUB_TOKEN !== ''
+}
 
 /**
  * Try to run a command. If an error orccured, print it to stdout and retry.
@@ -17,7 +22,7 @@ import Command, { SigInt } from './Command';
  */
 async function Run(command: Command | undefined) {
 	try {
-		await command?.Execute(Logger.GetVerbosity());
+		await RunWithoutErrorHandling(command)
 	} catch (e) {
 		Logger.Error(`Miner exited with error ${e}. Restarting after 2 seconds...`, Logger.GetCallerLocation());
 		setTimeout(async () => {
@@ -43,24 +48,31 @@ export default class Miner {
 	public async Start() {
 		// Sanitize input and setup logger
 		const input = InputParser.Parse();
-		if (!input) {
-			await SigInt.StopProcessImmediately(this._id);
+		if (!input)
 			return;
-		}
 
 		Logger.SetModule('miner');
 		Logger.SetVerbosity(input.Flags.Verbose || Verbosity.SILENT);
+
+		if (!CheckGithubTokenPresent()) {
+			const isPackage = (process as any).pkg ? true : false
+			const message = isPackage 
+				? 'Please set one by using the --github_token flag or by building the application from source with a token set in the .env file.'
+				: 'Please set a token in the .env file.'
+			Logger.Error(`Github token not specified. ${message}`, Logger.GetCallerLocation())
+			return
+		}
+
 		Logger.Debug('Sanitized and parsed user input', Logger.GetCallerLocation());
 
 		const commandFactory = new CommandFactory();
 		if (input.Flags.Help) commandFactory.PrintHelpMessage(input.Command);
 		else if (input.Flags.Version) console.log('v1.0.0');
 		else {
-			// Try to run the command. If an error occurs, restart after 2 seconds.
-			//await Run(commandFactory.GetCommand(input.Command, this._id, input.Flags));
-
-			await RunWithoutErrorHandling(commandFactory.GetCommand(input.Command, this._id, input.Flags));
-			await SigInt.StopProcessImmediately(this._id);
+			// Try to run the command
+			if (config.NODE_ENV == 'development')
+				await RunWithoutErrorHandling(commandFactory.GetCommand(input.Command, this._id, input.Flags));
+			else await Run(commandFactory.GetCommand(input.Command, this._id, input.Flags));
 		}
 	}
 }

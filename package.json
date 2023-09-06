@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "bin": "dist/main.js",
-  "main": "main.js",
+  "main": "main.ts",
   "scripts": {
     "test": "jest",
     "build-win": "npm run build-ts && copyfiles -f .\\src\\config\\.env .\\dist\\config",
@@ -13,17 +13,20 @@
     "update": "git checkout main && git pull origin main && git submodule update --init --recursive --remote",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
-    "package-win": "npm run build-win && pkg . -t node18-win-x64 -o bin/miner -C Gzip",
-    "package-linux": "npm run build-unix && pkg . -t node18-linux -o bin/miner -C Gzip",
-    "package-mac": "npm run build-unix && pkg . -t node18-mac-x64 -o bin/miner -C Gzip"
+    "package-win": "npm run build-win && pkg package.json -t node18-win-x64 -C Gzip",
+    "package-linux": "npm run build-unix && pkg package.json -t node18-linux -C Gzip",
+    "package-mac": "npm run build-unix && pkg package.json -t node18-mac-x64 -C Gzip"
   },
 
   "pkg": {
-    "scripts": "dist/**/*.js",
-    "assets": [
-      "dist/config/.env"
+    "scripts": [
+      "dist/**/*.js"
     ],
-    "outputPath": "bin"
+    "assets": [
+      "dist/config/.env",
+      ".tmp"
+    ],
+    "outputPath": "build"
   },
 
   "author": "Wouter Beffers",
