@@ -136,7 +136,8 @@ export class InputParser {
 		if (parsed.threads) flags.Threads = Number(parsed.threads);
 		if (parsed.miner_name) 
 			setInConfig('MINER_NAME', parsed.miner_name)
-		if (parsed.github_token) setInConfig('GITHUB_TOKEN', parsed.github_token)
+		if (parsed.github_token) 
+			setInConfig('GITHUB_TOKEN', parsed.github_token)
 
 		setInConfig('COMMAND', command)
 
