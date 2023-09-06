@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { InputParser } from './Input';
+import { Flags, InputParser } from './Input';
 import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import CommandFactory from './CommandFactory';
 import Command, { SigInt } from './Command';
@@ -37,22 +37,21 @@ async function RunWithoutErrorHandling(command: Command | undefined) {
 
 export default class Miner {
 	private _id: string;
+	private _flags: Flags
+	private _command: string
 
-	constructor(id: string) {
+	constructor(id: string, command: string, flags: Flags) {
 		this._id = id;
+		this._flags = flags
+		this._command = command
 	}
 
 	/**
 	 * Starts the miner with the command supplied by the user.
 	 */
 	public async Start() {
-		// Sanitize input and setup logger
-		const input = InputParser.Parse();
-		if (!input)
-			return;
-
 		Logger.SetModule('miner');
-		Logger.SetVerbosity(input.Flags.Verbose || Verbosity.SILENT);
+		Logger.SetVerbosity(this._flags.Verbose || Verbosity.SILENT);
 
 		if (!CheckGithubTokenPresent()) {
 			const isPackage = (process as any).pkg ? true : false
@@ -63,16 +62,10 @@ export default class Miner {
 			return
 		}
 
-		Logger.Debug('Sanitized and parsed user input', Logger.GetCallerLocation());
-
 		const commandFactory = new CommandFactory();
-		if (input.Flags.Help) commandFactory.PrintHelpMessage(input.Command);
-		else if (input.Flags.Version) console.log('v1.0.0');
-		else {
-			// Try to run the command
-			if (config.NODE_ENV == 'development')
-				await RunWithoutErrorHandling(commandFactory.GetCommand(input.Command, this._id, input.Flags));
-			else await Run(commandFactory.GetCommand(input.Command, this._id, input.Flags));
-		}
+		// Try to run the command
+		if (config.NODE_ENV == 'development')
+			await RunWithoutErrorHandling(commandFactory.GetCommand(this._command, this._id, this._flags));
+		else await Run(commandFactory.GetCommand(this._command, this._id, this._flags));
 	}
 }

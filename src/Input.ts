@@ -54,6 +54,7 @@ type Input = {
 	threads?: number;
 	miner_name?: string,
 	github_token?: string,
+	wallet_address?: string,
 	_: (string | number)[];
 	$0: string;
 };
@@ -67,13 +68,13 @@ export class InputParser {
 
 		const argv: Argv<Input> = yargs(process.argv.slice(2))
 			.option('verbose', {
-				describe: 'set miner verbosity',
+				describe: 'set the miner verbosity. Possible values are 1|2|3|4|5',
 				type: 'number',
 				alias: 'V',
 			})
 			.option('branch', {
 				type: 'string',
-				description: 'The branch to check',
+				description: 'The branch to check.',
 				alias: 'b',
 			})
 			.option('tag', {
@@ -83,17 +84,22 @@ export class InputParser {
 			})
 			.option('threads', {
 				type: 'number',
-				description: 'How many threads to use during parsing',
+				description: 'How many threads to use during parsing.',
 				alias: 't',
 			})
 			.option('miner_name', {
 				type: 'string',
-				description: 'optional name for the miner'
+				description: 'Optional name for the miner.'
 			})
 			.option('github_token', {
 				type: 'string',
 				description: 'The github token to use for downloading repositories',
 				alias: 'g'
+			})
+			.option('wallet_address', {
+				type: 'string',
+				description: 'The wallet address used to link the miner to the DAO.',
+				alias: 'w'
 			})
 			.usage('Usage: $0 <command>')
 			.command('start', 'starts the miner', () => {
@@ -138,6 +144,8 @@ export class InputParser {
 			setInConfig('MINER_NAME', parsed.miner_name)
 		if (parsed.github_token) 
 			setInConfig('GITHUB_TOKEN', parsed.github_token)
+		if (parsed.wallet_address)
+			setInConfig('PERSONAL_WALLET_ADDRESS', parsed.wallet_address)
 
 		setInConfig('COMMAND', command)
 

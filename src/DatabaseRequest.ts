@@ -182,9 +182,17 @@ export enum FinishReason {
 	TIMEOUT,
 }
 
+function LogWithoutWallet(msg: string, warningGiven: boolean) {
+	if (warningGiven)
+		Logger.Debug(msg, Logger.GetCallerLocation())
+	else Logger.Warning(msg, Logger.GetCallerLocation())
+	return true
+}
+
 export default class DatabaseRequest {
 	private static _client = new TCPClient(config.MINER_NAME, config.DB_HOST, config.DB_PORT);
 	private static _minerId = '';
+	private static _walletWarningGiven = false
 	private static _cassandraClient = new cassandra.Client({
 		contactPoints: [`${config.DB_HOST}:8002`],
 		localDataCenter: 'dcscience-vs317.science.uu.nl',
@@ -280,6 +288,11 @@ export default class DatabaseRequest {
 	}
 
 	public static async RetrieveClaimableHashCount(): Promise<cassandra.types.Long> {
+		if (!config.PERSONAL_WALLET_ADDRESS) {
+			this._walletWarningGiven = LogWithoutWallet('Cannot retrieve claimable hash count as PERSONAL_WALLET_ADDRESS is not set.', this._walletWarningGiven)
+			return cassandra.types.Long.fromNumber(0)
+		}
+
 		Logger.Debug('Connecting with the database to retrieve all claimable hashes', Logger.GetCallerLocation());
 		const query = 'SELECT claimable_hashes FROM miners WHERE id=? AND wallet=?;';
 		const result = await this._cassandraClient.execute(
@@ -290,7 +303,12 @@ export default class DatabaseRequest {
 		return result.rows[0]?.claimable_hashes || cassandra.types.Long.fromNumber(0);
 	}
 
-	private static async incrementClaimableHashes(amount: number) {
+	private static async incrementClaimableHashes(amount: number): Promise<void> {
+		if (!config.PERSONAL_WALLET_ADDRESS) {
+			this._walletWarningGiven = LogWithoutWallet('Cannot increment claimable hash count as PERSONAL_WALLET_ADDRESS is not set.', this._walletWarningGiven)
+			return
+		}
+
 		Logger.Debug(`Incrementing claimable hash count by ${amount}`, Logger.GetCallerLocation());
 		const currentCount = await this.RetrieveClaimableHashCount();
 		const newCount = currentCount.add(cassandra.types.Long.fromNumber(amount));
@@ -308,20 +326,30 @@ export default class DatabaseRequest {
 		Logger.Debug(`Total of claimable hashes is now ${newCount.low}`, Logger.GetCallerLocation());
 	}
 
-	public static async ResetClaimableHashCount() {
+	public static async ResetClaimableHashCount(): Promise<void> {
+		if (!config.PERSONAL_WALLET_ADDRESS) {
+			this._walletWarningGiven = LogWithoutWallet('Cannot reset claimable hash count as PERSONAL_WALLET_ADDRESS is not set.', this._walletWarningGiven)
+			return
+		}
+
 		Logger.Debug('Resetting claimable hash count', Logger.GetCallerLocation());
 		const query = 'UPDATE rewarding.miners SET claimable_hashes=? WHERE wallet=?;';
 		await this._cassandraClient.execute(query, [0, config.PERSONAL_WALLET_ADDRESS], { prepare: true });
 	}
 
-	public static async AddMinerToDatabase(id: string, wallet: string): Promise<boolean> {
+	public static async AddMinerToDatabase(id: string): Promise<boolean> {
+		if (!config.PERSONAL_WALLET_ADDRESS) {
+			this._walletWarningGiven = LogWithoutWallet('Cannot insert new miner into database as PERSONAL_WALLET_ADDRESS is not set.', this._walletWarningGiven)
+			return false
+		}
+
 		const query =
 			'INSERT INTO rewarding.miners (id, wallet, claimable_hashes, last_startup, status) VALUES (?, ?, ?, ?, ?) IF NOT EXISTS;';
 		const result = await this._cassandraClient.execute(
 			query,
 			[
 				cassandra.types.Uuid.fromString(id),
-				wallet,
+				config.PERSONAL_WALLET_ADDRESS,
 				cassandra.types.Long.fromNumber(0),
 				cassandra.types.Long.fromNumber(Date.now()),
 				'running',
@@ -331,7 +359,12 @@ export default class DatabaseRequest {
 		return result.rows[0]['[applied]'];
 	}
 
-	public static async SetMinerStatus(id: string, status: string) {
+	public static async SetMinerStatus(id: string, status: string): Promise<void> {
+		if (!config.PERSONAL_WALLET_ADDRESS) {
+			this._walletWarningGiven = LogWithoutWallet('Cannot set miner status as PERSONAL_WALLET_ADDRESS is not set.', this._walletWarningGiven)
+			return
+		}
+
 		const query = 'UPDATE rewarding.miners SET status=?, last_startup=? WHERE id=? AND wallet=?;';
 		Logger.Debug(`Setting miner status to ${status}`, Logger.GetCallerLocation());
 		await this._cassandraClient.execute(
@@ -346,10 +379,15 @@ export default class DatabaseRequest {
 		);
 	}
 
-	public static async ListMinersAssociatedWithWallet(wallet: string): Promise<{ id: string; status: string }[]> {
+	public static async ListMinersAssociatedWithWallet(): Promise<{ id: string; status: string }[]> {
+		if (!config.PERSONAL_WALLET_ADDRESS) {
+			this._walletWarningGiven = LogWithoutWallet('Cannot reset claimable hash count as PERSONAL_WALLET_ADDRESS is not set.', this._walletWarningGiven)
+			return []
+		}
+
 		const query = 'SELECT id, status FROM rewarding.miners WHERE wallet=? ALLOW FILTERING;';
-		Logger.Debug(`List all miners associated with wallet ${wallet}`, Logger.GetCallerLocation());
-		const response = await this._cassandraClient.execute(query, [wallet]);
+		Logger.Debug(`List all miners associated with wallet ${config.PERSONAL_WALLET_ADDRESS}`, Logger.GetCallerLocation());
+		const response = await this._cassandraClient.execute(query, [config.PERSONAL_WALLET_ADDRESS]);
 
 		return response.rows.map((row) => ({
 			id: row.id.toString(),
@@ -357,10 +395,15 @@ export default class DatabaseRequest {
 		}));
 	}
 
-	public static async TruncateZombieMiners(wallet: string): Promise<void> {
+	public static async ResetInactiveMiners(): Promise<void> {
+		if (!config.PERSONAL_WALLET_ADDRESS) {
+			this._walletWarningGiven = LogWithoutWallet('Cannot reset inactive miners as PERSONAL_WALLET_ADDRESS is not set.', this._walletWarningGiven)
+			return
+		}
+
 		let query =
 			'SELECT id, claimable_hashes, last_hashes_update, last_startup, status FROM rewarding.miners WHERE wallet=? AND status=? ALLOW FILTERING;';
-		const response = await this._cassandraClient.execute(query, [wallet, 'running']);
+		const response = await this._cassandraClient.execute(query, [config.PERSONAL_WALLET_ADDRESS, 'running']);
 
 		const dayInMilis = 86_400_000;
 		const deadMinerIds = response.rows
@@ -376,6 +419,6 @@ export default class DatabaseRequest {
 		query = `UPDATE rewarding.miners SET status=? WHERE id IN (${new Array(deadMinerIds.length)
 			.fill('?')
 			.join(',')}) AND wallet=?;`;
-		await this._cassandraClient.execute(query, ['idle', ...deadMinerIds, wallet]);
+		await this._cassandraClient.execute(query, ['idle', ...deadMinerIds, config.PERSONAL_WALLET_ADDRESS]);
 	}
 }
