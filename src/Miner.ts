@@ -67,5 +67,6 @@ export default class Miner {
 		if (config.NODE_ENV == 'development')
 			await RunWithoutErrorHandling(commandFactory.GetCommand(this._command, this._id, this._flags));
 		else await Run(commandFactory.GetCommand(this._command, this._id, this._flags));
+		await SigInt.StopProcessImmediately(this._id);
 	}
 }
