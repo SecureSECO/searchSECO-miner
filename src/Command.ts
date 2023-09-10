@@ -123,11 +123,13 @@ export default abstract class Command {
 		Logger.Info(`Checking ${url} against the SearchSECO database`, Logger.GetCallerLocation());
 
 		const metadata = await this._moduleFacade.GetProjectMetadata(url);
-		if (!this._flags.Branch) this._flags.Branch = metadata.defaultBranch;
+		if (!this._flags.Branch) 
+			this._flags.Branch = metadata.defaultBranch;
 
 		await this._moduleFacade.DownloadRepository(url, this._flags.Branch);
 
-		if (this._flags.ProjectCommit !== '') await this._moduleFacade.SwitchVersion(this._flags.ProjectCommit);
+		if (this._flags.ProjectCommit !== '') 
+			await this._moduleFacade.SwitchVersion(this._flags.ProjectCommit);
 
 		const [hashes, authorData] = await this.parseAndBlame();
 		const databaseResponse = await DatabaseRequest.FindMatches(hashes);
@@ -168,7 +170,8 @@ export default abstract class Command {
 		}
 
 		const success = await this._moduleFacade.DownloadRepository(this._flags.MandatoryArgument, this._flags.Branch);
-		if (!success) return;
+		if (!success) 
+			return;
 		metadata.versionHash = await this._moduleFacade.GetCurrentVersion();
 
 		const vulnCommits = await this._moduleFacade.GetVulnerabilityCommits();
@@ -185,7 +188,8 @@ export default abstract class Command {
 			await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata);
 		}
 
-		if (metadata.defaultBranch !== this._flags.Branch) await this._moduleFacade.SwitchVersion(this._flags.Branch);
+		if (metadata.defaultBranch !== this._flags.Branch) 
+			await this._moduleFacade.SwitchVersion(this._flags.Branch);
 		const tags = await this._moduleFacade.GetRepositoryTags();
 		const tagc = tags.length;
 
