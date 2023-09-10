@@ -13,7 +13,6 @@ import config from './config/config';
 import DatabaseRequest from './DatabaseRequest';
 import { v4 as uuidv4 } from 'uuid';
 import { InputParser } from './Input'
-import os from 'os'
 
 async function createNewMiner(minerId: string) {
 	if (await DatabaseRequest.AddMinerToDatabase(minerId))
