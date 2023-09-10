@@ -9,7 +9,7 @@
     "build-win": "npm run build-ts && copyfiles -f .\\src\\config\\.env .\\dist\\config",
     "build-unix": "npm run build-ts && cp ./src/config/.env ./dist/config/.env",
     "build-ts": "tsc",
-    "execute": "node --no-warnings dist/main.js",
+    "execute": "node --no-warnings --max-old-space-size=8192 dist/main.js",
     "update": "git checkout main && git pull origin main && git submodule update --init --recursive --remote",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",

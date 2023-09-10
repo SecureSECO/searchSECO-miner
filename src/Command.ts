@@ -118,11 +118,13 @@ export default abstract class Command {
 		return [hashes, authorData];
 	}
 
-	protected async checkProject(): Promise<void> {
+	protected async checkProject(): Promise<boolean> {
 		const url = this._flags.MandatoryArgument;
 		Logger.Info(`Checking ${url} against the SearchSECO database`, Logger.GetCallerLocation());
 
 		const metadata = await this._moduleFacade.GetProjectMetadata(url);
+		if (!metadata) return false;
+
 		if (!this._flags.Branch) 
 			this._flags.Branch = metadata.defaultBranch;
 
@@ -137,6 +139,7 @@ export default abstract class Command {
 		const printer = new MatchPrinter();
 		await printer.PrintHashMatches(hashes, databaseResponse, authorData, url, metadata.id);
 		printer.Close();
+		return true
 	}
 
 	/**
@@ -149,11 +152,7 @@ export default abstract class Command {
 		Logger.Info('Processing and uploading project to database', Logger.GetCallerLocation());
 
 		const metadata = await this._moduleFacade.GetProjectMetadata(this._flags.MandatoryArgument);
-
-		if (!metadata) {
-			Logger.Warning('Error getting project metadata. Moving on', Logger.GetCallerLocation());
-			return;
-		}
+		if (!metadata) return;
 
 		// Set default branch
 		if (
@@ -357,7 +356,7 @@ export class StartCommand extends Command {
 		DatabaseRequest.ConnectToCassandraNode();
 		DatabaseRequest.SetVerbosity(verbosity);
 		while (!SigInt.Stop) {
-			this._moduleFacade.ResetState();
+			this._moduleFacade.ResetParserState();
 
 			this._flags.Branch = '';
 			const job = await DatabaseRequest.GetNextJob();
@@ -431,9 +430,7 @@ export class CheckUploadCommand extends Command {
 		DatabaseRequest.SetMinerId(this._minerId);
 		DatabaseRequest.ConnectToCassandraNode();
 
-		await this.checkProject();
-		await this.uploadProject('', '', 0);
-
-		await SigInt.StopProcessImmediately(this._minerId);
+		const checked = await this.checkProject();
+		if (checked) await this.uploadProject('', '', 0);
 	}
 }

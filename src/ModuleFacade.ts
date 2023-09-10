@@ -26,7 +26,7 @@ export default class ModuleFacade {
 		this._verbosity = verbosity;
 		this._filePath = filePath;
 		this._flags = flags;
-		this._spider = new Spider(this._verbosity);
+		this._spider = new Spider(config.GITHUB_TOKEN, this._verbosity);
 		this._crawler = new Crawler(config.GITHUB_TOKEN);
 		this._parser = new Parser(this._verbosity, flags.Threads);
 	}
@@ -34,9 +34,7 @@ export default class ModuleFacade {
 	/**
 	 * reinitialize modules
 	 */
-	public ResetState() {
-		this._spider = new Spider(this._verbosity);
-		this._crawler = new Crawler(config.GITHUB_TOKEN);
+	public ResetParserState() {
 		this._parser = new Parser(this._verbosity, this._flags.Threads);
 	}
 
@@ -151,10 +149,15 @@ export default class ModuleFacade {
 	 * @returns The project data of the project
 	 */
 	public async GetProjectMetadata(url: string): Promise<ProjectMetadata> {
-		Logger.Debug('Calling the crawer to get project metadata', Logger.GetCallerLocation());
-		const metadata = this._crawler.getProjectMetadata(url);
-		Logger.Debug('Project metadata succesfully fetched', Logger.GetCallerLocation());
-		return metadata;
+		try {
+			Logger.Debug('Calling the crawer to get project metadata', Logger.GetCallerLocation());
+			const metadata = await this._crawler.getProjectMetadata(url);
+			Logger.Debug('Project metadata succesfully fetched', Logger.GetCallerLocation());
+			return metadata;
+		} catch (err) {
+			Logger.Error(`Error getting metadata of ${url}: ${err}`, Logger.GetCallerLocation())
+			return undefined
+		}
 	}
 
 	/**
