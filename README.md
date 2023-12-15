@@ -1,6 +1,7 @@
 # SearchSECO Miner
 This is the repository for the SecureSECO DAO miner built to scrape Github, upload project data to the SecureSECO database and to connect with the DAO to facilitate claiming of rewards.
 ## Initial Setup
+This project uses Node v18.
 ### Environment variables
 All environment variables are listed in `src/config/.env.example`. The variables are exposed via a `.env` file in the same folder as `.env.example`, and this example file serves as a template for the variables that need to be specified in `.env`.
 ### Setting up environment variables and installing dependencies
