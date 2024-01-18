@@ -52,9 +52,9 @@ type Input = {
 	branch?: string;
 	tag?: string;
 	threads?: number;
-	miner_name?: string,
-	github_token?: string,
-	wallet_address?: string,
+	miner_name?: string;
+	github_token?: string;
+	wallet_address?: string;
 	_: (string | number)[];
 	$0: string;
 };
@@ -64,9 +64,9 @@ export class InputParser {
 		const flags = JSON.parse(JSON.stringify(new Flags())) as Flags;
 
 		let command: string;
-		const validCommand = true;
+		let validCommand = true;
 
-		const argv: Argv<Input> = yargs(process.argv.slice(2))
+		const parser: Argv<Input> = yargs
 			.option('verbose', {
 				describe: 'set the miner verbosity. Possible values are 1|2|3|4|5',
 				type: 'number',
@@ -89,50 +89,56 @@ export class InputParser {
 			})
 			.option('miner_name', {
 				type: 'string',
-				description: 'Optional name for the miner.'
+				description: 'Optional name for the miner.',
 			})
 			.option('github_token', {
 				type: 'string',
 				description: 'The github token to use for downloading repositories',
-				alias: 'g'
+				alias: 'g',
 			})
 			.option('wallet_address', {
 				type: 'string',
 				description: 'The wallet address used to link the miner to the DAO.',
-				alias: 'w'
+				alias: 'w',
 			})
 			.usage('Usage: $0 <command>')
-			.command('start', 'starts the miner', () => {
+			.command('start', 'starts the miner', (yargs) => {
 				command = 'start';
+				return yargs;
 			})
 			.command('check', 'checks a url against the SearchSECO database', (yargs) => {
-				yargs
+				command = 'check';
+				return yargs
 					.usage('usage: $0 check <url> [options]')
 					.positional('url', {
 						describe: 'The url to check',
 						type: 'string',
-						demand: true,
+						demandOption: true,
 					})
 					.help('help')
 					.wrap(null);
-				command = 'check';
 			})
 			.command('checkupload', 'checks a url against the SearchSECO database and uploads the project', (yargs) => {
-				yargs
+				command = 'checkupload';
+				return yargs
 					.usage('usage: $0 checkupload <url> [options]')
 					.positional('url', {
 						describe: 'The url to check',
 						type: 'string',
-						demand: true,
+						demandOption: true,
 					})
 					.help('help')
 					.wrap(null);
-				command = 'checkupload';
 			})
 			.help('help')
 			.wrap(null);
 
-		const parsed = argv.parseSync();
+		let parsed: Input;
+		parser.parseSync(process.argv.slice(2), flags, (err, argv) => {
+			if (err) validCommand = false;
+			parsed = argv;
+		});
+
 		if (!validCommand) return;
 
 		if (parsed.url || parsed._[1]?.toString()) flags.MandatoryArgument = parsed.url || parsed._[1].toString();
@@ -140,14 +146,11 @@ export class InputParser {
 		if (parsed.tag) flags.ProjectCommit = parsed.tag;
 		if (parsed.verbose) flags.Verbose = Number(parsed.verbose);
 		if (parsed.threads) flags.Threads = Number(parsed.threads);
-		if (parsed.miner_name) 
-			setInConfig('MINER_NAME', parsed.miner_name)
-		if (parsed.github_token) 
-			setInConfig('GITHUB_TOKEN', parsed.github_token)
-		if (parsed.wallet_address)
-			setInConfig('PERSONAL_WALLET_ADDRESS', parsed.wallet_address)
+		if (parsed.miner_name) setInConfig('MINER_NAME', parsed.miner_name);
+		if (parsed.github_token) setInConfig('GITHUB_TOKEN', parsed.github_token);
+		if (parsed.wallet_address) setInConfig('PERSONAL_WALLET_ADDRESS', parsed.wallet_address);
 
-		setInConfig('COMMAND', command)
+		setInConfig('COMMAND', command);
 
 		return new ParsedInput(command, flags, '');
 	}

@@ -114,11 +114,8 @@ export default class MatchPrinter {
 		const authorIdToName = new Map<string, AuthorResponseData>();
 
 		parseDatabaseHashes(databaseMethods, receivedHashes, projectMatches, projectVersions, dbAuthors);
-
-		const [authorResponse, projectResponse] = await Promise.all([
-			DatabaseRequest.GetAuthor(dbAuthors),
-			DatabaseRequest.GetProjectData(projectVersions),
-		]);
+		const authorResponse = await DatabaseRequest.GetAuthor(dbAuthors)
+		const projectResponse = await DatabaseRequest.GetProjectData(projectVersions)
 
 		if (authorResponse.responseCode != 200 || projectResponse.responseCode != 200) return;
 

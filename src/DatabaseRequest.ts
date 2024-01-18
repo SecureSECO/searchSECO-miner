@@ -218,6 +218,11 @@ export default class DatabaseRequest {
 		Logger.Debug('Successfully connected to Cassandra', Logger.GetCallerLocation());
 	}
 
+	public static async DisconnectFromCassandraNode() {
+		await this._cassandraClient.shutdown();
+		Logger.Debug('Successfully disconnected from Cassandra', Logger.GetCallerLocation());
+	}
+
 	public static async UploadHashes(
 		hashes: HashData[],
 		metadata: ProjectMetadata,

@@ -43,10 +43,7 @@ export class SigInt {
 	public static async StopProcess(minerId: string) {
 		this.Stop = true;
 		while (!this.IsStopped) await new Promise((resolve) => setTimeout(resolve, 1000));
-		if (this.Stop) {
-			await DatabaseRequest.SetMinerStatus(minerId, 'idle');
-			process.exit(0);
-		}
+		if (this.Stop) await this.stop(minerId);
 	}
 	/**
 	 * Resumes the process if it was gracefully stopped with the SigInt.StopProcess() function
@@ -59,7 +56,12 @@ export class SigInt {
 	 * @param minerId The miner ID associated with the current process
 	 */
 	public static async StopProcessImmediately(minerId: string) {
+		await this.stop(minerId);
+	}
+
+	private static async stop(minerId: string) {
 		await DatabaseRequest.SetMinerStatus(minerId, 'idle');
+		await DatabaseRequest.DisconnectFromCassandraNode();
 		process.exit(0);
 	}
 }
@@ -353,7 +355,7 @@ export class StartCommand extends Command {
 
 	public async Execute(verbosity: Verbosity): Promise<void> {
 		DatabaseRequest.SetMinerId(this._minerId);
-		DatabaseRequest.ConnectToCassandraNode();
+		await DatabaseRequest.ConnectToCassandraNode();
 		DatabaseRequest.SetVerbosity(verbosity);
 		while (!SigInt.Stop) {
 			this._moduleFacade.ResetParserState();
@@ -428,9 +430,10 @@ export class CheckUploadCommand extends Command {
 	public async Execute(verbosity: Verbosity): Promise<void> {
 		DatabaseRequest.SetVerbosity(verbosity);
 		DatabaseRequest.SetMinerId(this._minerId);
-		DatabaseRequest.ConnectToCassandraNode();
+		await DatabaseRequest.ConnectToCassandraNode();
 
 		const checked = await this.checkProject();
 		if (checked) await this.uploadProject('', '', 0);
+		// await SigInt.StopProcessImmediately(this._minerId);
 	}
 }
