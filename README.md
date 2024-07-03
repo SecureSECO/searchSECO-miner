@@ -71,3 +71,11 @@ This project is licensed under the MIT license. See [LICENSE](/LICENSE) for more
 This program has been developed by students from the bachelor Computer Science at
 Utrecht University within the Software Project course. © Copyright Utrecht University
 (Department of Information and Computing Sciences)
+
+## Related Artciles
+
+Jansen, S., Farshidi, S., Gousios, G., Visser, J., Storm, T. V. D., & Bruntink, M. (2020). SearchSECO: A Worldwide Index of the Open Source Software Ecosystem. In M. Papadakis, & M. Cordy (Eds.), Proceedings of the 19th Belgium-Netherlands Software Evolution Workshop, BENEVOL 2020, Luxembourg, December 3-4, 2020 (Vol. 2912). (CEUR Workshop Proceedings). CEUR-WS.org. http://ceurws.org/Vol-2912/./paper3.pdf
+
+Deekshitha, S. Farshidi, J. Maassen, R. Bakhshi, R. Van Nieuwpoort and S. Jansen, "FAIRSECO: An Extensible Framework for Impact Measurement of Research Software," 2023 IEEE 19th International Conference on e-Science (e-Science), Limassol, Cyprus, 2023, pp. 1-10, doi: 10.1109/e-Science58273.2023.10254664. keywords: {Software quality;Software;Software measurement;FAIR;research software engineering;software impact measurement;software citations},
+
+
