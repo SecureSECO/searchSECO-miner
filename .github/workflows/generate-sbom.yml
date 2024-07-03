@@ -1,0 +1,35 @@
+name: Generate SBOM
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Syft
+      run: |
+        curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+
+    - name: Generate SBOM
+      run: syft dir:. -o spdx-json > sbom.json
+
+    - name: Commit SBOM
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git checkout -b sbom-updates
+        git add sbom.json
+        git commit -m 'Add SBOM'
+        git push origin sbom-updates --force
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
