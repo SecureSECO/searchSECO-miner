@@ -1,3 +1,14 @@
+# SecureSECO
+The goal of the SecureSECO initiative is to secure and increase trust in the software ecosystem, through the use of distributed ledger technology and empirical software engineering research.
+
+The software ecosystem is a trust-rich part of the world. Collaboratively, software engineers put their trust in major hubs in the ecosystem, such as package managers, repository services, and programming language ecosystems. However, there are many parts of the chain in which this trust can be broken. We present a vision for a trust ensuring mechanism in the software ecosystem that mitigates the presented risks. If our community manages to implement this mechanism, we can create an urgently needed secure software ecosystem.
+
+The initiative is an academic initiative with partners from several universities and companies.
+
+### Website
+
+https://secureseco.org/
+
 # SearchSECO Miner
 This is the repository for the SecureSECO DAO miner built to scrape Github, upload project data to the SecureSECO database and to connect with the DAO to facilitate claiming of rewards.
 ## Initial Setup
