@@ -230,6 +230,9 @@ export default class DatabaseRequest {
 		prevCommitTime: string,
 		unchangedFiles: string[]
 	): Promise<boolean> {
+		// Spawn a separate worker.
+		// Store data in local DB maybe, such as Redis?
+		// Write to DB as the miner continues!
 		const raw = serializeData(hashes, metadata, authordata, prevCommitTime, unchangedFiles);
 		Logger.Info(`Uploading ${hashes.length} methods to the database`, Logger.GetCallerLocation(), true);
 		const { responseCode } = await this._client.Execute(RequestType.UPLOAD, raw);
