@@ -21,13 +21,13 @@ Install submodules:
 ```
 git submodule init 
 ```
-Fill in the relevant variables in the `.env` file and install dependencies:
-```
-npm i
-```
 Update the submodules:
 ```
 git submodule update --init --recursive
+```
+Fill in the relevant variables in the `.env` file and install dependencies:
+```
+npm i
 ```
 Build the miner for the target operating sytem:
 ```
