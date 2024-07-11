@@ -17,9 +17,17 @@ Below is a list of the specified environment variables that need to be specified
   - `git config --system core.protectNTFS false` - Some filepaths are incorrectly formatted (e.g have symbols such as `:` or `*` in them) for NTFS filesystems, and this flag disables a check for those filepaths.
 ## Installing and running the miner
 ### Run using `npm`
+Install submodules:
+```
+git submodule init 
+```
 Fill in the relevant variables in the `.env` file and install dependencies:
 ```
 npm i
+```
+Update the submodules:
+```
+git submodule update --init --recursive
 ```
 Build the miner for the target operating sytem:
 ```
@@ -37,15 +45,13 @@ To get a list of all commands and options, run:
 ```
 npm run execute -- --help
 ```
-### Run using a standalone executable
-#### Latest release
-Download the latest release and run the miner using the following command:
+For example:
 ```
-miner <command> [options]
+npm run execute -- check https://github.com/SecureSECO/searchSECO-miner -V 5
 ```
-The following options have to be set when running from the latest release:
+For help:
 ```
---github_token, -g [YOUR_GITHUB_TOKEN]
+npm help run-script
 ```
 #### Build from source
 Optionally fill in all relevant variables in `.env` and run the following command. Choose the target depending on your operating system.
