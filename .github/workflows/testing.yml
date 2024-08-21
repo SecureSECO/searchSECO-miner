@@ -1,0 +1,67 @@
+name: Test SearchSECO Miner
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Initialize submodules
+        run: git submodule update --init --recursive
+
+      - name: Install srcml
+        run: |
+          #  sudo apt-get update && sudo apt-get install srcml -y
+          wget http://131.123.42.38/lmcrs/v1.0.0/srcml_1.0.0-1_ubuntu20.04.deb
+          sudo dpkg -i srcml_1.0.0-1_ubuntu20.04.deb
+
+      - name: Create .env file
+        run: |
+          echo "MINER_NAME=aminuldidar" >> .env
+          echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> .env
+          echo "PERSONAL_WALLET_ADDRESS=${{ secrets.PERSONAL_WALLET_ADDRESS }}" >> .env
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build-unix
+
+      # - name: Start the project
+      #   run: npm run start-unix
+
+      - name: Execute SearchSECO-miner check on zlib
+        run: npm run execute -- check https://github.com/madler/zlib -V 5
+        timeout-minutes: 10
+        continue-on-error: true
+
+      - name: Execute SearchSECO-miner check on junit5
+        run: npm run execute -- check https://github.com/junit-team/junit5 -V 5
+        timeout-minutes: 10
+        continue-on-error: true
+
+      - name: Execute SearchSECO-miner check on javacpp
+        run: npm run execute -- check https://github.com/bytedeco/javacpp -V 5
+        timeout-minutes: 10
+        continue-on-error: true
+
+      - name: Execute SearchSECO-miner check on Clustering-GRETA
+        run: npm run execute -- check https://github.com/aminuldidar/Clustering-GRETA -V 5
+        timeout-minutes: 10
+        continue-on-error: true
