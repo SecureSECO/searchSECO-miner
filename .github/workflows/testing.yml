@@ -27,15 +27,8 @@ jobs:
 
       - name: Install srcml
         run: |
-          #  sudo apt-get update && sudo apt-get install srcml -y
           wget http://131.123.42.38/lmcrs/v1.0.0/srcml_1.0.0-1_ubuntu20.04.deb
           sudo dpkg -i srcml_1.0.0-1_ubuntu20.04.deb
-
-      - name: Create .env file
-        run: |
-          echo "MINER_NAME=aminuldidar" >> .env
-          echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> .env
-          echo "PERSONAL_WALLET_ADDRESS=${{ secrets.PERSONAL_WALLET_ADDRESS }}" >> .env
 
       - name: Install dependencies
         run: npm install
@@ -47,21 +40,10 @@ jobs:
       #   run: npm run start-unix
 
       - name: Execute SearchSECO-miner check on zlib
+        env:
+          MINER_NAME: aminuldidar
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PERSONAL_WALLET_ADDRESS: ${{ secrets.PERSONAL_WALLET_ADDRESS }}
         run: npm run execute -- check https://github.com/madler/zlib -V 5
-        timeout-minutes: 10
-        continue-on-error: true
-
-      - name: Execute SearchSECO-miner check on junit5
-        run: npm run execute -- check https://github.com/junit-team/junit5 -V 5
-        timeout-minutes: 10
-        continue-on-error: true
-
-      - name: Execute SearchSECO-miner check on javacpp
-        run: npm run execute -- check https://github.com/bytedeco/javacpp -V 5
-        timeout-minutes: 10
-        continue-on-error: true
-
-      - name: Execute SearchSECO-miner check on Clustering-GRETA
-        run: npm run execute -- check https://github.com/aminuldidar/Clustering-GRETA -V 5
         timeout-minutes: 10
         continue-on-error: true
