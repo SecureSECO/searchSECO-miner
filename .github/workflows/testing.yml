@@ -48,6 +48,11 @@ jobs:
         timeout-minutes: 10
         continue-on-error: true
       
+      - name: Execute SearchSECO-miner check on javacpp
+        env:
+          MINER_NAME: aminuldidar
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PERSONAL_WALLET_ADDRESS: ${{ secrets.PERSONAL_WALLET_ADDRESS }}
         run: npm run execute -- check https://github.com/bytedeco/javacpp -V 5
         timeout-minutes: 10
         continue-on-error: true
