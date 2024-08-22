@@ -47,3 +47,7 @@ jobs:
         run: npm run execute -- check https://github.com/madler/zlib -V 5
         timeout-minutes: 10
         continue-on-error: true
+      
+        run: npm run execute -- check https://github.com/bytedeco/javacpp -V 5
+        timeout-minutes: 10
+        continue-on-error: true
