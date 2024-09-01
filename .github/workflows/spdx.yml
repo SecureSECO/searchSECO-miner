@@ -1,0 +1,29 @@
+name: Generate SPDX Document
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-spdx:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Install SPDX Tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y spdx-tools
+
+    - name: Generate SPDX Document
+      run: |
+        spdx-doc-generator --format=spdx-json --output=spdx-document.spdx.json .
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: spdx-document
+        path: spdx-document.spdx.json
