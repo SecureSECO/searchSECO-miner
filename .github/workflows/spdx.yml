@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3  # Make sure to use the latest version
 
     - name: Install SPDX Tools
       run: |
