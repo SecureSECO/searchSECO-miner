@@ -50,5 +50,21 @@
     }
   ],
   "keywords": ["data mining", "research software"],
-  "repository": "https://github.com/SecureSECO/searchSECO-miner"
+  "repository": "https://github.com/SecureSECO/searchSECO-miner",
+  "referencePublication": [
+    {
+      "@type": "ScholarlyArticle",
+      "name": "SearchSECO: A Worldwide Index of the Open Source Software Ecosystem",
+      "publisher": "CEUR-WS.org",
+      "url": "http://ceurws.org/Vol-2912/./paper3.pdf"
+     
+    },
+    {
+        "@type": "ScholarlyArticle",
+        "name": "FAIRSECO: An Extensible Framework for Impact Measurement of Research Software",
+        "publisher": "IEEE",
+        "url": "https://ieeexplore.ieee.org/document/10254664"
+    }
+  ]
+
 }
