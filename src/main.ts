@@ -58,14 +58,13 @@ export default async function start() {
 	const input = InputParser.Parse()
 	if (!input)
 		return
-
 	Logger.SetModule('start')
 	Logger.SetVerbosity(input.Flags.Verbose || Verbosity.SILENT)
 	DatabaseRequest.SetVerbosity(input.Flags.Verbose || Verbosity.SILENT)
 
 	Logger.Debug('Sanitized and parsed user input', Logger.GetCallerLocation());
 	const minerId = await AssignOrCreateMiner()
-	
+
 	SetCustomSignalInterruptBehaviour(minerId)
 
 	const miner = new Miner(minerId, input.Command, input.Flags);

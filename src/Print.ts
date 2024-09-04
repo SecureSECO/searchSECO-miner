@@ -9,22 +9,9 @@ import {
 } from './modules/searchSECO-databaseAPI/src/Response';
 import DatabaseRequest, { getAuthors, transformHashList } from './DatabaseRequest';
 import { ObjectMap, ObjectSet } from './Utility';
+import Logger from './modules/searchSECO-logger/src/Logger';
+import { AuthorInfoResponseItem, CheckResponse, ProjectInfoResponseItem } from './JsonRequest';
 
-type Method = {
-	method_hash: string;
-	projectID: string;
-	startVersion: string;
-	startVersionHash: string;
-	endVersion: string;
-	endVersionHash: string;
-	method_name: string;
-	file: string;
-	lineNumber: string;
-	parserVersion: string;
-	vulnCode: string;
-	authorTotal: string;
-	authorIds: string[];
-};
 
 enum OutputStream {
 	SUMMARY,
@@ -39,48 +26,99 @@ function line(str: string) {
 	return `${str}\n`;
 }
 
+class ProjectAuthorInfo {
+	name: string;
+	email: string;
+
+	constructor(name: string, email: string) {
+		this.name = name;
+		this.email = email;
+	}
+}
+
+function idFromProjectMethod(method: HashData): string {
+	return method.FileName + method.LineNumber
+}
+
+function getAuthorsPerMethod(hashes: Map<string, HashData[]>, rawData: AuthorData): Map<string, string[]> {
+	const output = new Map<string, string[]>();
+
+	rawData.forEach((_, key) => {
+		let currentEnd = -1,
+			hashesIndex = -1,
+			authorIndex = 0;
+		const dupes = new Map<string, number>();
+
+		const hashesFromFile = hashes.get(key);
+		const rawAuthorData = rawData.get(key);
+
+		while (hashesIndex < hashesFromFile.length || authorIndex < rawAuthorData.length) {
+			if (authorIndex == rawAuthorData.length || currentEnd < rawAuthorData[authorIndex].line) {
+				hashesIndex++;
+				if (hashesIndex >= hashesFromFile.length) break;
+				if (authorIndex > 0) authorIndex--;
+				currentEnd = hashesFromFile[hashesIndex].LineNumberEnd;
+				dupes.clear();
+			}
+			if (
+				hashesFromFile[hashesIndex].LineNumber <=
+				rawAuthorData[authorIndex].line + rawAuthorData[authorIndex].numLines
+			) {
+				const cd = rawAuthorData[authorIndex];
+				const author = cd.commit.author.replace(/\?/g, '');
+				const mail = cd.commit.authorMail.replace(/\?/g, '');
+				const toAdd = `?${author}?${mail}`;
+
+				if ((dupes.get(toAdd) || 0) == 0) {
+					let key = idFromProjectMethod(hashesFromFile[hashesIndex]);
+					if (!output.has(key)) output.set(key, []);
+					output.get(key).push(toAdd);
+					dupes.set(toAdd, 1);
+				}
+			}
+			authorIndex++;
+		}
+	});
+
+	return output;
+}
+
+
+
 function parseDatabaseHashes(
-	entries: Method[],
-	receivedHashes: Map<string, Method[]>,
-	projectMatches: Map<string, number>,
-	projectVersions: ObjectSet<[string, string]>,
-	authors: Map<string, number>
+	methods: CheckResponse[],
+	methodsPerHash: Map<string, CheckResponse[]>,
+	projectOccurrence: Map<number, number>,
+	projectVersions: ObjectSet<[number, number]>,
+	authorOccurence: Map<string, number>
 ) {
-	entries.forEach((method) => {
-		if (!receivedHashes.has(method.method_hash)) receivedHashes.set(method.method_hash, []);
-		receivedHashes.get(method.method_hash).push(method);
-
-		for (let i = 0; i < parseInt(method.authorTotal); i++) {
-			if (!/^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$/.test(method.authorIds[i])) continue;
-
-			if (!authors.has(method.authorIds[i])) authors.set(method.authorIds[i], 0);
-			authors.set(method.authorIds[i], authors.get(method.authorIds[i]) + 1);
+	methods.forEach((method) => {
+		if (!methodsPerHash.has(method.mh)) methodsPerHash.set(method.mh, []);
+		methodsPerHash.get(method.mh).push(method);
+		let authorTotal = method.authors.length;
+		for (let i = 0; i < authorTotal; i++) {
+			if (!authorOccurence.has(method.authors[i])) authorOccurence.set(method.authors[i], 0);
+			authorOccurence.set(method.authors[i], authorOccurence.get(method.authors[i]) + 1);
 		}
 
-		if (!projectMatches.has(method.projectID)) projectMatches.set(method.projectID, 0);
-		projectMatches.set(method.projectID, projectMatches.get(method.projectID) + 1);
+		if (!projectOccurrence.has(method.pid)) projectOccurrence.set(method.pid, 0);
+		projectOccurrence.set(method.pid, projectOccurrence.get(method.pid) + 1);
 
-		if (method.startVersion) {
-			projectVersions.add([method.projectID, method.startVersion]);
-			if (method.startVersion != method.endVersion)
-				if (method.endVersion) projectVersions.add([method.projectID, method.endVersion]);
+		if (method.sv_time) {
+			projectVersions.add([method.pid, method.sv_time]);
+			if (method.sv_time != method.ev_time)
+				if (method.ev_time) projectVersions.add([method.pid, method.ev_time]);
 				else console.log(method);
-		} else console.log(method);
+		}
 	});
 }
 
-function getDatabaseAuthorAndProjectData(
-	projectEntries: ProjectResponseData[],
-	authorEntries: AuthorResponseData[],
-	dbProjects: Map<string, ProjectResponseData>,
-	authorIdToName: Map<string, AuthorResponseData>
+function makeAuthorMap(
+	authorEntries: AuthorInfoResponseItem[],
+	authorIdToName: Map<string, AuthorInfoResponseItem>
 ) {
-	projectEntries.forEach((entry) => {
-		dbProjects.set(entry.id, entry);
-	});
-
 	authorEntries.forEach((entry) => {
-		authorIdToName.set(entry.uuid, entry);
+		authorIdToName.set(entry.id, entry);
 	});
 }
 
@@ -98,66 +136,69 @@ export default class MatchPrinter {
 	}
 
 	public async PrintHashMatches(
-		hashes: HashData[],
-		databaseResponse: MethodResponseData[],
-		authorData: AuthorData,
-		url: string,
-		projectID: number
+		projectUrl: string,
+		projectID: number,
+		projectMethods: HashData[],
+		projectBlaming: AuthorData,
+		dbMethods: CheckResponse[],
+		dbProjectInfo: Map<number, ProjectInfoResponseItem[]>,
+		dbAuthorInfo: AuthorInfoResponseItem[]
+
 	) {
-		const databaseMethods = databaseResponse.map((res) => JSON.parse(JSON.stringify(res)) as Method);
+		const dbMethodsPerHash = new Map<string, CheckResponse[]>();
+		const dbProjectOccurrence = new Map<number, number>();
+		const dbProjectVersions = new ObjectSet<[number, number]>();
+		const dbAuthorOccurrence = new Map<string, number>();
+		const dbAuthorPerId = new Map<string, AuthorInfoResponseItem>();
 
-		const receivedHashes = new Map<string, Method[]>();
-		const projectMatches = new Map<string, number>();
-		const projectVersions = new ObjectSet<[string, string]>();
-		const dbAuthors = new Map<string, number>();
-		const dbProjects = new Map<string, ProjectResponseData>();
-		const authorIdToName = new Map<string, AuthorResponseData>();
+		parseDatabaseHashes(dbMethods, dbMethodsPerHash, dbProjectOccurrence, dbProjectVersions, dbAuthorOccurrence);
+		makeAuthorMap(dbAuthorInfo, dbAuthorPerId);
 
-		parseDatabaseHashes(databaseMethods, receivedHashes, projectMatches, projectVersions, dbAuthors);
-		const authorResponse = await DatabaseRequest.GetAuthor(dbAuthors)
-		const projectResponse = await DatabaseRequest.GetProjectData(projectVersions)
+		const projectMethodsPerFile = transformHashList(projectMethods);
 
-		if (authorResponse.responseCode != 200 || projectResponse.responseCode != 200) return;
-
-		const authorEntries = authorResponse.response as AuthorResponseData[];
-		const projectEntries = projectResponse.response as ProjectResponseData[];
-
-		getDatabaseAuthorAndProjectData(projectEntries, authorEntries, dbProjects, authorIdToName);
-
-		const transformedList = transformHashList(hashes);
-		const authors = getAuthors(transformedList, authorData);
+		// map from method to strings of 'author?author-mail'		
+		const projectAuthorInfoPerMethod =
+			// The map is expensive, because every key use means serialising the method to a json representation.
+			// Using the Hash value alone as key is not good enough, as small methods can and do lead to the same hash values.
+			// But FileName-LineNumber should be unique within the project
+			//getAuthors(projectMethodsPerFile, projectBlaming);
+			getAuthorsPerMethod(projectMethodsPerFile, projectBlaming);
 
 		let matches = 0;
 		const authorCopiedForm = new Map<string, number>();
 		const authorsCopied = new Map<string, number>();
-		const vulnerabilities: [HashData, Method][] = [];
+		const vulnerabilities: [HashData, CheckResponse][] = [];
 
-		const hashMethods = new Map<string, HashData[]>();
+		const projectMethodsPerHash = new Map<string, HashData[]>();
 
-		hashes.forEach((hash) => {
-			if (!hashMethods.has(hash.Hash)) hashMethods.set(hash.Hash, []);
-			hashMethods.get(hash.Hash).push(hash);
+		projectMethods.forEach((hash) => {
+			if (!projectMethodsPerHash.has(hash.Hash))
+				projectMethodsPerHash.set(hash.Hash, []);
+			//else
+			//	Logger.Info(`Multiple methods in project with same hash ${hash.Hash}, name ${hash.MethodName}, file ${hash.FileName}, line ${hash.LineNumber}`, Logger.GetCallerLocation());
+			projectMethodsPerHash.get(hash.Hash).push(hash);
 		});
 
+
 		let matchesReport = '';
-		receivedHashes.forEach((methods, method_hash) => {
+		dbMethodsPerHash.forEach((methods, method_hash) => {
 			if (
 				methods.reduce(
-					(projectMatch, currentMethod) => projectMatch + Number(currentMethod.projectID != projectID.toString()),
+					(projectMatch, currentMethod) => projectMatch + Number(currentMethod.pid != projectID),
 					0
 				)
 			) {
 				matches++;
 				matchesReport = this._printMatch(
-					hashMethods.get(method_hash),
+					projectMethodsPerHash.get(method_hash),
 					methods,
-					authors,
-					projectID.toString(),
+					projectAuthorInfoPerMethod,
+					projectID,
 					authorCopiedForm,
 					authorsCopied,
 					vulnerabilities,
-					dbProjects,
-					authorIdToName,
+					dbProjectInfo,
+					dbAuthorPerId,
 					matchesReport
 				);
 			}
@@ -170,26 +211,27 @@ export default class MatchPrinter {
 			authorsCopied,
 			vulnerabilities,
 			matches,
-			hashes.length,
-			dbProjects,
-			authorIdToName,
-			projectMatches,
-			url
+			projectMethods.length,
+			dbProjectInfo,
+			dbAuthorPerId,
+			dbProjectOccurrence,
+			projectUrl
 		);
+
 
 		this._writeLineToFile(this._JSONbuilder.Compile(), OutputStream.REPORT);
 	}
 
 	private _printMatch(
 		hashes: HashData[],
-		dbEntries: Method[],
-		authors: ObjectMap<HashData, string[]>,
-		projectID: string,
+		dbEntries: CheckResponse[],
+		authors: Map<string, string[]>,
+		projectID: number,
 		authorCopiedForm: Map<string, number>,
 		authorsCopied: Map<string, number>,
-		vulnerabilities: [HashData, Method][],
-		dbProjects: Map<string, ProjectResponseData>,
-		authorIdToName: Map<string, AuthorResponseData>,
+		vulnerabilities: [HashData, CheckResponse][],
+		dbProjects: Map<number, ProjectInfoResponseItem[]>,
+		authorIdToName: Map<string, AuthorInfoResponseItem>,
 		report: string
 	): string {
 		let currentReport = report;
@@ -204,6 +246,7 @@ export default class MatchPrinter {
 		});
 
 		hashes.forEach((hash, idx) => {
+
 			currentReport += `  * Method ${hash.MethodName} in file ${hash.FileName}, line ${hash.LineNumber}\n`;
 			currentReport += `    Authors of local method: \n`;
 
@@ -214,7 +257,7 @@ export default class MatchPrinter {
 				isLocal: true,
 			});
 
-			const authorData = authors.get(hash) || [];
+			const authorData = authors.get(idFromProjectMethod(hash)) || [];
 			authorData.forEach((s) => {
 				const formatted = s.replace(/\?/g, '\t');
 				currentReport += `  ${formatted}\n`;
@@ -232,25 +275,29 @@ export default class MatchPrinter {
 
 		currentReport += '\nDATABASE\n';
 		dbEntries.forEach((method, idx) => {
-			if (method.projectID === projectID) return;
-			if (!dbProjects.has(method.projectID)) return;
+			if (method.pid === projectID) return;
+			if (!dbProjects.has(method.pid)) return;
 
 			const linkFile = method.file.replace(/\\\\/g, '/');
 
-			const currentProject = dbProjects.get(method.projectID);
-			currentReport += `  * Method ${method.method_name} in project ${currentProject.name} in file ${method.file}, line ${method.lineNumber}\n`;
-			currentReport += `    URL: ${currentProject.url}/blob/${method.endVersionHash}/${linkFile}#L${method.lineNumber}\n`;
+			let currentProject = dbProjects.get(method.pid).find((el) => el.vtime === method.ev_time);
+			if (!currentProject) {
+				Logger.Warning(`PrintMatch: no project found for method ${method.method} with process id ${method.pid}`, Logger.GetCallerLocation());
+				currentProject = { "name": "<undefined>", "url": "<undefined>", pid: -1, vtime: -1, vhash: "<undefined>", license: "<undefined>", oid: "", pv: -1 };
+			}
+			currentReport += `  * Method ${method.method} in project ${currentProject.name} in file ${method.file}, line ${method.line}\n`;
+			currentReport += `    URL: ${currentProject.url}/blob/${method.ev_hash}/${linkFile}#L${method.line}\n`;
 
 			this._JSONbuilder.Add(
 				`hashes[0].methods`,
 				{
 					isLocal: false,
-					url: `${currentProject.url}/blob/${method.endVersionHash}/${linkFile}#L${method.lineNumber}`,
-					name: method.method_name,
+					url: `${currentProject.url}/blob/${method.ev_hash}/${linkFile}#L${method.line}`,
+					name: method.method,
 					file: method.file,
-					lineNumber: method.lineNumber,
+					lineNumber: method.line,
 					project: {
-						id: currentProject.id,
+						id: currentProject.pid,
 						name: currentProject.name,
 						url: currentProject.url,
 					},
@@ -258,30 +305,32 @@ export default class MatchPrinter {
 				true
 			);
 
-			if (method.vulnCode) {
-				currentReport += `   Method marked as vulnerable with code ${method.vulnCode} (https://nvd.nist.gov/vuln/detail/${method.vulnCode})`;
-				this._JSONbuilder.Add(`hashes[0].methods[${idx}].vulnCode`, method.vulnCode);
+			if (method.vuln) {
+				currentReport += `   Method marked as vulnerable with code ${method.vuln} (https://nvd.nist.gov/vuln/detail/${method.vuln})`;
+				this._JSONbuilder.Add(`hashes[0].methods[${idx}].vulnCode`, method.vuln);
 				hashes.forEach((hash) => {
 					vulnerabilities.push([hash, method]);
 				});
 			} else this._JSONbuilder.Add(`hashes[0].methods[${idx}].vulnCode`, '');
 
-			if (Number(method.authorTotal) > 0) {
+			let authorTotal = method.authors.length;
+			if (authorTotal > 0) {
 				currentReport += `   Authors of method found in database: \n`;
-				method.authorIds.forEach((id) => {
+				method.authors.forEach((id) => {
 					if (!authorIdToName.has(id)) return;
 					authorCopiedForm.set(id, (authorCopiedForm.get(id) || 0) + 1);
-					currentReport += `   \t${authorIdToName.get(id).username}\t${authorIdToName.get(id).email}\n`;
+					currentReport += `   \t${authorIdToName.get(id).name}\t${authorIdToName.get(id).mail}\n`;
 					this._JSONbuilder.Add(
 						`hashes[0].methods[${idx}].authors`,
 						{
-							username: authorIdToName.get(id).username,
-							email: authorIdToName.get(id).email,
+							username: authorIdToName.get(id).name,
+							email: authorIdToName.get(id).mail,
 						},
 						true
 					);
 				});
 			}
+
 			currentReport += '\n';
 		});
 
@@ -291,12 +340,12 @@ export default class MatchPrinter {
 	private _printSummary(
 		authorCopiedForm: Map<string, number>,
 		authorsCopied: Map<string, number>,
-		vulnerabilities: [HashData, Method][],
+		vulnerabilities: [HashData, CheckResponse][],
 		matches: number,
 		methods: number,
-		dbProjects: Map<string, ProjectResponseData>,
-		authorIdToName: Map<string, AuthorResponseData>,
-		projectMatches: Map<string, number>,
+		dbProjects: Map<number, ProjectInfoResponseItem[]>,
+		authorIdToName: Map<string, AuthorInfoResponseItem>,
+		projectMatches: Map<number, number>,
 		url: string
 	) {
 		this._printAndWriteToFile(`\nSummary:`);
@@ -316,9 +365,8 @@ export default class MatchPrinter {
 			this._printAndWriteToFile('\nVulnerabilities found:');
 			vulnerabilities.forEach(([hashData, method]) => {
 				this._printAndWriteToFile(
-					`Method with hash ${hashData.Hash} was found to be vulnerable in ${
-						dbProjects.get(method.projectID).name
-					} with code ${method.vulnCode} (https://nvd.nist.gov/vuln/detail/${method.vulnCode})`
+					`Method with hash ${hashData.Hash} was found to be vulnerable in ${dbProjects.get(method.pid)[0].name
+					} with code ${method.vuln} (https://nvd.nist.gov/vuln/detail/${method.vuln})`
 				);
 			});
 		}
@@ -328,7 +376,8 @@ export default class MatchPrinter {
 
 		projectMatches.forEach((value, key) => {
 			if (!dbProjects.has(key)) return;
-			vprojects.push([value, dbProjects.get(key).name, dbProjects.get(key).url]);
+			let aProject = dbProjects.get(key)[0];
+			vprojects.push([value, aProject.name, aProject.url]);
 		});
 
 		const longestProjectName = getLongestStringLength(vprojects.map(([, projectName]) => projectName));
@@ -351,7 +400,7 @@ export default class MatchPrinter {
 		const remoteAuthors: [number, string, string][] = [];
 		authorCopiedForm.forEach((value, key) => {
 			const author = authorIdToName.get(key);
-			remoteAuthors.push([value, author.username, author.email]);
+			remoteAuthors.push([value, author.name, author.mail]);
 		});
 
 		const longestAuthorName = getLongestStringLength([

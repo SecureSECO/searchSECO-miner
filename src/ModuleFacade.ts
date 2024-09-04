@@ -86,11 +86,11 @@ export default class ModuleFacade {
 	}
 
 	/**
-     * Retrieves author data from a project, only retrieving data from specified files
+	 * Retrieves author data from a project, only retrieving data from specified files
 
-     * @param files A list of files to fetch the author data for
-     * @returns The fetched author data
-     */
+	 * @param files A list of files to fetch the author data for
+	 * @returns The fetched author data
+	 */
 	public async GetAuthors(files: string[]): Promise<AuthorData> {
 		Logger.Debug('Calling the spider to download author data', Logger.GetCallerLocation());
 		let authorData: AuthorData = new Map();

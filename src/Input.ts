@@ -55,6 +55,8 @@ type Input = {
 	miner_name?: string;
 	github_token?: string;
 	wallet_address?: string;
+	json_token?: string;
+	json_url?: string;
 	_: (string | number)[];
 	$0: string;
 };
@@ -95,6 +97,15 @@ export class InputParser {
 				type: 'string',
 				description: 'The github token to use for downloading repositories',
 				alias: 'g',
+			})
+			.option('json_token', {
+				type: 'string',
+				description: 'The json token to use for authenticating in database requests',
+			})
+			.option('json_url', {
+				type: 'string',
+				description: 'The url where the json api to the database is located',
+				alias: 'u',
 			})
 			.option('wallet_address', {
 				type: 'string',
@@ -149,6 +160,8 @@ export class InputParser {
 		if (parsed.miner_name) setInConfig('MINER_NAME', parsed.miner_name);
 		if (parsed.github_token) setInConfig('GITHUB_TOKEN', parsed.github_token);
 		if (parsed.wallet_address) setInConfig('PERSONAL_WALLET_ADDRESS', parsed.wallet_address);
+		if (parsed.json_token) setInConfig('JSON_TOKEN', parsed.json_token);
+		if (parsed.json_url) setInConfig('JSON_URL', parsed.json_url);
 
 		setInConfig('COMMAND', command);
 
