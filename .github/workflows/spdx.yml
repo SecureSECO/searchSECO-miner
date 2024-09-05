@@ -1,37 +1,37 @@
-name: Generate SPDX Document
+name: SPDX Generation and Validation
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+  release:
+    types: [created]
 
 jobs:
-  generate-spdx:
+  spdx:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3  # Make sure to use the latest version
+      - name: Checkout the repository
+        uses: actions/checkout@v2
 
-    # - name: Install SPDX Tools
-    #   run: |
-    #     sudo apt-get update
-    #     sudo apt-get install -y spdx-tools
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-    - name: Install Python
-      run: sudo apt-get install -y python3-pip
+      - name: Install SPDX tools
+        run: |
+          pip install spdx-tools
+          pip install spdx-creator
 
-    - name: Install SPDX Tools via pip
-      run: |
-        pip install spdx-tools
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Generate SPDX Document
+        run: |
+          spdx-creator --name "searchSECO-miner" --version "1.0.0" --url "https://github.com/SecureSECO/searchSECO-miner" --author "Slinger Jansen" --output spdx-file.spdx
 
-    - name: Generate SPDX Document
-      run: |
-        spdx-doc-generator --format=spdx-json --output=spdx-document.spdx.json .
-
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: spdx-document
-        path: spdx-document.spdx.json
+      - name: Validate SPDX Document
+        run: |
+          spdx-tools verify spdx-file.spdx
