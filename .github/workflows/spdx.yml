@@ -13,10 +13,16 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3  # Make sure to use the latest version
 
-    - name: Install SPDX Tools
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y spdx-tools
+    # - name: Install SPDX Tools
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y spdx-tools
+
+    - name: Install Python
+      run: sudo apt-get install -y python3-pip
+
+    - name: Install SPDX Tools via pip
+      run: pip install spdx-tools
 
     - name: Generate SPDX Document
       run: |
