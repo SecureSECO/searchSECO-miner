@@ -17,8 +17,10 @@ interface ENV {
 	PERSONAL_WALLET_ADDRESS: string;
 	GITHUB_TOKEN: string;
 	COMMAND: string;
-	MINER_NAME: string
-	IS_EXECUTABLE: boolean
+	MINER_NAME: string;
+	IS_EXECUTABLE: boolean;
+	JSON_TOKEN: string;
+	JSON_URL: string;
 }
 
 interface Config {
@@ -30,6 +32,8 @@ interface Config {
 	COMMAND: string;
 	MINER_NAME: string
 	IS_EXECUTABLE: boolean
+	JSON_TOKEN: string;
+	JSON_URL: string;
 }
 
 function getConfig(): ENV {
@@ -41,7 +45,9 @@ function getConfig(): ENV {
 		GITHUB_TOKEN: process.env.GITHUB_TOKEN || '',
 		COMMAND: '',
 		MINER_NAME: process.env.MINER_NAME || 'client',
-		IS_EXECUTABLE: (process as any).pkg ? true : false
+		IS_EXECUTABLE: (process as any).pkg ? true : false,
+		JSON_TOKEN: process.env.JSON_TOKEN || '',
+		JSON_URL: process.env.JSON_URL || ''
 	};
 }
 
@@ -53,7 +59,7 @@ export const NullableKeys = [
 
 function getSanitizedConfig(config: ENV): Config {
 	for (const [key, value] of Object.entries(config))
-		if (value === undefined && !NullableKeys.find(validKey => validKey == key)) 
+		if (value === undefined && !NullableKeys.find(validKey => validKey == key))
 			throw new Error(`Missing non-nullable key ${key} in .env`);
 	return config as Config;
 }
@@ -63,10 +69,12 @@ const sanitizedConfig = getSanitizedConfig(config);
 export default sanitizedConfig;
 
 type SettableKey =
-	  'COMMAND'
+	'COMMAND'
 	| 'GITHUB_TOKEN'
 	| 'MINER_NAME'
 	| 'PERSONAL_WALLET_ADDRESS'
+	| 'JSON_TOKEN'
+	| 'JSON_URL'
 
 
 /**

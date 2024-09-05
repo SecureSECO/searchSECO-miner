@@ -16,6 +16,7 @@ import DatabaseRequest from './DatabaseRequest';
 import { ProjectMetadata } from './modules/searchSECO-crawler/src/Crawler';
 import MatchPrinter from './Print';
 import config from './config/config';
+import { CheckResponse, JsonRequest, ProjectInfoResponseItem, ProjectWithVersion } from './JsonRequest';
 
 /**
  * Makes a designated repo download location for the current miner.
@@ -98,26 +99,74 @@ export default abstract class Command {
 
 	/**
 	 * Parses a project and retrieves author data.
+	 * AuthorData is a map from filenames to CodeBlocks
 	 * @returns a tuple containing a HashData array and an AuthorData object
 	 */
 	protected async parseAndBlame(): Promise<[HashData[], AuthorData]> {
-		const [filenames, hashes] = await this._moduleFacade.ParseRepository();
+		const [filenames, methods] = await this._moduleFacade.ParseRepository();
+		if (methods.length == 0) {
+			Logger.Debug('No methods found, skipping authors', Logger.GetCallerLocation());
+			return [methods, new Map() as AuthorData];
+		}
+		// Select the files where we found a method
 		const filteredFileNames: string[] = [];
-
-		hashes.forEach((hash) => {
+		methods.forEach((hash) => {
 			const idx = filenames.findIndex((file) => file === hash.FileName);
 			if (idx < 0) return;
 			filteredFileNames.push(filenames[idx]);
 			filenames.splice(idx, 1);
 		});
+		const authorData = await this._moduleFacade.GetAuthors(filteredFileNames);
+		return [methods, authorData];
+	}
 
-		if (hashes.length == 0) {
-			Logger.Debug('No methods found, skipping authors', Logger.GetCallerLocation());
-			return [hashes, new Map() as AuthorData];
+
+	static add_if_new(pid: number, version: number, pv_map: Map<number, number[]>) {
+		let pid_list = pv_map.get(pid);
+		if (!pid_list) {
+			pv_map.set(pid, [version]);
+		} else if (!pid_list.includes(version)) {
+			pid_list.push(version);
 		}
 
-		const authorData = await this._moduleFacade.GetAuthors(filteredFileNames);
-		return [hashes, authorData];
+	}
+
+	static get_project_versions(methods: CheckResponse[]): ProjectWithVersion[] {
+		let map: Map<number, number[]> = new Map();
+		methods.forEach(m => {
+			if (m.sv_time) {
+				this.add_if_new(m.pid, m.sv_time, map);
+			}
+			if (m.ev_time) {
+				this.add_if_new(m.pid, m.ev_time, map);
+			}
+		})
+		let result: ProjectWithVersion[] = [];
+		map.forEach((vs, k) => {
+			vs.forEach((v) => result.push({ project_id: k, version: v }));
+		});
+		return result;
+	}
+
+	static get_project_authors(methods: CheckResponse[]): Set<string> {
+		let authors: Set<string> = new Set();
+		methods.forEach(m => {
+			m.authors.forEach(a => authors.add(a))
+		})
+		return authors;
+	}
+
+	static order_project_info(pi_items: ProjectInfoResponseItem[]): Map<number, ProjectInfoResponseItem[]> {
+		let result = new Map<number, ProjectInfoResponseItem[]>();
+		pi_items.forEach((pi) => {
+			let pi_list = result.get(pi.pid);
+			if (!pi_list) {
+				result.set(pi.pid, [pi]);
+			} else {
+				pi_list.push(pi);
+			}
+		})
+		return result;
 	}
 
 	protected async checkProject(): Promise<boolean> {
@@ -127,19 +176,25 @@ export default abstract class Command {
 		const metadata = await this._moduleFacade.GetProjectMetadata(url);
 		if (!metadata) return false;
 
-		if (!this._flags.Branch) 
+		if (!this._flags.Branch)
 			this._flags.Branch = metadata.defaultBranch;
 
 		await this._moduleFacade.DownloadRepository(url, this._flags.Branch);
 
-		if (this._flags.ProjectCommit !== '') 
+		if (this._flags.ProjectCommit !== '')
 			await this._moduleFacade.SwitchVersion(this._flags.ProjectCommit);
 
-		const [hashes, authorData] = await this.parseAndBlame();
-		const databaseResponse = await DatabaseRequest.FindMatches(hashes);
+		const [projectMethods, projectBlaming] = await this.parseAndBlame();
+		const projectHashes = Array.from(new Set<string>(projectMethods.map((hash) => hash.Hash)));
+		const checkResponse: CheckResponse[] = await JsonRequest.FindMatches(projectHashes);
+		const dbProjectIds = Command.get_project_versions(checkResponse);
+		const dbProjectInfo = Command.order_project_info(await JsonRequest.GetProjectData(dbProjectIds));
+		const authorIds = Command.get_project_authors(checkResponse);
+		const dbAuthorInfo = await JsonRequest.GetAuthorData(authorIds.values());
+
 
 		const printer = new MatchPrinter();
-		await printer.PrintHashMatches(hashes, databaseResponse, authorData, url, metadata.id);
+		await printer.PrintHashMatches(url, metadata.id, projectMethods, projectBlaming, checkResponse, dbProjectInfo, dbAuthorInfo);
 		printer.Close();
 		return true
 	}
@@ -171,7 +226,7 @@ export default abstract class Command {
 		}
 
 		const success = await this._moduleFacade.DownloadRepository(this._flags.MandatoryArgument, this._flags.Branch);
-		if (!success) 
+		if (!success)
 			return;
 		metadata.versionHash = await this._moduleFacade.GetCurrentVersion();
 
@@ -189,7 +244,7 @@ export default abstract class Command {
 			await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata);
 		}
 
-		if (metadata.defaultBranch !== this._flags.Branch) 
+		if (metadata.defaultBranch !== this._flags.Branch)
 			await this._moduleFacade.SwitchVersion(this._flags.Branch);
 		const tags = await this._moduleFacade.GetRepositoryTags();
 		const tagc = tags.length;
@@ -238,9 +293,9 @@ export default abstract class Command {
 		trimmedHashes.forEach((hash) => {
 			filteredFileNames.push(
 				filenames[
-					filenames.findIndex((file) => {
-						file.includes(hash.FileName);
-					})
+				filenames.findIndex((file) => {
+					file.includes(hash.FileName);
+				})
 				]
 			);
 		});
