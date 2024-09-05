@@ -22,8 +22,9 @@ jobs:
       run: sudo apt-get install -y python3-pip
 
     - name: Install SPDX Tools via pip
-      run: pip install spdx-tools
-      run: pip install spdx-doc-generator
+      run: |
+        pip install spdx-tools
+        pip install spdx-doc-generator
 
     - name: Generate SPDX Document
       run: |
