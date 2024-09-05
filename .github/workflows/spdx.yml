@@ -24,7 +24,7 @@ jobs:
     - name: Install SPDX Tools via pip
       run: |
         pip install spdx-tools
-        pip install spdx-doc-generator
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Generate SPDX Document
       run: |
