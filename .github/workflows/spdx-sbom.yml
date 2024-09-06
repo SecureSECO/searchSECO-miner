@@ -1,0 +1,42 @@
+name: Build and Generate SPDX SBOM
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code from the repository
+      - uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js environment
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      # Step 3: Install dependencies and build the project
+      - run: |
+          npm install
+          npm run build
+
+      # Step 4: Generate SPDX SBOM
+      - name: Generate SPDX SBOM
+        id: spdx-builder
+        uses: philips-software/spdx-action@v0.9.1.1
+        with:
+          project: node-project
+          mode: ort
+
+      # Step 5: Upload SPDX SBOM as an artifact
+      - name: Upload SPDX SBOM
+        uses: actions/upload-artifact@v2
+        with:
+          name: spdx-sbom
+          path: ${{ steps.spdx-builder.outputs.spdx-file }}
