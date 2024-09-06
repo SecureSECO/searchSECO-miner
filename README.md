@@ -36,11 +36,11 @@ searchSECO-miner uses the following external libraries and modules:
 - **prompt-sync**: ^4.2.0
 - **uuid**: ^9.0.0
 - **yargs**: ^17.7.2
-- **searchseco-crawler : file:src/modules/searchSECO-crawler
-- **searchseco-databaseapi: file:src/modules/searchSECO-databaseAPI
-- **searchseco-logger: file:src/modules/searchSECO-logger
-- **searchseco-parser: file:src/modules/searchSECO-parser
-- **searchseco-spider: file:src/modules/searchSECO-spider
+- **searchseco-crawler** : "file:src/modules/searchSECO-crawler"
+- **searchseco-databaseapi**: "file:src/modules/searchSECO-databaseAPI"
+- **searchseco-logger**: "file:src/modules/searchSECO-logger"
+- **searchseco-parser**: "file:src/modules/searchSECO-parser"
+- **searchseco-spider**: "file:src/modules/searchSECO-spider"
   
 ## Installing and running the miner
 ### Run using `npm`
