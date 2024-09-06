@@ -26,6 +26,22 @@ Below is a list of the specified environment variables that need to be specified
 - The miner also uses [Git](https://git-scm.com/) to interface with github. Make sure it is installed and run the following commands in a terminal with admin rights:
   - `git config --system core.longpaths true` - Some filenames are too long to be accessed with git, and this flag enables long filenames.
   - `git config --system core.protectNTFS false` - Some filepaths are incorrectly formatted (e.g have symbols such as `:` or `*` in them) for NTFS filesystems, and this flag disables a check for those filepaths.
+## Library Dependencies
+
+searchSECO-miner uses the following external libraries and modules:
+
+- **cassandra-driver**: ^4.6.4
+- **copyfiles**: ^2.4.1
+- **dotenv**: ^16.0.3
+- **prompt-sync**: ^4.2.0
+- **uuid**: ^9.0.0
+- **yargs**: ^17.7.2
+- **searchseco-crawler : file:src/modules/searchSECO-crawler
+- **searchseco-databaseapi: file:src/modules/searchSECO-databaseAPI
+- **searchseco-logger: file:src/modules/searchSECO-logger
+- **searchseco-parser: file:src/modules/searchSECO-parser
+- **searchseco-spider: file:src/modules/searchSECO-spider
+  
 ## Installing and running the miner
 ### Run using `npm`
 Install submodules:
