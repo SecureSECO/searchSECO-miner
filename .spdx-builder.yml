@@ -1,0 +1,17 @@
+---
+document:
+  title: "searchSECO-miner SPDX Document"
+  organization: "SecureSECO"
+  comment: "Software Bill of Materials (SBOM) for searchSECO-miner"
+  key: "SBOM-key"
+  namespace: "https://github.com/SecureSECO/searchSECO-miner"
+projects:
+  - id: "searchSECO-miner"
+    purl:  "pkg:generic/SecureSECO/searchSECO-miner@1.0.0"
+  # Replace with correct package type, name, and version
+    excluded:
+      - "test*"  # Exclude test files if needed
+curations:
+  - purl: "pkg:generic/SecureSECO/searchSECO-miner@1.0.0" # Provide the correct package URL (PURL)
+    source: "https://github.com/SecureSECO/searchSECO-miner"  # Replace with the actual source
+    license: "MIT"  # Specify the license if known
