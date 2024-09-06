@@ -16,12 +16,6 @@ jobs:
         with:
           java-version: '11.0.13'
 
-      - name: Debug Configuration
-        run: cat .spdx-builder.yml
-
-      - name: Debug ORT File
-        run: cat ort/analyzer-result.json
-
       - name: Create SPDX file
         id: spdx-builder
         uses: philips-software/spdx-action@v0.9.1.1
