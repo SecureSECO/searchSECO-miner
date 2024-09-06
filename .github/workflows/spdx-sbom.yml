@@ -1,42 +1,29 @@
-name: Build and Generate SPDX SBOM
+# workflow name
+name: Generate sbom file
 
+# on events
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  release:
+    types:
+        - created
 
+# workflow tasks
 jobs:
-  build:
+  generate:
+    name: Generate sbom file
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Checkout code from the repository
-      - uses: actions/checkout@v2
-
-      # Step 2: Set up Node.js environment
-      - uses: actions/setup-node@v2
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+      - name: gh-action-spdx-sbom-generator
+        uses: niravpatel27/gh-action-spdx-sbom-generator@v1.0.0
         with:
-          node-version: '14'
-
-      # Step 3: Install dependencies and build the project
-      - run: |
-          npm install
-          npm run build
-
-      # Step 4: Generate SPDX SBOM
-      - name: Generate SPDX SBOM
-        id: spdx-builder
-        uses: philips-software/spdx-action@v0.9.1.1
-        with:
-          project: node-project
-          mode: ort
-
-      # Step 5: Upload SPDX SBOM as an artifact
-      - name: Upload SPDX SBOM
-        uses: actions/upload-artifact@v2
-        with:
-          name: spdx-sbom
-          path: ${{ steps.spdx-builder.outputs.spdx-file }}
+            version: '0.0.9'   
+      - name: Check if sbom file generated
+        run: |
+          if [ ! -f "bom-go-mod.spdx" ]; then
+            echo "::error::bom-go-mod.spdx is missing. Must generate using the spdx-sbom-generator cli."
+            exit 1
+          else
+             echo "Success!"            
+          fi   
