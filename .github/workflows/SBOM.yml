@@ -1,4 +1,4 @@
- name: Generate SBOM
+name: Generate SBOM
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
     - name: Generate SBOM
       run: syft dir:. -o spdx-json > sbom.json
 
-   - name: Commit SBOM to new branch
+    - name: Commit SBOM to new branch
       run: |
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
