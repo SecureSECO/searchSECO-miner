@@ -27,7 +27,7 @@ jobs:
       run: |
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
-        git checkout -b sbom-updates
+        git checkout -b main
         git add sbom.json
         git commit -m 'Add SBOM'
         git push origin sbom-updates --force
