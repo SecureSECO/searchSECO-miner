@@ -23,13 +23,12 @@ jobs:
     - name: Generate SBOM
       run: syft dir:. -o spdx-json > sbom.json
 
-    - name: Commit SBOM
+    - name: Commit SBOM to main
       run: |
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
-        git checkout -b main
         git add sbom.json
         git commit -m 'Add SBOM'
-        git push origin sbom-updates --force
+        git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
