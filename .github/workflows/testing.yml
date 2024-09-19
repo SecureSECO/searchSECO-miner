@@ -32,6 +32,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+      - name: Create .env file in src/config
+        run: echo " " >> src/config/.env
 
       - name: Build the project
         run: npm run build-unix
