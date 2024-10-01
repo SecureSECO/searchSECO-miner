@@ -1,5 +1,6 @@
 # SecureSECO
 ![License: MIT](https://img.shields.io/github/license/SecureSECO/searchSECO-miner)
+[![RSD](https://img.shields.io/badge/RSD-SearchSECO-brightgreen)](https://research-software-directory.org/projects/searchseco)
 
 The goal of the SecureSECO initiative is to secure and increase trust in the software ecosystem, through the use of distributed ledger technology and empirical software engineering research.
 
