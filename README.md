@@ -1,4 +1,6 @@
 # SecureSECO
+![License: MIT](https://img.shields.io/github/license/SecureSECO/searchSECO-miner)
+
 The goal of the SecureSECO initiative is to secure and increase trust in the software ecosystem, through the use of distributed ledger technology and empirical software engineering research.
 
 The software ecosystem is a trust-rich part of the world. Collaboratively, software engineers put their trust in major hubs in the ecosystem, such as package managers, repository services, and programming language ecosystems. However, there are many parts of the chain in which this trust can be broken. We present a vision for a trust ensuring mechanism in the software ecosystem that mitigates the presented risks. If our community manages to implement this mechanism, we can create an urgently needed secure software ecosystem.
