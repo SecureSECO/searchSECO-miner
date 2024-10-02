@@ -1,4 +1,8 @@
 # SecureSECO
+![License: MIT](https://img.shields.io/github/license/SecureSECO/searchSECO-miner)
+[![RSD](https://img.shields.io/badge/RSD-SearchSECO-brightgreen)](https://research-software-directory.org/projects/searchseco)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.13710367-blue)](https://doi.org/10.5281/zenodo.13710367)
+
 The goal of the SecureSECO initiative is to secure and increase trust in the software ecosystem, through the use of distributed ledger technology and empirical software engineering research.
 
 The software ecosystem is a trust-rich part of the world. Collaboratively, software engineers put their trust in major hubs in the ecosystem, such as package managers, repository services, and programming language ecosystems. However, there are many parts of the chain in which this trust can be broken. We present a vision for a trust ensuring mechanism in the software ecosystem that mitigates the presented risks. If our community manages to implement this mechanism, we can create an urgently needed secure software ecosystem.
@@ -26,6 +30,22 @@ Below is a list of the specified environment variables that need to be specified
 - The miner also uses [Git](https://git-scm.com/) to interface with github. Make sure it is installed and run the following commands in a terminal with admin rights:
   - `git config --system core.longpaths true` - Some filenames are too long to be accessed with git, and this flag enables long filenames.
   - `git config --system core.protectNTFS false` - Some filepaths are incorrectly formatted (e.g have symbols such as `:` or `*` in them) for NTFS filesystems, and this flag disables a check for those filepaths.
+## Library Dependencies
+
+searchSECO-miner uses the following external libraries and modules:
+
+- **cassandra-driver**: ^4.6.4
+- **copyfiles**: ^2.4.1
+- **dotenv**: ^16.0.3
+- **prompt-sync**: ^4.2.0
+- **uuid**: ^9.0.0
+- **yargs**: ^17.7.2
+- **searchseco-crawler** : "file:src/modules/searchSECO-crawler"
+- **searchseco-databaseapi**: "file:src/modules/searchSECO-databaseAPI"
+- **searchseco-logger**: "file:src/modules/searchSECO-logger"
+- **searchseco-parser**: "file:src/modules/searchSECO-parser"
+- **searchseco-spider**: "file:src/modules/searchSECO-spider"
+  
 ## Installing and running the miner
 ### Run using `npm`
 Install submodules:

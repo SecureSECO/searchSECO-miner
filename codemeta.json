@@ -65,6 +65,11 @@
         "publisher": "IEEE",
         "url": "https://ieeexplore.ieee.org/document/10254664"
     }
-  ]
+  ],
+  "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "DOI",
+    "value": "10.5281/zenodo.13710367" 
+  }
 
 }
