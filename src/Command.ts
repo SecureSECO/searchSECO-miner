@@ -12,11 +12,10 @@ import { AuthorData } from './modules/searchSECO-spider/src/Spider';
 import ModuleFacade from './ModuleFacade';
 import path from 'path';
 import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
-import DatabaseRequest from './DatabaseRequest';
 import { ProjectMetadata } from './modules/searchSECO-crawler/src/Crawler';
 import MatchPrinter from './Print';
 import config from './config/config';
-import { CheckResponse, JsonRequest, ProjectInfoResponseItem, ProjectWithVersion } from './JsonRequest';
+import { CheckResponse, CrawlTask, JsonRequest, ProjectInfoResponseItem, ProjectWithVersion, SpiderTask } from './JsonRequest';
 
 /**
  * Makes a designated repo download location for the current miner.
@@ -61,8 +60,6 @@ export class SigInt {
 	}
 
 	private static async stop(minerId: string) {
-		await DatabaseRequest.SetMinerStatus(minerId, 'idle');
-		await DatabaseRequest.DisconnectFromCassandraNode();
 		process.exit(0);
 	}
 }
@@ -205,7 +202,7 @@ export default abstract class Command {
 	 * @param jobTime The time the job has been uploaded
 	 * @param startTime The time the job started
 	 */
-	protected async uploadProject(jobID: string, jobTime: string, startTime: number): Promise<void> {
+	protected async uploadProject(jobID: string, jobTime: number, startTime: number): Promise<void> {
 		Logger.Info('Processing and uploading project to database', Logger.GetCallerLocation());
 
 		const metadata = await this._moduleFacade.GetProjectMetadata(this._flags.MandatoryArgument);
@@ -219,8 +216,8 @@ export default abstract class Command {
 			this._flags.Branch = metadata.defaultBranch;
 		Logger.Debug(`Default branch is ${this._flags.Branch}`, Logger.GetCallerLocation());
 
-		const startingTime = await DatabaseRequest.GetProjectVersion(metadata.id.toString(), metadata.versionTime);
-		if (parseInt(metadata.versionTime) <= startingTime) {
+		const startingTime = await JsonRequest.LastVersion(metadata.id);
+		if (startingTime > 0 && metadata.versionTime <= startingTime) {
 			Logger.Info('Most recent version already in database', Logger.GetCallerLocation());
 			return;
 		}
@@ -235,13 +232,14 @@ export default abstract class Command {
 
 		for (const commit of vulnCommits) {
 			Logger.Info(`Uploading vulnerability: ${commit.vulnerability}`, Logger.GetCallerLocation(), true);
+			Logger.Warning(`Uploading currently disabled (not implemented)`, Logger.GetCallerLocation(), true);
 
-			if (config.COMMAND === 'start') {
-				jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
-				startTime = Date.now();
-			}
+			//if (config.COMMAND === 'start') {
+			//	jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
+			//	startTime = Date.now();
+			//}
 
-			await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata);
+			//await this.uploadPartialProject(commit.commit, commit.lines, commit.vulnerability, metadata);
 		}
 
 		if (metadata.defaultBranch !== this._flags.Branch)
@@ -249,7 +247,7 @@ export default abstract class Command {
 		const tags = await this._moduleFacade.GetRepositoryTags();
 		const tagc = tags.length;
 
-		if (parseInt(metadata.versionTime) > startingTime && tagc == 0) {
+		if (metadata.versionTime > startingTime && tagc == 0) {
 			await this.parseLatest(metadata);
 		} else if (tagc != 0) {
 			if (tags[tagc - 1][1] <= startingTime) {
@@ -302,7 +300,7 @@ export default abstract class Command {
 		const authorData = await this._moduleFacade.GetAuthors(filteredFileNames);
 		metadata.versionTime = await this._moduleFacade.GetVersionTime(version);
 		metadata.versionHash = version;
-		await DatabaseRequest.UploadHashes(trimmedHashes, metadata, authorData, '', []);
+		await JsonRequest.UploadHashes(trimmedHashes, metadata, authorData, -1, []);
 	}
 
 	/**
@@ -314,7 +312,7 @@ export default abstract class Command {
 		const [hashes, authorData] = await this.parseAndBlame();
 		if (hashes.length == 0) return;
 		Logger.Debug('Uploading hashes', Logger.GetCallerLocation());
-		await DatabaseRequest.UploadHashes(hashes, metadata, authorData, '', []);
+		await JsonRequest.UploadHashes(hashes, metadata, authorData, -1, []);
 	}
 
 	/**
@@ -330,18 +328,18 @@ export default abstract class Command {
 		metadata: ProjectMetadata,
 		startingTime: number,
 		jobID: string,
-		jobTime: string
+		jobTime: number
 	) {
 		let i = 0;
 		while (tags[i][1] <= startingTime) i++;
 
 		let prevTag = '';
-		let prevVersionTime = '';
+		let prevVersionTime = -1;
 		const prevUnchangedFiles: string[] = [];
 
 		if (i > 0) {
 			prevTag = tags[i - 1][0];
-			prevVersionTime = tags[i - 1][1].toString();
+			prevVersionTime = tags[i - 1][1];
 		}
 
 		for (; i < tags.length; i++) {
@@ -349,19 +347,19 @@ export default abstract class Command {
 			const versionTime = tags[i][1];
 			const versionHash = tags[i][2];
 
-			metadata.versionTime = versionTime.toString();
+			metadata.versionTime = versionTime;
 			metadata.versionHash = versionHash;
 
 			Logger.Info(`Processing tag: ${currTag} (${i + 1}/${tags.length})`, Logger.GetCallerLocation());
 			Logger.Debug(`Comparing tags: ${prevTag} and ${currTag}.`, Logger.GetCallerLocation());
 
-			if (config.COMMAND === 'start') jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
+			//if (config.COMMAND === 'start') jobTime = await DatabaseRequest.UpdateJob(jobID, jobTime);
 
 			const success = await this.downloadTagged(prevTag, currTag, metadata, prevVersionTime, prevUnchangedFiles);
 			if (!success) break;
 
 			prevTag = currTag;
-			prevVersionTime = versionTime.toString();
+			prevVersionTime = versionTime;
 		}
 	}
 
@@ -378,12 +376,12 @@ export default abstract class Command {
 		prevTag: string,
 		currTag: string,
 		metadata: ProjectMetadata,
-		prevVersionTime: string,
+		prevVersionTime: number,
 		prevUnchangedFiles: string[]
 	): Promise<boolean> {
 		const unchangedFiles = await this._moduleFacade.UpdateVersion(prevTag, currTag, prevUnchangedFiles);
 		const [hashes, authorData] = await this.parseAndBlame();
-		const success = await DatabaseRequest.UploadHashes(hashes, metadata, authorData, prevVersionTime, unchangedFiles);
+		const success = await JsonRequest.UploadHashes(hashes, metadata, authorData, prevVersionTime, unchangedFiles);
 		prevUnchangedFiles = unchangedFiles;
 		return success;
 	}
@@ -409,35 +407,24 @@ export class StartCommand extends Command {
 	}
 
 	public async Execute(verbosity: Verbosity): Promise<void> {
-		DatabaseRequest.SetMinerId(this._minerId);
-		await DatabaseRequest.ConnectToCassandraNode();
-		DatabaseRequest.SetVerbosity(verbosity);
+		Logger.Debug('Starting loop', Logger.GetCallerLocation());
 		while (!SigInt.Stop) {
 			this._moduleFacade.ResetParserState();
 
 			this._flags.Branch = '';
-			const job = await DatabaseRequest.GetNextJob();
-			const splitted = job.split('?');
-			switch (splitted[0]) {
-				case 'Spider': {
-					Logger.Info(`New Job: Download and parse ${splitted[2]}`, Logger.GetCallerLocation(), true);
-					const startTime = Date.now();
-					await this.processVersion(splitted, startTime);
-					break;
-				}
-				case 'Crawl':
-					Logger.Info('New Job: Crawl for more URLs', Logger.GetCallerLocation(), true);
-					await this.handleCrawlRequest(splitted);
-					break;
-
-				case 'NoJob':
-					Logger.Info('Waiting for a new job', Logger.GetCallerLocation(), true);
-					await new Promise((resolve) => setTimeout(resolve, 5000));
-					break;
-
-				default:
-					Logger.Warning('Unknown job type', Logger.GetCallerLocation());
-					break;
+			const task = await JsonRequest.GetTask();
+			if (task == "No") {
+				Logger.Debug('Waiting for a new job', Logger.GetCallerLocation());
+				await new Promise((resolve) => setTimeout(resolve, 5000));
+			} else if ("Spider" in task) {
+				let spiderTask = task.Spider;
+				Logger.Debug(`New Job: Download and parse ${spiderTask.url}`, Logger.GetCallerLocation());
+				const startTime = Date.now();
+				await this.processVersion(spiderTask, startTime);
+			} else {
+				let crawlTask = task.Crawl;
+				Logger.Debug('New Job: Crawl for more URLs', Logger.GetCallerLocation());
+				await this.handleCrawlRequest(crawlTask);
 			}
 		}
 
@@ -448,18 +435,22 @@ export class StartCommand extends Command {
 		/* empty */
 	}
 
-	private async handleCrawlRequest(splitted: string[]) {
+	private async handleCrawlRequest(task: CrawlTask) {
 		const crawled = await this._moduleFacade.CrawlRepositories();
-		await DatabaseRequest.AddCrawledJobs(crawled, splitted[2]);
+		Logger.Info('Received data from crawler', Logger.GetCallerLocation());
+		await JsonRequest.AddCrawledJobs(crawled, task)
+		Logger.Info('Sent crawl data to DB.', Logger.GetCallerLocation());
 	}
 
-	private async processVersion(splitted: string[], startTime: number) {
-		if (splitted.length < 5 || !splitted[2]) {
+	private async processVersion(task: SpiderTask, startTime: number) {
+
+		if (!task.url) {
 			Logger.Warning('Unexpected job data received from database', Logger.GetCallerLocation());
 			return;
 		}
-		this._flags.MandatoryArgument = splitted[2];
-		await this.uploadProject(splitted[1], splitted[3], startTime);
+		this._flags.MandatoryArgument = task.url;
+		await this.uploadProject(task.id, task.time, startTime);
+
 	}
 }
 
@@ -470,7 +461,6 @@ export class CheckCommand extends Command {
 	}
 
 	public async Execute(verbosity: Verbosity): Promise<void> {
-		DatabaseRequest.SetVerbosity(verbosity);
 		await this.checkProject();
 	}
 }
@@ -483,12 +473,8 @@ export class CheckUploadCommand extends Command {
 	}
 
 	public async Execute(verbosity: Verbosity): Promise<void> {
-		DatabaseRequest.SetVerbosity(verbosity);
-		DatabaseRequest.SetMinerId(this._minerId);
-		await DatabaseRequest.ConnectToCassandraNode();
-
 		const checked = await this.checkProject();
-		if (checked) await this.uploadProject('', '', 0);
+		if (checked) await this.uploadProject('', 0, 0);
 		// await SigInt.StopProcessImmediately(this._minerId);
 	}
 }

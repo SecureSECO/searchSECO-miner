@@ -21,6 +21,7 @@ function CheckGithubTokenPresent() {
  * @param command The command to run
  */
 async function Run(command: Command | undefined) {
+	Logger.Debug('Running with error handling', Logger.GetCallerLocation());
 	try {
 		await RunWithoutErrorHandling(command)
 	} catch (e) {
@@ -32,6 +33,7 @@ async function Run(command: Command | undefined) {
 }
 
 async function RunWithoutErrorHandling(command: Command | undefined) {
+	Logger.Debug('Running command', Logger.GetCallerLocation());
 	await command?.Execute(Logger.GetVerbosity());
 }
 
@@ -51,11 +53,13 @@ export default class Miner {
 	 */
 	public async Start() {
 		Logger.SetModule('miner');
+		let verbosity = this._flags.Verbose || Verbosity.SILENT;
 		Logger.SetVerbosity(this._flags.Verbose || Verbosity.SILENT);
+		Logger.Debug("In function Start", Logger.GetCallerLocation());
 
 		if (!CheckGithubTokenPresent()) {
 			const isPackage = (process as any).pkg ? true : false
-			const message = isPackage 
+			const message = isPackage
 				? 'Please set one by using the --github_token flag or by building the application from source with a token set in the .env file.'
 				: 'Please set a token in the .env file.'
 			Logger.Error(`Github token not specified. ${message}`, Logger.GetCallerLocation())
@@ -63,10 +67,12 @@ export default class Miner {
 		}
 
 		const commandFactory = new CommandFactory();
+		const command = commandFactory.GetCommand(this._command, this._id, this._flags);
 		// Try to run the command
 		if (config.NODE_ENV == 'development')
-			await RunWithoutErrorHandling(commandFactory.GetCommand(this._command, this._id, this._flags));
-		else await Run(commandFactory.GetCommand(this._command, this._id, this._flags));
+			await RunWithoutErrorHandling(command);
+		else
+			await Run(command);
 		await SigInt.StopProcessImmediately(this._id);
 	}
 }
