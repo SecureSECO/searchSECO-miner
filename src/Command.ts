@@ -474,7 +474,7 @@ export class CheckUploadCommand extends Command {
 
 	public async Execute(verbosity: Verbosity): Promise<void> {
 		const checked = await this.checkProject();
-		if (checked) await this.uploadProject('', 0, 0);
+		await this.uploadProject('', 0, 0);
 		// await SigInt.StopProcessImmediately(this._minerId);
 	}
 }
