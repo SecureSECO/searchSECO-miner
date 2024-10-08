@@ -150,7 +150,10 @@ export class InputParser {
 			parsed = argv;
 		});
 
-		if (!validCommand) return;
+		if (!command || !validCommand) {
+			yargs.showHelp();
+			return;
+		}
 
 		if (parsed.url || parsed._[1]?.toString()) flags.MandatoryArgument = parsed.url || parsed._[1].toString();
 		if (parsed.branch) flags.Branch = parsed.branch;

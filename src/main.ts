@@ -10,21 +10,15 @@ import Miner from './Miner';
 import { SigInt } from './Command';
 import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import config from './config/config';
-import DatabaseRequest from './DatabaseRequest';
 import { v4 as uuidv4 } from 'uuid';
 import { InputParser } from './Input'
 
 async function createNewMiner(minerId: string) {
-	if (await DatabaseRequest.AddMinerToDatabase(minerId))
-		Logger.Info(`New miner with id ${minerId} added to database`, Logger.GetCallerLocation());
-	else Logger.Warning(`Could not add new miner to database`, Logger.GetCallerLocation())
 }
 
 async function AssignOrCreateMiner() {
-	await DatabaseRequest.ResetInactiveMiners();
-
+	const existingMiners: { id: string; status: string }[] = [];
 	let minerId: string = uuidv4();
-	const existingMiners = await DatabaseRequest.ListMinersAssociatedWithWallet();
 
 	if (existingMiners.length > 0) {
 		const allRunning = existingMiners.every(({ status }) => status === 'running');
@@ -33,7 +27,6 @@ async function AssignOrCreateMiner() {
 			const { id } = existingMiners.find(({ status }) => status === 'idle');
 			minerId = id;
 			Logger.Debug(`Found idle miner: ${minerId}`, Logger.GetCallerLocation())
-			await DatabaseRequest.SetMinerStatus(id, 'running');
 		}
 	} else await createNewMiner(minerId);
 	return minerId
@@ -60,7 +53,6 @@ export default async function start() {
 		return
 	Logger.SetModule('start')
 	Logger.SetVerbosity(input.Flags.Verbose || Verbosity.SILENT)
-	DatabaseRequest.SetVerbosity(input.Flags.Verbose || Verbosity.SILENT)
 
 	Logger.Debug('Sanitized and parsed user input', Logger.GetCallerLocation());
 	const minerId = await AssignOrCreateMiner()

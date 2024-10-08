@@ -119,7 +119,10 @@ export default class ModuleFacade {
 	 */
 	public async GetRepositoryTags(): Promise<[string, number, string][]> {
 		Logger.Debug('Calling the spider to get the tags of previous versions', Logger.GetCallerLocation());
-		return await this._spider.getTags(this._filePath);
+
+		const result = await this._spider.getTags(this._filePath);
+		Logger.Debug(`got ${result.length} tags`, Logger.GetCallerLocation());
+		return result;
 	}
 
 	/**
@@ -127,9 +130,9 @@ export default class ModuleFacade {
 	 * @param version The commit version
 	 * @returns The version time string
 	 */
-	public async GetVersionTime(version: string): Promise<string> {
+	public async GetVersionTime(version: string): Promise<number> {
 		Logger.Debug('Calling the spider to get the version time', Logger.GetCallerLocation());
-		return await this._spider.getVersionTime(this._filePath, version);
+		return parseInt(await this._spider.getVersionTime(this._filePath, version));
 	}
 
 	/**
@@ -150,7 +153,7 @@ export default class ModuleFacade {
 	 */
 	public async GetProjectMetadata(url: string): Promise<ProjectMetadata> {
 		try {
-			Logger.Debug('Calling the crawer to get project metadata', Logger.GetCallerLocation());
+			Logger.Debug('Calling the crawler to get project metadata', Logger.GetCallerLocation());
 			const metadata = await this._crawler.getProjectMetadata(url);
 			Logger.Debug('Project metadata succesfully fetched', Logger.GetCallerLocation());
 			return metadata;
@@ -165,7 +168,7 @@ export default class ModuleFacade {
 	 * @returns Crawl data of the crawled repos
 	 */
 	public async CrawlRepositories(): Promise<CrawlData> {
-		Logger.Debug('Calling the crawer to crawl a repository', Logger.GetCallerLocation());
+		Logger.Debug('Calling the crawler to crawl a repository', Logger.GetCallerLocation());
 		const crawldata = this._crawler.crawl();
 		Logger.Debug('Crawling complete', Logger.GetCallerLocation());
 		return crawldata;
