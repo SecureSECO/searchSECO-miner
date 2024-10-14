@@ -40,6 +40,8 @@ jobs:
 
       # - name: Start the project
       #   run: npm run start-unix
+      - name: Make and install helper program
+        run: cd src/modules/searchSECO-crawler/cpp; make install; echo "$HOME/bin" >> "$GITHUB_PATH"
 
       - name: Execute SearchSECO-miner check on zlib
         env:
