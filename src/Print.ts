@@ -7,7 +7,7 @@ import {
 	MethodResponseData,
 	ProjectResponseData,
 } from './modules/searchSECO-databaseAPI/src/Response';
-import DatabaseRequest, { getAuthors, transformHashList } from './DatabaseRequest';
+import { transformHashList } from './JsonRequest';
 import { ObjectMap, ObjectSet } from './Utility';
 import Logger from './modules/searchSECO-logger/src/Logger';
 import { AuthorInfoResponseItem, CheckResponse, ProjectInfoResponseItem } from './JsonRequest';

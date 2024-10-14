@@ -6,10 +6,10 @@
 	url = https://github.com/SecureSECODAO/searchSECO-databaseAPI	
 [submodule "src/modules/searchSECO-parser"]
 	path = src/modules/searchSECO-parser
-	url = https://github.com/SecureSECODAO/searchSECO-parser
+	url = ../searchSECO-parser
 [submodule "src/modules/searchSECO-logger"]
 	path = src/modules/searchSECO-logger
 	url = https://github.com/SecureSECODAO/searchSECO-logger.git
 [submodule "src/modules/searchSECO-crawler"]
 	path = src/modules/searchSECO-crawler
-	url = https://github.com/SecureSECODAO/searchSECO-crawler.git
+	url = ../searchSECO-crawler.git
