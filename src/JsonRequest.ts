@@ -112,6 +112,13 @@ interface Upload {
     method_data: MethodData[]
 }
 
+interface JobFinish {
+    jid: string,
+    time: number,
+    reason: number,
+    rdata: string
+}
+
 
 export type Task = "No" | { "Spider": SpiderTask } | { "Crawl": CrawlTask };
 
@@ -127,10 +134,12 @@ interface UpdateJobRequest { "UpdateJob": { "jid": string, "time": number } }
 
 interface UploadRequest { "Upload": Upload }
 
+interface FinishJobRequest { "FinishJob": JobFinish }
+
 type Content =
     CheckRequest | ProjectInfoRequest | AuthorRequest |
     GetTaskRequest | CrawlJobsRequest | PrevProjectsRequest | UpdateJobRequest |
-    UploadRequest;
+    UploadRequest | FinishJobRequest;
 
 
 
@@ -167,6 +176,7 @@ export class JsonRequest {
         Logger.Debug(`Status code: ${response.status}`, Logger.GetCallerLocation());
 
         if (!response.ok) {
+            Logger.Warning(`JSON api status code: ${response.status}`, Logger.GetCallerLocation());
             throw new Error(`Error! status: ${response.status}`);
         }
 
@@ -363,6 +373,25 @@ export class JsonRequest {
                 throw 'An unexpected error occurred';
             }
         }
+    }
+
+    public static async finishJob(jid: string, time: number, reason: number, rdata: string): Promise<number> {
+        let content = {
+            "FinishJob": { jid: jid, time: time, reason: reason, rdata: rdata }
+        };
+        try {
+            let obj = await this.PerformRequest(content);
+            return;
+        } catch (error) {
+            if (error instanceof Error) {
+                Logger.Warning(`error message:  ${error.message}`, Logger.GetCallerLocation());
+                throw error;
+            } else {
+                Logger.Warning(`unexpected error: $error`, Logger.GetCallerLocation());
+                throw 'An unexpected error occurred';
+            }
+        }
+
     }
 
 }

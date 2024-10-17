@@ -244,9 +244,11 @@ export default abstract class Command {
 
 		if (metadata.defaultBranch !== this._flags.Branch)
 			await this._moduleFacade.SwitchVersion(this._flags.Branch);
-		const tags = await this._moduleFacade.GetRepositoryTags();
-		const tagc = tags.length;
+		//const tags = await this._moduleFacade.GetRepositoryTags();
+		//const tagc = tags.length;
 
+		await this.parseLatest(metadata, jobID, jobTime);
+		/*
 		if (metadata.versionTime > startingTime && tagc == 0) {
 			await this.parseLatest(metadata);
 		} else if (tagc != 0) {
@@ -256,6 +258,7 @@ export default abstract class Command {
 			}
 			await this.loopThroughTags(tags, metadata, startingTime, jobID, jobTime);
 		}
+		*/
 	}
 
 	/**
@@ -307,12 +310,15 @@ export default abstract class Command {
 	 * Parse the latest version of a project
 	 * @param metadata The metadata of the project
 	 */
-	private async parseLatest(metadata: ProjectMetadata) {
+	private async parseLatest(metadata: ProjectMetadata, jobID: string, jobTime: number) {
 		Logger.Debug('No tags found, just looking at HEAD', Logger.GetCallerLocation());
 		const [hashes, authorData] = await this.parseAndBlame();
 		if (hashes.length == 0) return;
 		Logger.Debug('Uploading hashes', Logger.GetCallerLocation());
 		await JsonRequest.UploadHashes(hashes, metadata, authorData, -1, []);
+		if (jobID != '') {
+			await JsonRequest.finishJob(jobID, jobTime, 0, '');
+		}
 	}
 
 	/**
