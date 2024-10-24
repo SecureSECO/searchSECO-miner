@@ -15,7 +15,7 @@ import Logger, { Verbosity } from './modules/searchSECO-logger/src/Logger';
 import { ProjectMetadata } from './modules/searchSECO-crawler/src/Crawler';
 import MatchPrinter from './Print';
 import config from './config/config';
-import { CheckResponse, CrawlTask, JsonRequest, ProjectInfoResponseItem, ProjectWithVersion, SpiderTask } from './JsonRequest';
+import { CheckResponse, CrawlTask, JobId, JsonRequest, ProjectInfoResponseItem, ProjectWithVersion, SpiderTask } from './JsonRequest';
 
 /**
  * Makes a designated repo download location for the current miner.
@@ -204,6 +204,10 @@ export default abstract class Command {
 	 */
 	protected async uploadProject(jobID: string, jobTime: number, startTime: number): Promise<void> {
 		Logger.Info('Processing and uploading project to database', Logger.GetCallerLocation());
+		let job = null;
+		if (jobID != '') {
+			job = { "jid": jobID, "time": jobTime };
+		}
 
 		const metadata = await this._moduleFacade.GetProjectMetadata(this._flags.MandatoryArgument);
 		if (!metadata) return;
@@ -247,7 +251,7 @@ export default abstract class Command {
 		//const tags = await this._moduleFacade.GetRepositoryTags();
 		//const tagc = tags.length;
 
-		await this.parseLatest(metadata, jobID, jobTime);
+		await this.parseLatest(metadata, job);
 		/*
 		if (metadata.versionTime > startingTime && tagc == 0) {
 			await this.parseLatest(metadata);
@@ -303,22 +307,19 @@ export default abstract class Command {
 		const authorData = await this._moduleFacade.GetAuthors(filteredFileNames);
 		metadata.versionTime = await this._moduleFacade.GetVersionTime(version);
 		metadata.versionHash = version;
-		await JsonRequest.UploadHashes(trimmedHashes, metadata, authorData, -1, []);
+		await JsonRequest.UploadHashes(trimmedHashes, metadata, authorData, -1, [], null);
 	}
 
 	/**
 	 * Parse the latest version of a project
 	 * @param metadata The metadata of the project
 	 */
-	private async parseLatest(metadata: ProjectMetadata, jobID: string, jobTime: number) {
+	private async parseLatest(metadata: ProjectMetadata, job: null | JobId) {
 		Logger.Debug('No tags found, just looking at HEAD', Logger.GetCallerLocation());
 		const [hashes, authorData] = await this.parseAndBlame();
 		if (hashes.length == 0) return;
 		Logger.Debug('Uploading hashes', Logger.GetCallerLocation());
-		await JsonRequest.UploadHashes(hashes, metadata, authorData, -1, []);
-		if (jobID != '') {
-			await JsonRequest.finishJob(jobID, jobTime, 0, '');
-		}
+		await JsonRequest.UploadHashes(hashes, metadata, authorData, -1, [], job);
 	}
 
 	/**
@@ -387,7 +388,7 @@ export default abstract class Command {
 	): Promise<boolean> {
 		const unchangedFiles = await this._moduleFacade.UpdateVersion(prevTag, currTag, prevUnchangedFiles);
 		const [hashes, authorData] = await this.parseAndBlame();
-		const success = await JsonRequest.UploadHashes(hashes, metadata, authorData, prevVersionTime, unchangedFiles);
+		const success = await JsonRequest.UploadHashes(hashes, metadata, authorData, prevVersionTime, unchangedFiles, null);
 		prevUnchangedFiles = unchangedFiles;
 		return success;
 	}

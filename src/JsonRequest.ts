@@ -112,6 +112,31 @@ interface Upload {
     method_data: MethodData[]
 }
 
+export interface JobId {
+    jid: string,
+    time: number
+}
+
+interface UploadStart {
+    project_id: number,
+    version: number,
+    version_hash: string,
+    license: string,
+    project_name: string,
+    url: string,
+    owner_name: string,
+    owner_mail: string,
+    parser_version: number,
+    prev_version: null | { version: number, unchanged_files: string[] },
+    jid: null | JobId,
+}
+
+interface UploadContinuation {
+    upload_id: number,
+    last: boolean,
+    method_data: MethodData[]
+}
+
 interface JobFinish {
     jid: string,
     time: number,
@@ -134,20 +159,23 @@ interface UpdateJobRequest { "UpdateJob": { "jid": string, "time": number } }
 
 interface UploadRequest { "Upload": Upload }
 
+interface UploadStartRequest { "UploadStart": UploadStart }
+
+interface UploadContinuationRequest { "UploadContinuation": UploadContinuation }
+
 interface FinishJobRequest { "FinishJob": JobFinish }
 
 type Content =
     CheckRequest | ProjectInfoRequest | AuthorRequest |
     GetTaskRequest | CrawlJobsRequest | PrevProjectsRequest | UpdateJobRequest |
-    UploadRequest | FinishJobRequest;
-
-
-
+    UploadRequest | UploadStartRequest | UploadContinuationRequest | FinishJobRequest;
 
 interface Request {
     token: string;
     content: Content;
 }
+
+interface UploadResponse { "id": number }
 
 function toJobs(crawlData: CrawlData): NewJob[] {
     let result: NewJob[] = [];
@@ -335,18 +363,19 @@ export class JsonRequest {
         metadata: ProjectMetadata,
         authordata: AuthorData,
         prevCommitTime: number,
-        unchangedFiles: string[]
+        unchangedFiles: string[],
+        jid: null | JobId
     ): Promise<boolean> {
         let prev_version = null;
         if (prevCommitTime > 0) {
             prev_version = { version: prevCommitTime, unchanged_files: unchangedFiles }
         }
-        let hashes2: MethodData[] = [];
         const transformedHashList = transformHashList(hashes);
         const authors = getAuthors(transformedHashList, authordata);
-        hashes.map((val, _ix, _arr) => { hashes2.push({ hash: val.Hash, name: val.MethodName, file: val.FileName, line: val.LineNumber, vuln: val.VulnCode, authors: authors.get(val) }) })
+        //let hashes2: MethodData[] = [];
+        //hashes.map((val, _ix, _arr) => { hashes2.push({ hash: val.Hash, name: val.MethodName, file: val.FileName, line: val.LineNumber, vuln: val.VulnCode, authors: authors.get(val) }) })
         let content = {
-            "Upload": {
+            "UploadStart": {
                 project_id: metadata.id,
                 version: metadata.versionTime,
                 version_hash: metadata.versionHash,
@@ -357,13 +386,13 @@ export class JsonRequest {
                 owner_mail: metadata.authorMail,
                 parser_version: PARSER_VERSION,
                 prev_version,
-                method_data: hashes2
-
+                jid
             }
         }
+        let upload_id = -1;
         try {
-            let obj = await this.PerformRequest(content);
-            return;
+            let obj = (await this.PerformRequest(content)) as UploadResponse;
+            upload_id = obj.id;
         } catch (error) {
             if (error instanceof Error) {
                 Logger.Warning(`error message:  ${error.message}`, Logger.GetCallerLocation());
@@ -373,6 +402,38 @@ export class JsonRequest {
                 throw 'An unexpected error occurred';
             }
         }
+        let start = 0;
+        const ChunkSize = 1000;
+        let last = false;
+        while (!last) {
+            let end = start + ChunkSize;
+            let hashes2 = [];
+            if (end > hashes.length) { end = hashes.length; last = true }
+            for (let i = start; i < end; i++) {
+                let val = hashes[i];
+                hashes2.push({ hash: val.Hash, name: val.MethodName, file: val.FileName, line: val.LineNumber, vuln: val.VulnCode, authors: authors.get(val) })
+            }
+            let content = {
+                "UploadContinuation": {
+                    upload_id,
+                    last,
+                    method_data: hashes2
+                }
+            }
+            try {
+                let obj = await this.PerformRequest(content);
+            } catch (error) {
+                if (error instanceof Error) {
+                    Logger.Warning(`error message:  ${error.message}`, Logger.GetCallerLocation());
+                    throw error;
+                } else {
+                    Logger.Warning(`unexpected error: $error`, Logger.GetCallerLocation());
+                    throw 'An unexpected error occurred';
+                }
+            }
+            start = end;
+        }
+        return true;
     }
 
     public static async finishJob(jid: string, time: number, reason: number, rdata: string): Promise<number> {
