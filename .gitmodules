@@ -1,6 +1,6 @@
 [submodule "src/modules/searchSECO-spider"]
 	path = src/modules/searchSECO-spider
-	url = https://github.com/SecureSECODAO/searchSECO-spider
+	url = ../searchSECO-spider
 [submodule "src/modules/searchSECO-databaseAPI"]
 	path = src/modules/searchSECO-databaseAPI
 	url = https://github.com/SecureSECODAO/searchSECO-databaseAPI	
