@@ -193,6 +193,8 @@ export default abstract class Command {
 		const printer = new MatchPrinter();
 		await printer.PrintHashMatches(url, metadata.id, projectMethods, projectBlaming, checkResponse, dbProjectInfo, dbAuthorInfo);
 		printer.Close();
+		await this._moduleFacade.ClearRepository();
+
 		return true
 	}
 
@@ -263,6 +265,7 @@ export default abstract class Command {
 			await this.loopThroughTags(tags, metadata, startingTime, jobID, jobTime);
 		}
 		*/
+		await this._moduleFacade.ClearRepository();
 	}
 
 	/**
