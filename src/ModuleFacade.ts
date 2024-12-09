@@ -52,6 +52,13 @@ export default class ModuleFacade {
 	}
 
 	/**
+	 * Uses the spider to clear a repository
+	 * */
+	public async ClearRepository() {
+		await this._spider.clearDirectory(this._filePath);
+	}
+
+	/**
 	 * Uses the spider to update the repository to a different tag, keeping track of unchanged files
 	 * @param prevTag The previous tag
 	 * @param newTag The tag to switch to
