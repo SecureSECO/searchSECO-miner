@@ -11,6 +11,7 @@ import { transformHashList } from './JsonRequest';
 import { ObjectMap, ObjectSet } from './Utility';
 import Logger from './modules/searchSECO-logger/src/Logger';
 import { AuthorInfoResponseItem, CheckResponse, ProjectInfoResponseItem } from './JsonRequest';
+import { version } from '@types/yargs';
 
 
 enum OutputStream {
@@ -247,7 +248,7 @@ export default class MatchPrinter {
 
 		hashes.forEach((hash, idx) => {
 
-			currentReport += `  * Method ${hash.MethodName} in file ${hash.FileName}, line ${hash.LineNumber}\n`;
+			currentReport += `  * Method ${hash.MethodName}, Project ID: ${projectID}, ${dbProjects.forEach} in file ${hash.FileName}, line ${hash.LineNumber}\n`;
 			currentReport += `    Authors of local method: \n`;
 
 			this._JSONbuilder.Add(`hashes[0].methods[${idx}]`, {
@@ -285,7 +286,7 @@ export default class MatchPrinter {
 				Logger.Warning(`PrintMatch: no project found for method ${method.method} with process id ${method.pid}`, Logger.GetCallerLocation());
 				currentProject = { "name": "<undefined>", "url": "<undefined>", pid: -1, vtime: -1, vhash: "<undefined>", license: "<undefined>", oid: "", pv: -1 };
 			}
-			currentReport += `  * Method ${method.method} in project ${currentProject.name} in file ${method.file}, line ${method.line}\n`;
+			currentReport += `  * Method ${method.method} in project name: ${currentProject.name}, project ID: ${currentProject.pid+', Version: '+currentProject.vtime+', License: '+ currentProject.license} in file ${method.file}, line ${method.line}\n`;
 			currentReport += `    URL: ${currentProject.url}/blob/${method.ev_hash}/${linkFile}#L${method.line}\n`;
 
 			this._JSONbuilder.Add(
@@ -300,6 +301,7 @@ export default class MatchPrinter {
 						id: currentProject.pid,
 						name: currentProject.name,
 						url: currentProject.url,
+						version: currentProject.vtime,
 					},
 				},
 				true

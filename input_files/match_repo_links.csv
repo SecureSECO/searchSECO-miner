@@ -1,0 +1,1579 @@
+_id,link,license,language,licenseConflicts
+6467b3e013df3d68492c59e4,https://github.com/microsoft/Microsoft.Diagnostics.Tracing.Logging,MIT License,C#,20
+6467bbd113df3d68492c5a06,https://github.com/microsoft/XamlBehaviors,MIT License,C#,4
+6467b37d13df3d68492c59da,https://github.com/microsoft/Vipr,MIT License,C#,12
+6467bb8c13df3d68492c5a00,https://github.com/google/transitfeed,Apache License 2.0,Python,476
+6467ac9c13df3d68492c59b2,https://github.com/facebook/metro,MIT License,JavaScript,9
+6467b27f13df3d68492c59c4,https://github.com/google/grafika,Apache License 2.0,Java,3
+6467b31813df3d68492c59d0,https://github.com/facebook/buck2-prelude,Apache License 2.0,Starlark,1
+6467bd8e13df3d68492c5a14,https://github.com/microsoft/clrmd,MIT License,C#,6
+6467b43213df3d68492c59e8,https://github.com/microsoft/UVAtlas,MIT License,C++,4
+6467a50713df3d68492c5990,https://github.com/google/truth,Apache License 2.0,Java,46
+6467b3d613df3d68492c59e2,https://github.com/google/fruit,Apache License 2.0,C++,2
+6467b45d13df3d68492c59ee,https://github.com/microsoft/vsts-extension-samples,MIT License,TypeScript,6
+6467bd7213df3d68492c5a10,https://github.com/google/nogotofail,Apache License 2.0,Python,2
+6467af8513df3d68492c59b8,https://github.com/facebook/fbt,MIT License,JavaScript,2
+6467b40813df3d68492c59e6,https://github.com/microsoft/SCVMMLinuxGuestAgent,Apache License 2.0,C++,79
+6467b3a113df3d68492c59dc,https://github.com/microsoft/DACExtensions,MIT License,C#,41
+6467ba3b13df3d68492c59f2,https://github.com/microsoft/Windows-appsample-rssreader,MIT License,C#,6
+6467abde13df3d68492c59b0,https://github.com/facebook/TextLayoutBuilder,Apache License 2.0,Java,23
+6467b37413df3d68492c59d8,https://github.com/google/autofdo,Apache License 2.0,C++,6
+6467b2b213df3d68492c59c8,https://github.com/facebook/sapp,MIT License,Python,16
+6467ba7013df3d68492c59f4,https://github.com/microsoft/Telemetry-Client-for-Android,MIT License,Java,29
+6467ba9d13df3d68492c59f6,https://github.com/google/libaddressinput,Apache License 2.0,C++,61
+6467bbda13df3d68492c5a08,https://github.com/microsoft/ETW2JSON,MIT License,C#,3
+6467b00e13df3d68492c59bc,https://github.com/facebook/TestSlide,MIT License,Python,291
+6467a56613df3d68492c599a,https://github.com/google/ios-webkit-debug-proxy,"BSD 3-Clause ""New"" or ""Revised"" License",C,41
+6467b36713df3d68492c59d6,https://github.com/facebook/ocamlrep,MIT License,Starlark,1
+6467a54113df3d68492c5996,https://github.com/facebook/IT-CPE,Apache License 2.0,Ruby,5
+6467af2f13df3d68492c59b6,https://github.com/microsoft/dotnet-samples,MIT License,C#,32
+6467bbe113df3d68492c5a0a,https://github.com/microsoft/unittest-cpp,MIT License,C++,6
+6467a96613df3d68492c59a6,https://github.com/facebook/screenshot-tests-for-android,Apache License 2.0,Java,6
+6467b2f713df3d68492c59ca,https://github.com/facebook/mariana-trench,MIT License,C++,63
+6467b43c13df3d68492c59ea,https://github.com/microsoft/Microsoft-Message-Bridge,MIT License,C#,11
+6467bd5e13df3d68492c5a0e,https://github.com/google/rappor,Apache License 2.0,R,26
+6467bd3a13df3d68492c5a0c,https://github.com/microsoft/azure-devops-intellij,MIT License,Java,1061
+6467c2d913df3d68492c5a30,https://github.com/google/packetdrill,GNU General Public License v2.0,C,41
+6467c39b13df3d68492c5a3a,https://github.com/google/google-toolbox-for-mac,Apache License 2.0,Objective-C,3
+6467c44813df3d68492c5a3c,https://github.com/google/earthengine-api,Apache License 2.0,JavaScript,21
+6467c4f713df3d68492c5a4e,https://github.com/microsoft/Windows-appsample-huelightcontroller,MIT License,C#,2
+6467c34713df3d68492c5a34,https://github.com/microsoft/clouddriver,Apache License 2.0,Groovy,2
+6467c48d13df3d68492c5a42,https://github.com/google/MOE,Apache License 2.0,Java,4
+6467c4a913df3d68492c5a46,https://github.com/google/caliper,Apache License 2.0,Java,40
+6467c48413df3d68492c5a40,https://github.com/google/honggfuzz,Apache License 2.0,C,8
+6467c6e013df3d68492c5a54,https://github.com/google/googletest,"BSD 3-Clause ""New"" or ""Revised"" License",C++,1176
+6467c77113df3d68492c5a5a,https://github.com/google/cityhash,MIT License,Shell,6
+6467c83613df3d68492c5a5e,https://github.com/microsoft/azure-pipelines-agent,MIT License,C#,91
+6467cb4613df3d68492c5a68,https://github.com/microsoft/WinAppDriver,MIT License,C#,46
+6467cc5d13df3d68492c5a6e,https://github.com/google/android-classyshark,Apache License 2.0,Java,128
+6467cab913df3d68492c5a62,https://github.com/google/Accessibility-Test-Framework-for-Android,Apache License 2.0,Java,33
+6467cbef13df3d68492c5a6c,https://github.com/google/syzkaller,Apache License 2.0,Go,14
+6467cd0513df3d68492c5a7a,https://github.com/google/safe-html-types,Apache License 2.0,Java,9
+6467ceb613df3d68492c5a7c,https://github.com/microsoft/LIS-Tempest,Apache License 2.0,Python,1162
+6467ccfd13df3d68492c5a78,https://github.com/microsoft/malmo,MIT License,Java,60
+6467cc6813df3d68492c5a70,https://github.com/microsoft/Windows-appsample-familynotes,MIT License,C#,18
+6467ccb813df3d68492c5a74,https://github.com/google/closure-compiler-npm,Apache License 2.0,JavaScript,1
+6467d1a713df3d68492c5a98,https://github.com/microsoft/sqlite-tracer,MIT License,C#,1
+6467d47813df3d68492c5ab3,https://github.com/google/wycheproof,Apache License 2.0,Java,24
+6467ced313df3d68492c5a82,https://github.com/microsoft/WindowsDevicePortalWrapper,MIT License,C#,39
+6467d0e213df3d68492c5a92,https://github.com/google/neuroglancer,Apache License 2.0,TypeScript,54
+6467d0f713df3d68492c5a94,https://github.com/google/cld3,Apache License 2.0,C++,5
+6467d08b13df3d68492c5a90,https://github.com/microsoft/XamarinAzure_ShoppingDemoApp,MIT License,C#,59
+6467d29613df3d68492c5aaa,https://github.com/microsoft/edx-configuration,GNU Affero General Public License v3.0,Python,122
+6467d40313df3d68492c5aae,https://github.com/google/guetzli,Apache License 2.0,C++,1
+6467d22613df3d68492c5aa8,https://github.com/microsoft/testfx,MIT License,C#,6
+6467d44313df3d68492c5ab1,https://github.com/google/bloaty,Apache License 2.0,C++,2
+6467d1a013df3d68492c5a96,https://github.com/microsoft/BotFramework-WebChat,MIT License,JavaScript,89
+6467d1bb13df3d68492c5a9c,https://github.com/microsoft/lagscope,MIT License,C,3
+6467d20a13df3d68492c5aa6,https://github.com/google/perf_data_converter,"BSD 3-Clause ""New"" or ""Revised"" License",C++,3
+6467d04913df3d68492c5a8c,https://github.com/google/neper,Apache License 2.0,C,4
+6467d3fd13df3d68492c5aac,https://github.com/google/web-bsd-hunt,Apache License 2.0,Go,31
+6467d1d913df3d68492c5a9e,https://github.com/google/turbine,Apache License 2.0,Java,35
+6467d5c213df3d68492c5acb,https://github.com/microsoft/Windows-appsample-customers-orders-database,MIT License,TSQL,4
+6467d5b613df3d68492c5ac9,https://github.com/google/glazier,Apache License 2.0,Python,2
+6467d75413df3d68492c5ad9,https://github.com/microsoft/BotBuilder-Location,MIT License,C#,3
+6467d66e13df3d68492c5ad5,https://github.com/google/cdep,Apache License 2.0,Java,22
+6467d4a713df3d68492c5ab5,https://github.com/microsoft/bamboo-demo,MIT License,C#,26
+6467d4b513df3d68492c5ab7,https://github.com/microsoft/Visual-Audience-Polling,MIT License,Java,16
+6467d4be13df3d68492c5abb,https://github.com/microsoft/Static-Module-Verifier,MIT License,C#,1
+6467d59a13df3d68492c5ac5,https://github.com/microsoft/busiotools,MIT License,C#,7
+6467d5a013df3d68492c5ac7,https://github.com/google/mobly-bundled-snippets,Apache License 2.0,Java,16
+6467d5f313df3d68492c5acf,https://github.com/google/mug,Apache License 2.0,Java,6
+6467d80d13df3d68492c5adf,https://github.com/google/jsinterop-generator,Apache License 2.0,Java,26
+6467e31113df3d68492c5b01,https://github.com/microsoft/VFSForGit,MIT License,C#,125
+6467d8fe13df3d68492c5af3,https://github.com/google/clspv,Apache License 2.0,LLVM,2
+6467e40a13df3d68492c5b09,https://github.com/microsoft/vsixbootstrapper,MIT License,C++,1
+6467e05713df3d68492c5afd,https://github.com/microsoft/vswhere,MIT License,C++,333
+6467e41d13df3d68492c5b0b,https://github.com/google/tangent,Apache License 2.0,Python,9
+6467d8af13df3d68492c5ae5,https://github.com/google/ci_edit,Apache License 2.0,Python,37
+6467d87713df3d68492c5ae3,https://github.com/microsoft/xbox-live-trace-analyzer,MIT License,C#,5
+6467ddb913df3d68492c5af5,https://github.com/microsoft/HoloJS,MIT License,JavaScript,633
+6467d8d913df3d68492c5aed,https://github.com/microsoft/windows-developer-blog-samples,MIT License,,26
+6467dfa313df3d68492c5afb,https://github.com/google/devtools-driver,Apache License 2.0,Java,108
+6467d80113df3d68492c5add,https://github.com/google/myelin-acorn-electron-hardware,Apache License 2.0,Python,121
+6467ebb013df3d68492c5b13,https://github.com/microsoft/pxt-common-packages,MIT License,TypeScript,1
+6467eb7513df3d68492c5b0f,https://github.com/microsoft/WingtipSaaS,MIT License,PowerShell,2258
+6467edda13df3d68492c5b25,https://github.com/google/riegeli,Apache License 2.0,C++,2
+6467ee8413df3d68492c5b2f,https://github.com/google/diff-match-patch,Apache License 2.0,Python,88
+6467ede313df3d68492c5b27,https://github.com/microsoft/XamlBehaviorsWpf,MIT License,C#,61
+6467ee4913df3d68492c5b2d,https://github.com/google/multichannel-audio-tools,Apache License 2.0,C++,17
+6467ed3613df3d68492c5b1d,https://github.com/google/pasta,Apache License 2.0,Python,4
+6467ed3f13df3d68492c5b21,https://github.com/google/android-cuttlefish,Apache License 2.0,Go,12
+6467ec8213df3d68492c5b15,https://github.com/microsoft/Windows-appsample-get-started-js3d,MIT License,JavaScript,209
+6467ee3713df3d68492c5b2b,https://github.com/microsoft/EasyRepro,MIT License,C#,2
+6467ed2713df3d68492c5b1b,https://github.com/google/deepvariant,"BSD 3-Clause ""New"" or ""Revised"" License",Python,47
+6467ee2a13df3d68492c5b29,https://github.com/google/fhir,Apache License 2.0,C++,38
+6467f32613df3d68492c5b43,https://github.com/microsoft/sql-ml-tutorials,MIT License,JavaScript,4
+6467f27a13df3d68492c5b35,https://github.com/microsoft/Recognizers-Text,MIT License,C#,1519
+6467ef0613df3d68492c5b33,https://github.com/microsoft/PQCrypto-SIDH,MIT License,C,2
+6467f30c13df3d68492c5b3d,https://github.com/google/flutter.plugins,"BSD 3-Clause ""New"" or ""Revised"" License",Dart,1
+6467f29613df3d68492c5b39,https://github.com/microsoft/vs-mef,MIT License,C#,7
+6467f31a13df3d68492c5b41,https://github.com/microsoft/BotBuilder-RealTimeMediaCalling,MIT License,C#,1
+6467f3ff13df3d68492c5b4b,https://github.com/microsoft/Dhalion,MIT License,Java,16
+6467f64a13df3d68492c5b5b,https://github.com/microsoft/O-CNN,MIT License,C++,183
+6467f38a13df3d68492c5b45,https://github.com/microsoft/CRA,MIT License,C#,188
+6467f3f813df3d68492c5b49,https://github.com/microsoft/BuildCast,MIT License,C#,2
+6467f47613df3d68492c5b4f,https://github.com/microsoft/MRDL_Unity_LunarModule,MIT License,C#,290
+6467f47e13df3d68492c5b51,https://github.com/google/synthmark,Apache License 2.0,C++,6
+6467eeea13df3d68492c5b31,https://github.com/microsoft/ctsTraffic,Apache License 2.0,C++,148
+6467f30813df3d68492c5b3b,https://github.com/google/starthinker,Apache License 2.0,Python,30
+6467f60513df3d68492c5b59,https://github.com/microsoft/libHttpClient,MIT License,C++,27
+6467f6e513df3d68492c5b5d,https://github.com/microsoft/knack,MIT License,Python,387
+6467f41113df3d68492c5b4d,https://github.com/google/oodle-demo,Apache License 2.0,HTML,5
+6467f52913df3d68492c5b53,https://github.com/microsoft/SynapseML,MIT License,Scala,491
+6467f58e13df3d68492c5b55,https://github.com/google/asylo-site,Apache License 2.0,HTML,146
+6467f96913df3d68492c5b79,https://github.com/microsoft/AppModelSamples,MIT License,,43
+6467f70513df3d68492c5b61,https://github.com/microsoft/bobsql,MIT License,Jupyter Notebook,1
+6468095413df3d68492c5be7,https://github.com/google/scaaml,Apache License 2.0,Python,342
+6467fb0813df3d68492c5b95,https://github.com/google/supl-client,Apache License 2.0,Java,12
+6468070113df3d68492c5bd5,https://github.com/google/live-transcribe-speech-engine,Apache License 2.0,Java,46
+6468087f13df3d68492c5bdd,https://github.com/google/tcli,Apache License 2.0,Python,7
+646808ca13df3d68492c5be1,https://github.com/microsoft/botbuilder-java,MIT License,Java,78
+6467fa4f13df3d68492c5b85,https://github.com/google/model-viewer,Apache License 2.0,TypeScript,2
+6467f98c13df3d68492c5b7d,https://github.com/google/TrustScore,Apache License 2.0,Jupyter Notebook,31
+6467fa5813df3d68492c5b87,https://github.com/google/GiftStick,Apache License 2.0,Python,2
+6467fa7313df3d68492c5b8b,https://github.com/google/amber,Apache License 2.0,C++,3
+6467fbb513df3d68492c5b99,https://github.com/microsoft/adfsWebCustomization,MIT License,JavaScript,16
+6467fc2413df3d68492c5b9f,https://github.com/microsoft/Windows-appsample-remote-system-sessions,MIT License,C#,4
+6467ff2113df3d68492c5baf,https://github.com/alibaba/asyncload,Apache License 2.0,Java,4
+646806c613df3d68492c5bcf,https://github.com/google/earthengine-community,Apache License 2.0,Jupyter Notebook,2
+646806e813df3d68492c5bd1,https://github.com/google/ml-fairness-gym,Apache License 2.0,Python,10
+6467f6f713df3d68492c5b5f,https://github.com/google/oatts,Apache License 2.0,JavaScript,8
+6467fc1813df3d68492c5b9b,https://github.com/microsoft/DbgShell,MIT License,C#,42
+6468099913df3d68492c5be9,https://github.com/apache/pluto,Apache License 2.0,,440
+6467f77513df3d68492c5b6f,https://github.com/microsoft/OpenAPI.NET,MIT License,C#,2
+6467fc1e13df3d68492c5b9d,https://github.com/microsoft/print-oem-samples,MIT License,C++,2
+6467ff0613df3d68492c5bab,https://github.com/google/codewords,Apache License 2.0,TypeScript,1
+646805de13df3d68492c5bc1,https://github.com/alibaba/TProfiler,GNU General Public License v2.0,Java,62
+6468061913df3d68492c5bc3,https://github.com/alibaba/simpleimage,Apache License 2.0,Java,116
+6467f73613df3d68492c5b65,https://github.com/microsoft/azure-maven-plugins,MIT License,Java,66
+6467f88613df3d68492c5b73,https://github.com/microsoft/elastic-db-tools-for-java,MIT License,Java,4
+6467fe8513df3d68492c5ba9,https://github.com/microsoft/envoy,Apache License 2.0,C++,276
+6467f99313df3d68492c5b7f,https://github.com/microsoft/LWE_Library,MIT License,C,1
+6467fddb13df3d68492c5ba7,https://github.com/microsoft/OpenAPI.NET.OData,MIT License,C#,29
+6468066a13df3d68492c5bc7,https://github.com/google/driblet,Apache License 2.0,Python,33
+6467fd0113df3d68492c5ba1,https://github.com/microsoft/samples-for-ai,MIT License,C#,279
+6467f70c13df3d68492c5b63,https://github.com/google/jws,Apache License 2.0,Python,2
+6467ff6613df3d68492c5bb1,https://github.com/google/TensorNetwork,Apache License 2.0,Python,6
+646801e913df3d68492c5bb7,https://github.com/microsoft/DualLearning,MIT License,Python,17
+64680f5213df3d68492c5bed,https://github.com/microsoft/VSDebugAdapterHost,MIT License,C#,11
+646801c813df3d68492c5bb5,https://github.com/alibaba/fastjson,Apache License 2.0,Java,19
+6467f8d213df3d68492c5b75,https://github.com/microsoft/uprove-csharp-sdk,Apache License 2.0,C#,40
+646805bb13df3d68492c5bbd,https://github.com/google/private-join-and-compute,Apache License 2.0,C++,73
+6468064c13df3d68492c5bc5,https://github.com/google/struct2tensor,Apache License 2.0,Python,35
+6468067913df3d68492c5bc9,https://github.com/microsoft/PQCrypto-LWEKE,MIT License,C,17
+64680f6313df3d68492c5bef,https://github.com/microsoft/spatial-computing,MIT License,C#,1
+64680ff913df3d68492c5bf3,https://github.com/google/airdialogue,Apache License 2.0,Python,384
+6468100b13df3d68492c5bf7,https://github.com/microsoft/sarif-visualstudio-extension,MIT License,C#,3
+646813e313df3d68492c5c09,https://github.com/apache/jsecurity,Apache License 2.0,Java,324
+6468125a13df3d68492c5c03,https://github.com/apache/commons-codec,Apache License 2.0,Java,19
+646814a913df3d68492c5c0d,https://github.com/apache/commons-io,Apache License 2.0,Java,114
+64680ffd13df3d68492c5bf5,https://github.com/microsoft/diskspd-for-linux,MIT License,C++,2
+6468131e13df3d68492c5c07,https://github.com/apache/xmlgraphics-commons,Apache License 2.0,Java,200
+6468153313df3d68492c5c11,https://github.com/apache/httpcomponents-client,Apache License 2.0,Java,185
+6468102f13df3d68492c5bf9,https://github.com/microsoft/sarif-vscode-extension,MIT License,TypeScript,18
+6468103f13df3d68492c5bfd,https://github.com/microsoft/powerbi-powershell,MIT License,C#,4
+6468121913df3d68492c5c01,https://github.com/google/perfetto,Apache License 2.0,C++,1504
+6468140813df3d68492c5c0b,https://github.com/alibaba/badgeboard,MIT License,JavaScript,74
+6468199f13df3d68492c5c25,https://github.com/google/identity-credential,Apache License 2.0,Java,1
+6468167c13df3d68492c5c19,https://github.com/google/cloud-forensics-utils,Apache License 2.0,Python,729
+6468198413df3d68492c5c21,https://github.com/alibaba/swarm,Apache License 2.0,Go,3
+64681ec213df3d68492c5c46,https://github.com/apache/commons-cli,Apache License 2.0,Java,1
+64681e3d13df3d68492c5c42,https://github.com/apache/commons-logging,Apache License 2.0,Java,5
+64681a1a13df3d68492c5c2f,https://github.com/alibaba/iOSSecAudit,GNU General Public License v3.0,Python,3
+646816a713df3d68492c5c1b,https://github.com/microsoft/PSRule,MIT License,C#,9
+64681af813df3d68492c5c35,https://github.com/microsoft/InventorySample,MIT License,C#,30
+6468197d13df3d68492c5c1f,https://github.com/apache/cassandra,Apache License 2.0,Java,591
+646819f213df3d68492c5c29,https://github.com/google/report2bq,Apache License 2.0,Python,222
+6468198c13df3d68492c5c23,https://github.com/alibaba/etcd,Apache License 2.0,Go,20
+64681e0e13df3d68492c5c3e,https://github.com/google/resultstoreui,Apache License 2.0,Python,758
+64681ada13df3d68492c5c31,https://github.com/microsoft/pmwcas,MIT License,C++,364
+64681eb713df3d68492c5c44,https://github.com/microsoft/Windows-AppConsult-Tools-DesktopBridgeHelpers,MIT License,C#,15
+64681a0b13df3d68492c5c2d,https://github.com/microsoft/windows-admin-center-extension-template,MIT License,TypeScript,12
+6468281413df3d68492c5c66,https://github.com/apache/tuscany-sca-cpp,Apache License 2.0,C++,8
+64681f5613df3d68492c5c4e,https://github.com/alibaba/QLExpress,Apache License 2.0,Java,172
+64682b0513df3d68492c5c88,https://github.com/microsoft/PointerSQL,MIT License,Python,320
+646826e013df3d68492c5c5e,https://github.com/microsoft/glTF-DXViewer,MIT License,C++,7
+646826d213df3d68492c5c5c,https://github.com/apache/activemq-cpp,Apache License 2.0,C++,877
+64682b2313df3d68492c5c8a,https://github.com/google/shoptimizer,Apache License 2.0,Python,21
+646829a313df3d68492c5c76,https://github.com/google/android-emulator-webrtc,Apache License 2.0,JavaScript,1
+64682b2b13df3d68492c5c8c,https://github.com/microsoft/PhoneticMatching,MIT License,C#,2
+646827e713df3d68492c5c62,https://github.com/microsoft/spring-cloud-playground,MIT License,Java,4
+646827f113df3d68492c5c64,https://github.com/alibaba/pouch,Apache License 2.0,Go,49
+6468282913df3d68492c5c68,https://github.com/alibaba/spring-cloud-alibaba,Apache License 2.0,Java,7
+6468292913df3d68492c5c6e,https://github.com/alibaba/webar.js,MIT License,,195
+646829ba13df3d68492c5c7c,https://github.com/google/osqp-cpp,Apache License 2.0,C++,2
+64681fd513df3d68492c5c50,https://github.com/microsoft/Windows-AppConsult-Tools-IAPWrapper,MIT License,ASP,3
+64681f1513df3d68492c5c48,https://github.com/apache/servicemix4-nmr,Apache License 2.0,Java,28
+646821b913df3d68492c5c5a,https://github.com/microsoft/presidio,MIT License,Python,86
+646847f113df3d68492c5c93,https://github.com/facebook/chisel,MIT License,Python,281
+6468217313df3d68492c5c56,https://github.com/alibaba/funcraft,MIT License,JavaScript,450
+6468283313df3d68492c5c6c,https://github.com/alibaba/ListItem,Apache License 2.0,Java,1
+64682b2f13df3d68492c5c8e,https://github.com/alibaba/spring-boot-web-support,GNU General Public License v3.0,Java,8
+64682a1213df3d68492c5c80,https://github.com/apache/commons-validator,Apache License 2.0,Java,1
+6468204113df3d68492c5c54,https://github.com/alibaba/beidou,MIT License,JavaScript,232
+64681fef13df3d68492c5c52,https://github.com/google/ldif,Apache License 2.0,Python,2
+6468278013df3d68492c5c60,https://github.com/alibaba/dawn,MIT License,JavaScript,4
+646829f213df3d68492c5c7e,https://github.com/google/fhir-data-pipes,Apache License 2.0,Java,20
+6468217713df3d68492c5c58,https://github.com/alibaba/android_viewtracker,Apache License 2.0,Java,4
+64682a9713df3d68492c5c86,https://github.com/google/ml_collections,Apache License 2.0,Python,2
+64684d7213df3d68492c5caa,https://github.com/facebook/lexical,MIT License,JavaScript,89
+64684a1313df3d68492c5ca2,https://github.com/facebook/FAI-PEP,Apache License 2.0,Python,26
+6468491613df3d68492c5c9c,https://github.com/facebook/SoLoader,Apache License 2.0,Java,4
+64684c8c13df3d68492c5ca6,https://github.com/google/blockly,Apache License 2.0,TypeScript,15
+64685e2213df3d68492c5cf3,https://github.com/google/android-gradle-dsl,Apache License 2.0,HTML,20
+646848be13df3d68492c5c96,https://github.com/facebook/wangle,Apache License 2.0,C++,20
+6468511713df3d68492c5cc7,https://github.com/microsoft/ADBench,MIT License,C++,23
+64684ee713df3d68492c5cbf,https://github.com/microsoft/Windows-appsample-trafficapp,MIT License,C#,9
+64685d4613df3d68492c5ce5,https://github.com/microsoft/Coding4Fun,MIT License,HTML,12
+64685db013df3d68492c5ced,https://github.com/google/account-provisioning-for-google-apps,Apache License 2.0,Java,2
+6468498b13df3d68492c5c9e,https://github.com/facebook/fb303,Apache License 2.0,C++,1
+64685c9b13df3d68492c5cd5,https://github.com/microsoft/ntttcp-for-linux,MIT License,C,2
+64685cc513df3d68492c5cd9,https://github.com/microsoft/Mobius,MIT License,C#,16
+64685da213df3d68492c5ceb,https://github.com/microsoft/libobjc2,MIT License,C,1
+64685e9013df3d68492c5cf5,https://github.com/microsoft/botframework-sdk,MIT License,JavaScript,1
+6468610e13df3d68492c5d0d,https://github.com/microsoft/jschema,Apache License 2.0,C#,7
+6468515d13df3d68492c5cc9,https://github.com/google/open-location-code,Apache License 2.0,Java,30
+64684d9813df3d68492c5cae,https://github.com/facebook/buck2,Apache License 2.0,Rust,1
+64684de813df3d68492c5cb4,https://github.com/microsoft/Microsoft.IO.RecyclableMemoryStream,MIT License,C#,1
+64685cdf13df3d68492c5cdb,https://github.com/google/yapf,Apache License 2.0,Python,1
+64685e1b13df3d68492c5cf1,https://github.com/google/capirca,Apache License 2.0,Python,64
+64685d3f13df3d68492c5ce3,https://github.com/google/archive-patcher,Apache License 2.0,Java,107
+6468602213df3d68492c5cf7,https://github.com/google/openhtf,Apache License 2.0,Python,41
+6468605b13df3d68492c5cfd,https://github.com/microsoft/azure-pipelines-extensions,MIT License,PowerShell,5
+64685d0613df3d68492c5cdd,https://github.com/google/wwgc,Apache License 2.0,JavaScript,29
+6468610413df3d68492c5d0b,https://github.com/google/marzipano,Apache License 2.0,JavaScript,12
+646848f713df3d68492c5c98,https://github.com/facebook/jscodeshift,MIT License,JavaScript,7
+64684c9013df3d68492c5ca8,https://github.com/microsoft/QuickInject,MIT License,C#,1
+646865df13df3d68492c5d29,https://github.com/microsoft/BotBuilder-Samples,MIT License,HTML,400
+64684edb13df3d68492c5cbd,https://github.com/google/re2,"BSD 3-Clause ""New"" or ""Revised"" License",C++,9
+64685d6613df3d68492c5ce9,https://github.com/google/watchpresenter,Apache License 2.0,Java,7
+6468637b13df3d68492c5d1f,https://github.com/google/meterstick,Apache License 2.0,Jupyter Notebook,1
+64684eeb13df3d68492c5cc1,https://github.com/microsoft/Office-Online-Test-Tools-and-Documentation,MIT License,,6
+64685d0e13df3d68492c5cdf,https://github.com/microsoft/cordova-plugin-hockeyapp,Apache License 2.0,HTML,4
+64684a1913df3d68492c5ca4,https://github.com/facebook/SPARTA,MIT License,C++,2
+64684ebd13df3d68492c5cbb,https://github.com/microsoft/Chakra-Samples,MIT License,HTML,306
+6468603413df3d68492c5cf9,https://github.com/google/s2-geometry-library-java,Apache License 2.0,Java,6
+64685c5e13df3d68492c5ccf,https://github.com/microsoft/vscode,MIT License,TypeScript,128
+64686b2f13df3d68492c5d33,https://github.com/microsoft/AzureKeyVaultExplorer,MIT License,C#,2
+646861ed13df3d68492c5d11,https://github.com/microsoft/vstest,MIT License,C#,157
+64686d2313df3d68492c5d40,https://github.com/google/pik,MIT License,C++,75
+646850e913df3d68492c5cc5,https://github.com/microsoft/VSSDK-Extensibility-Samples,MIT License,C#,110
+646864f813df3d68492c5d27,https://github.com/microsoft/vscode-html-languageservice,MIT License,TypeScript,8
+64685d1c13df3d68492c5ce1,https://github.com/microsoft/orca,Apache License 2.0,Groovy,18
+6468626913df3d68492c5d17,https://github.com/google/gps-measurement-tools,Apache License 2.0,Java,113
+646862b013df3d68492c5d1b,https://github.com/microsoft/LightGBM,MIT License,C++,59
+6468690913df3d68492c5d2d,https://github.com/google/gapid,Apache License 2.0,Go,812
+64686c6713df3d68492c5d39,https://github.com/microsoft/WakeYourPC_AndroidApp,MIT License,Java,2
+64684dd213df3d68492c5cb0,https://github.com/facebook/memlab,MIT License,TypeScript,90
+64686cd413df3d68492c5d3c,https://github.com/google/vk_callback_swapchain,Apache License 2.0,C++,282
+64686bb313df3d68492c5d35,https://github.com/google/clif,Apache License 2.0,Python,341
+6468708613df3d68492c5d61,https://github.com/google/cel-cpp,Apache License 2.0,C++,9
+64686eab13df3d68492c5d46,https://github.com/google/xctestrunner,Apache License 2.0,Python,7
+646872a113df3d68492c5d7e,https://github.com/google/mentornet,Apache License 2.0,Python,14
+6468726213df3d68492c5d78,https://github.com/google/gin-config,Apache License 2.0,Python,321
+6468732413df3d68492c5d86,https://github.com/google/docsy,Apache License 2.0,HTML,33
+646870a813df3d68492c5d69,https://github.com/microsoft/Windows-appsample-annotated-audio,MIT License,C#,2
+646871f013df3d68492c5d76,https://github.com/google/dynamic-form,Apache License 2.0,TypeScript,1
+64686fa613df3d68492c5d55,https://github.com/google/codemirror-mode-jsonnet,Apache License 2.0,JavaScript,295
+64686fe013df3d68492c5d59,https://github.com/google/data-transfer-project,Apache License 2.0,Java,21
+6468714b13df3d68492c5d72,https://github.com/google/docker-explorer,Apache License 2.0,Python,1
+646873b613df3d68492c5d8a,https://github.com/google/splot-java,Apache License 2.0,Java,229
+6468714413df3d68492c5d70,https://github.com/google/gvisor,Apache License 2.0,Go,18
+646871ec13df3d68492c5d74,https://github.com/microsoft/dynamics365-kbmigration,MIT License,C#,2
+6468729613df3d68492c5d7c,https://github.com/google/payjs,Apache License 2.0,JavaScript,1
+6468705a13df3d68492c5d5b,https://github.com/microsoft/WindowsRuntimeAPIs_Javascript_snippets,MIT License,JavaScript,1
+646870a513df3d68492c5d67,https://github.com/google/knusperli,Apache License 2.0,C++,1
+646875a513df3d68492c5d92,https://github.com/google/clusterfuzz,Apache License 2.0,Python,1498
+646873c813df3d68492c5d8e,https://github.com/microsoft/GazeInteractionApps,MIT License,C#,24
+646876c213df3d68492c5d96,https://github.com/google/pprof-nodejs,Apache License 2.0,JavaScript,4
+64687f6713df3d68492c5da3,https://github.com/microsoft/Bing-Maps-Fleet-Tracker,MIT License,C#,2
+6468887113df3d68492c5da9,https://github.com/google/tweakr,Apache License 2.0,JavaScript,221
+64687e9313df3d68492c5d9d,https://github.com/apache/apr-iconv,Apache License 2.0,C,55
+646876b713df3d68492c5d94,https://github.com/google/android-uiconductor,Apache License 2.0,Java,98
+646876d713df3d68492c5d98,https://github.com/google/brunsli,MIT License,C++,40
+64688b6013df3d68492c5dc1,https://github.com/google/framework-for-osdu,Apache License 2.0,Java,54
+646888aa13df3d68492c5dab,https://github.com/google/qkeras,Apache License 2.0,Python,7
+64688ae513df3d68492c5db3,https://github.com/microsoft/botbuilder-js,MIT License,TypeScript,10
+64688d2a13df3d68492c5dcb,https://github.com/google/agi,Apache License 2.0,Go,542
+64688bb313df3d68492c5dc7,https://github.com/microsoft/Windows-Machine-Learning,MIT License,C++,28
+64688b4113df3d68492c5dbf,https://github.com/microsoft/TrillSamples,MIT License,C#,3
+64688b3513df3d68492c5db9,https://github.com/google/AndroidForegroundCompat,Apache License 2.0,Java,19
+64687e5f13df3d68492c5d9b,https://github.com/microsoft/WingtipTicketsSaaS-DbPerTenant,MIT License,PowerShell,2396
+64687f8013df3d68492c5da5,https://github.com/microsoft/CodeTalk,MIT License,C#,1
+64687f5213df3d68492c5da1,https://github.com/microsoft/Windows-Packaging-Samples,MIT License,C#,11
+646888b113df3d68492c5dad,https://github.com/alibaba/tsar,Apache License 2.0,C,4
+64687fe313df3d68492c5da7,https://github.com/google/usd_from_gltf,Apache License 2.0,C++,114
+64688b2d13df3d68492c5db7,https://github.com/google/marl,Apache License 2.0,C++,47
+64688fee13df3d68492c5dd5,https://github.com/alibaba/uirecorder,MIT License,JavaScript,11
+6468913213df3d68492c5dd9,https://github.com/microsoft/Intune-Resource-Access,MIT License,C#,2
+64688f5713df3d68492c5dd3,https://github.com/apache/tika,Apache License 2.0,Java,479
+646893c513df3d68492c5ded,https://github.com/google/security-research,Apache License 2.0,Go,8
+6468938013df3d68492c5de7,https://github.com/google/EtwToPprof,Apache License 2.0,C#,1
+6468941013df3d68492c5df0,https://github.com/google/creatine-ads-inspector,Apache License 2.0,Java,100
+6468936813df3d68492c5de3,https://github.com/microsoft/Windows-AppConsult-Samples-DesktopBridge,MIT License,C#,67
+6468945113df3d68492c5df6,https://github.com/google/mirror-branch-action,Apache License 2.0,TypeScript,296
+6468985213df3d68492c5dfa,https://github.com/microsoft/Freeflow,MIT License,C,1208
+6468915d13df3d68492c5de1,https://github.com/microsoft/IIS.Common,MIT License,C++,4
+646895d313df3d68492c5df8,https://github.com/google/uncertainty-baselines,Apache License 2.0,Python,752
+6468937513df3d68492c5de5,https://github.com/google/shopping-markup,Apache License 2.0,Python,7
+646893c113df3d68492c5deb,https://github.com/alibaba/jetcache,Apache License 2.0,Java,75
+6468942613df3d68492c5df2,https://github.com/microsoft/glTF-SDK,MIT License,C++,39
+6468a6cc13df3d68492c5e5b,https://github.com/google/eclipse2017,Apache License 2.0,Python,5
+64689dc013df3d68492c5e2d,https://github.com/google/allocation-instrumenter,Apache License 2.0,Java,15
+6468afcb13df3d68492c5eb9,https://github.com/microsoft/windows-tutorials-customer-database,MIT License,C#,6
+6468b75513df3d68492c5ed4,https://github.com/microsoft/Windows-appsample-networkhelper,MIT License,C#,4
+6468ba9a13df3d68492c5ee7,https://github.com/google/copybara,Apache License 2.0,Java,47
+6468a67813df3d68492c5e53,https://github.com/microsoft/vsts-azurevm-extension,MIT License,Python,283
+6468a48013df3d68492c5e4b,https://github.com/google/oss-fuzz,Apache License 2.0,Shell,396
+646899d213df3d68492c5e09,https://github.com/alibaba/velocity-spring-boot-project,Apache License 2.0,Java,153
+64689b3713df3d68492c5e14,https://github.com/facebook/openr,MIT License,C++,30
+6468a75213df3d68492c5e5f,https://github.com/google/patents-public-data,Apache License 2.0,Jupyter Notebook,345
+6468a39813df3d68492c5e49,https://github.com/microsoft/vscode-css-languageservice,MIT License,TypeScript,4
+646898e513df3d68492c5e02,https://github.com/alibaba/tac,MIT License,Java,35
+6468b1e313df3d68492c5ec0,https://github.com/apache/log4j-zeroconf,Apache License 2.0,Java,30
+6468a4c413df3d68492c5e4f,https://github.com/microsoft/Resource-Static-Analysis,MIT License,C#,98
+6468acea13df3d68492c5e9d,https://github.com/google/highway,Apache License 2.0,C++,7
+6468aee113df3d68492c5ea9,https://github.com/google/software-product-sprint,Apache License 2.0,Java,45
+6468b95413df3d68492c5edb,https://github.com/google/UIforETW,Apache License 2.0,C++,28
+6468a6a313df3d68492c5e57,https://github.com/microsoft/fiat,Apache License 2.0,Java,20
+6468a80313df3d68492c5e67,https://github.com/microsoft/azuredevopslabs,MIT License,CSS,6
+6468af8613df3d68492c5eb5,https://github.com/google/trimmed_match,Apache License 2.0,Python,3
+6468b21713df3d68492c5ec4,https://github.com/apache/geronimo-txmanager,Apache License 2.0,Java,8
+64689a1813df3d68492c5e0c,https://github.com/facebook/mcrouter,MIT License,C++,1
+64689c1713df3d68492c5e20,https://github.com/microsoft/DirectXTex,MIT License,C++,145
+6468b1d713df3d68492c5ebe,https://github.com/apache/mina-sshd,Apache License 2.0,Java,176
+6468a8e713df3d68492c5e6f,https://github.com/microsoft/Dynamics365PSA,MIT License,C#,59
+6468aa1c13df3d68492c5e78,https://github.com/google/ground-android,Apache License 2.0,Kotlin,260
+6468aa6113df3d68492c5e7a,https://github.com/google/asylo,Apache License 2.0,C++,31
+6468ac7313df3d68492c5e97,https://github.com/microsoft/slngen,MIT License,C#,2
+6468af2513df3d68492c5ead,https://github.com/microsoft/MCW-SAP-HANA-on-Azure,MIT License,HCL,23
+6468987e13df3d68492c5dfc,https://github.com/alibaba/easyexcel,Apache License 2.0,Java,82
+6468a9d213df3d68492c5e76,https://github.com/microsoft/FourQlib,MIT License,C,1
+64689bba13df3d68492c5e1e,https://github.com/google/nsscache,GNU General Public License v2.0,Python,18
+6468a0ef13df3d68492c5e3b,https://github.com/microsoft/Availability-Monitor-for-Kafka,MIT License,Java,3
+6468a7b313df3d68492c5e63,https://github.com/google/ios-device-control,Apache License 2.0,Java,108
+6468ac3e13df3d68492c5e8d,https://github.com/google/sandboxed-api,Apache License 2.0,C++,303
+6468acd013df3d68492c5e9b,https://github.com/microsoft/powerapps-tools,MIT License,C#,10
+6468abf613df3d68492c5e87,https://github.com/google/tock-on-titan,Apache License 2.0,Rust,189
+6468b0b213df3d68492c5ebc,https://github.com/alibaba/ocr-label-tool,Apache License 2.0,C#,3
+64689d3013df3d68492c5e28,https://github.com/google/end-to-end,Apache License 2.0,JavaScript,7
+6468a21513df3d68492c5e43,https://github.com/microsoft/TPM-2.0-Parser,MIT License,C#,2
+6468ae7613df3d68492c5ea3,https://github.com/apache/nutch,Apache License 2.0,Java,344
+6468af5f13df3d68492c5eb1,https://github.com/google/glome,Apache License 2.0,C,97
+6468b21b13df3d68492c5ec6,https://github.com/alibaba/spring-webmvc-support,GNU General Public License v3.0,Java,8
+6468b53813df3d68492c5ece,https://github.com/microsoft/ApplicationInsights-Python,MIT License,Python,7
+6468ba0813df3d68492c5ee2,https://github.com/google/s2geometry,Apache License 2.0,C++,26
+6468ab8b13df3d68492c5e80,https://github.com/microsoft/CSPTASM,MIT License,C#,20
+6468989313df3d68492c5dfe,https://github.com/alibaba/footmark,Apache License 2.0,Python,4
+64689a7913df3d68492c5e10,https://github.com/facebook/idb,MIT License,Objective-C,72
+64689dd313df3d68492c5e31,https://github.com/microsoft/opensource-management-portal,MIT License,TypeScript,6
+6468a0c013df3d68492c5e33,https://github.com/microsoft/deck,Apache License 2.0,JavaScript,5
+64689a9513df3d68492c5e12,https://github.com/facebook/prophet,MIT License,Python,41
+6468a69e13df3d68492c5e55,https://github.com/google/EXEgesis,Apache License 2.0,C++,59
+6468ac0413df3d68492c5e89,https://github.com/google/ukey2,Apache License 2.0,Java,4
+6468a56013df3d68492c5e51,https://github.com/microsoft/mssql-jdbc,MIT License,Java,242
+6468ac5b13df3d68492c5e91,https://github.com/alibaba/tamper,Apache License 2.0,Java,196
+6468ac6c13df3d68492c5e95,https://github.com/google/android-kerberos-authenticator,Apache License 2.0,Java,1
+6468afc413df3d68492c5eb7,https://github.com/google/tsunami-security-scanner,Apache License 2.0,Java,102
+6468b9db13df3d68492c5ee0,https://github.com/google/turbinia,Apache License 2.0,Python,2
+64689a2f13df3d68492c5e0e,https://github.com/google/auto,Apache License 2.0,Java,25
+64689b9c13df3d68492c5e18,https://github.com/google/skia-buildbot,"BSD 3-Clause ""New"" or ""Revised"" License",Go,22
+6468a1f913df3d68492c5e3d,https://github.com/microsoft/GalaxyExplorer,MIT License,C#,1401
+6468ad3c13df3d68492c5e9f,https://github.com/google/transperf,Apache License 2.0,Python,15
+6468b50813df3d68492c5ec8,https://github.com/facebook/react,MIT License,JavaScript,10
+6468bae213df3d68492c5ee9,https://github.com/google/mobly,Apache License 2.0,Python,142
+6468bbc513df3d68492c5efb,https://github.com/google/importlab,Apache License 2.0,Python,5
+6468bee713df3d68492c5f0f,https://github.com/google/differential-privacy,Apache License 2.0,C++,23
+6468bc2a13df3d68492c5eff,https://github.com/microsoft/MRDesignLabs_Unity_Tools,MIT License,C#,278
+6468bd1713df3d68492c5f03,https://github.com/microsoft/EmbeddedSocial-CSharp-API-Library,MIT License,C#,539
+6468c8f713df3d68492c5f54,https://github.com/google/closure-library,Apache License 2.0,JavaScript,41
+6468c08213df3d68492c5f23,https://github.com/microsoft/Intune-PowerShell-SDK,MIT License,C#,3
+6468c30513df3d68492c5f35,https://github.com/google/subpar,Apache License 2.0,Python,4
+6468c52e13df3d68492c5f4c,https://github.com/google/gps_building_blocks,Apache License 2.0,Python,390
+6468bf2013df3d68492c5f13,https://github.com/alibaba/transmittable-thread-local,Apache License 2.0,Java,3
+6468bd6213df3d68492c5f07,https://github.com/google/devx-tools,Apache License 2.0,Go,1
+6468c53d13df3d68492c5f4e,https://github.com/alibaba/terraform-provider,Apache License 2.0,Go,27
+6468c19d13df3d68492c5f29,https://github.com/google/certificate-transparency,Apache License 2.0,C++,72
+6468bfa313df3d68492c5f15,https://github.com/apache/sanselan,Apache License 2.0,Java,17
+6468bf1013df3d68492c5f11,https://github.com/microsoft/EyeDrive,MIT License,C#,25
+6468bbbc13df3d68492c5ef9,https://github.com/microsoft/ApplicationInsights-ServiceFabric,MIT License,C#,2
+6468c4a013df3d68492c5f4a,https://github.com/microsoft/GaitAndBalanceApp,MIT License,C#,5
+6468c5aa13df3d68492c5f50,https://github.com/apache/activemq-activeio,Apache License 2.0,Java,83
+6468c2fa13df3d68492c5f31,https://github.com/microsoft/vsts-docker,MIT License,Python,678
+6468c06613df3d68492c5f21,https://github.com/alibaba/COLA,GNU Lesser General Public License v2.1,Java,774
+6468cb2d13df3d68492c5f60,https://github.com/google/tf_mesh_renderer,Apache License 2.0,Python,24
+6468bc4813df3d68492c5f01,https://github.com/google/adiantum,MIT License,C,492
+6468bebd13df3d68492c5f0d,https://github.com/google/blockly-samples,Apache License 2.0,JavaScript,13
+6468c15013df3d68492c5f27,https://github.com/google/jimfs,Apache License 2.0,Java,62
+6468c1dc13df3d68492c5f2b,https://github.com/google/open-vcdiff,Apache License 2.0,C++,176
+6468c3f213df3d68492c5f42,https://github.com/microsoft/Windows-appsample-photo-lab,MIT License,C#,6
+6468c49313df3d68492c5f46,https://github.com/google/audio-to-tactile,Apache License 2.0,C,620
+6468c00113df3d68492c5f1d,https://github.com/microsoft/tsiclient,MIT License,TypeScript,2
+6468cad813df3d68492c5f5e,https://github.com/google/vulkan_test_applications,Apache License 2.0,C++,392
+6468c32613df3d68492c5f3b,https://github.com/google/chatbase-python,Apache License 2.0,Python,14
+6468c00c13df3d68492c5f1f,https://github.com/alibaba/vanex,"BSD 2-Clause ""Simplified"" License",JavaScript,7
+6468c31213df3d68492c5f37,https://github.com/google/mobly-snippet-lib,Apache License 2.0,,34
+6468cbcf13df3d68492c5f66,https://github.com/apache/commons-collections,Apache License 2.0,Java,77
+6468ca2a13df3d68492c5f5a,https://github.com/google/ngx_brotli,"BSD 2-Clause ""Simplified"" License",C,22
+6468ce1813df3d68492c5f7a,https://github.com/microsoft/GraphEngine,MIT License,C#,2919
+6468cc5d13df3d68492c5f78,https://github.com/microsoft/WPFDXInterop,MIT License,C++,1
+6468cc1c13df3d68492c5f70,https://github.com/google/pyu2f,Apache License 2.0,Python,3
+6468cc5813df3d68492c5f76,https://github.com/google/ml-compiler-opt,Apache License 2.0,Python,10
+6468cbd413df3d68492c5f68,https://github.com/microsoft/appcenter-sampleapp-react-native,MIT License,TypeScript,10
+6468cec813df3d68492c5f7c,https://github.com/google/flax,Apache License 2.0,Python,326
+6468cc0913df3d68492c5f6c,https://github.com/microsoft/azure-pipelines-tasks,MIT License,TypeScript,3
+6468cf6913df3d68492c5f80,https://github.com/alibaba/spring-context-support,Apache License 2.0,Java,9
+6468cf5613df3d68492c5f7e,https://github.com/google/winops,Apache License 2.0,Go,387
+6468d14b13df3d68492c5f96,https://github.com/microsoft/PointerSQL,MIT License,Python,320
+6468cfb113df3d68492c5f8b,https://github.com/alibaba/BizGoblin,MIT License,TypeScript,10
+6468cff413df3d68492c5f91,https://github.com/apache/bval,Apache License 2.0,Java,4
+6468cfc213df3d68492c5f8d,https://github.com/alibaba/pont,MIT License,TypeScript,26
+646901ec13df3d68492c5fb8,https://github.com/alibaba/termd,Apache License 2.0,Java,305
+6469047c13df3d68492c5fba,https://github.com/apache/hcatalog,Apache License 2.0,Java,339
+6468d19613df3d68492c5f9d,https://github.com/microsoft/PhoneticMatching,MIT License,C#,2
+64693c4213df3d68492c5fdb,https://github.com/apache/empire-db,Apache License 2.0,Java,79
+64693b6613df3d68492c5fd4,https://github.com/apache/santuario-cpp,Apache License 2.0,C++,102
+646904c513df3d68492c5fbd,https://github.com/apache/karaf-cellar,Apache License 2.0,Java,122
+6468fe1413df3d68492c5fae,https://github.com/alibaba/text-ui,GNU General Public License v3.0,Java,1
+6469363013df3d68492c5fc5,https://github.com/google/CommonLoopUtils,Apache License 2.0,Jupyter Notebook,1
+6468ff7113df3d68492c5fb2,https://github.com/apache/ftpserver,Apache License 2.0,Java,409
+6468fdfb13df3d68492c5fab,https://github.com/microsoft/SiteInspector,MIT License,JavaScript,16
+64693b8413df3d68492c5fd6,https://github.com/google/sample-sql-translator,Apache License 2.0,Python,55
+646976fc13df3d68492c5ffe,https://github.com/alibaba/iot_remote_access,Apache License 2.0,C,428
+646975b713df3d68492c5ff4,https://github.com/apache/bigtop,Apache License 2.0,Python,229
+6469d7b913df3d68492c601f,https://github.com/alibaba/euler,Apache License 2.0,C++,4
+646a1875ad558202d9fd3b63,https://github.com/alibaba/metrics,Apache License 2.0,Java,95
+646975bc13df3d68492c5ff6,https://github.com/apache/kandula,Apache License 2.0,Java,8
+6469d0f113df3d68492c6009,https://github.com/google/slo-generator,Apache License 2.0,Python,2
+64693c5a13df3d68492c5fdf,https://github.com/alibaba/nls-dialog-sdk,Apache License 2.0,Java,16
+6469d16413df3d68492c600b,https://github.com/microsoft/pyspark_propensity_matching,MIT License,Python,265
+646a1ca9ad558202d9fd3b76,https://github.com/apache/giraph,Apache License 2.0,Java,286
+6469d79513df3d68492c601d,https://github.com/apache/sandesha,Apache License 2.0,Java,6
+646a1ccaad558202d9fd3b7e,https://github.com/google/plusfish,Apache License 2.0,C++,2
+646a3f22ad558202d9fd3b8b,https://github.com/apache/commons-fileupload,Apache License 2.0,Java,3
+646a47dbad558202d9fd3b95,https://github.com/google/vpn-libraries,Apache License 2.0,C++,27
+646a1e7fad558202d9fd3b86,https://github.com/alibaba/flutter_boost,MIT License,Dart,30
+646a5464ad558202d9fd3bca,https://github.com/apache/opennlp,Apache License 2.0,Java,260
+646a548dad558202d9fd3bd0,https://github.com/microsoft/vs-extension-testing,MIT License,C#,1
+646a4b52ad558202d9fd3ba8,https://github.com/apache/commons-compress,Apache License 2.0,Java,280
+646a529dad558202d9fd3bba,https://github.com/apache/commons-exec,Apache License 2.0,Java,13
+646a40e1ad558202d9fd3b8f,https://github.com/microsoft/exsim,MIT License,C#,1
+646a7236ad558202d9fd3c04,https://github.com/alibaba/eCommerceSearchBench,Apache License 2.0,Jupyter Notebook,5
+646a54c2ad558202d9fd3bd2,https://github.com/alibaba/alibaba-flink-connectors,Apache License 2.0,Java,26
+646a91b7ad558202d9fd3c42,https://github.com/apache/any23,Apache License 2.0,HTML,32
+646a7181ad558202d9fd3bf8,https://github.com/google/atheris,Apache License 2.0,Python,4
+646a89b5ad558202d9fd3c2b,https://github.com/microsoft/cppgraphqlgen,MIT License,C++,120
+646a88aead558202d9fd3c25,https://github.com/alibaba/EasyReinforcementLearning,Apache License 2.0,Python,631
+646a5158ad558202d9fd3bb5,https://github.com/apache/tiles,Apache License 2.0,Java,24
+646a8815ad558202d9fd3c23,https://github.com/apache/tiles-request,Apache License 2.0,Java,11
+646aaa05ad558202d9fd3c4e,https://github.com/microsoft/human-pose-estimation.pytorch,MIT License,Python,7
+646a8e69ad558202d9fd3c36,https://github.com/apache/karaf-cave,Apache License 2.0,Java,9
+646aaa37ad558202d9fd3c52,https://github.com/alibaba/innodb-java-reader,Apache License 2.0,Java,13
+646a8e23ad558202d9fd3c31,https://github.com/alibaba/lightproxy,Apache License 2.0,TypeScript,125
+646a7200ad558202d9fd3c00,https://github.com/alibaba/FastNN,Apache License 2.0,Python,279
+646a87dead558202d9fd3c1f,https://github.com/alibaba/alibaba-rsocket-broker,Apache License 2.0,Java,57
+646a89c8ad558202d9fd3c2f,https://github.com/microsoft/MTC_WindowsSmartInk,MIT License,C#,16
+646aab9dad558202d9fd3c5a,https://github.com/apache/james-postage,Apache License 2.0,Java,3
+646aac12ad558202d9fd3c5e,https://github.com/microsoft/FASTER,MIT License,C#,36
+646aad24ad558202d9fd3c65,https://github.com/alibaba/aliyun-spring-boot,Apache License 2.0,Java,2
+646ad0f1ad558202d9fd3ca9,https://github.com/microsoft/Project_Natick_Analysis,MIT License,Python,338
+646aaff7ad558202d9fd3c7d,https://github.com/microsoft/DMF,MIT License,C,788
+646ad29cad558202d9fd3cb7,https://github.com/alibaba/one-java-agent,Apache License 2.0,Java,87
+646abba3ad558202d9fd3ca0,https://github.com/microsoft/Partner-Center-PowerShell,MIT License,C#,509
+646aad4aad558202d9fd3c69,https://github.com/google/deluca,Apache License 2.0,Python,3
+646aad36ad558202d9fd3c67,https://github.com/alibaba/camera-proxy,MIT License,JavaScript,2
+646ab3aaad558202d9fd3c8b,https://github.com/apache/james-jsieve,Apache License 2.0,Java,29
+646aaeb0ad558202d9fd3c77,https://github.com/apache/james-jdkim,Apache License 2.0,Java,61
+646ab006ad558202d9fd3c7f,https://github.com/alibaba/SparkCube,Apache License 2.0,Scala,4
+646ab44ead558202d9fd3c8d,https://github.com/google/fedjax,Apache License 2.0,Python,390
+646ad10dad558202d9fd3cad,https://github.com/apache/creadur-rat,Apache License 2.0,Java,38
+646ad14cad558202d9fd3cb1,https://github.com/google/osv.dev,Apache License 2.0,Python,50
+646ab4d6ad558202d9fd3c91,https://github.com/microsoft/dotnet-apiport-ui,MIT License,C#,11
+646ad7e0ad558202d9fd3cc4,https://github.com/alibaba/compileflow,Apache License 2.0,Java,4
+646adb34ad558202d9fd3ccf,https://github.com/google/BIG-bench,Apache License 2.0,Python,542
+646adcdfad558202d9fd3ce9,https://github.com/google/shadertrap,Apache License 2.0,C++,22
+646adc3bad558202d9fd3cdd,https://github.com/apache/cordova-android,Apache License 2.0,JavaScript,5
+646adb5aad558202d9fd3cd3,https://github.com/microsoft/service-fabric-backup-explorer,MIT License,C#,4
+646ada26ad558202d9fd3ccd,https://github.com/google/aistplusplus_api,Apache License 2.0,Python,35
+646adb97ad558202d9fd3cd7,https://github.com/alibaba/compileflow-idea-designer,Apache License 2.0,Java,19
+646adb80ad558202d9fd3cd5,https://github.com/microsoft/fluent-xaml-theme-editor,MIT License,C#,82
+646ad2edad558202d9fd3cba,https://github.com/alibaba/libgrape-lite,Apache License 2.0,C++,34
+646ade7bad558202d9fd3cf0,https://github.com/alibaba/switch-config,Apache License 2.0,Java,90
+646ae010ad558202d9fd3cf8,https://github.com/alibaba/EasyTransfer,Apache License 2.0,Python,629
+646adf44ad558202d9fd3cf4,https://github.com/google/model_search,Apache License 2.0,Python,34
+646afd61ad558202d9fd3d08,https://github.com/alibaba/bytekit,Apache License 2.0,Java,113
+646afc78ad558202d9fd3cff,https://github.com/google/nerfies,Apache License 2.0,Python,1
+646b0858ad558202d9fd3d0f,https://github.com/alibaba/acqdp,MIT License,Python,337
+646b0959ad558202d9fd3d16,https://github.com/microsoft/VanArsdel,MIT License,C#,46
+646b7ed544bfe65f23891a90,https://github.com/google/TestParameterInjector,Apache License 2.0,Java,6
+646b6f3544bfe65f23891a69,https://github.com/alibaba/easy-retry,MIT License,Java,4
+646b650844bfe65f23891a4d,https://github.com/google/open-dice,Apache License 2.0,C++,3
+646b6ef944bfe65f23891a61,https://github.com/google/dicomproxy,Mozilla Public License 2.0,Java,2
+646b7cce44bfe65f23891a88,https://github.com/alibaba/UniFuse-Unidirectional-Fusion,MIT License,Python,2
+646b80a344bfe65f23891a9a,https://github.com/alibaba/easydispatch,Apache License 2.0,Python,2
+646b6eee44bfe65f23891a5d,https://github.com/google/duet,Apache License 2.0,Python,5
+646b635944bfe65f23891a39,https://github.com/alibaba/testable-mock,MIT License,Java,10
+646b7ca844bfe65f23891a82,https://github.com/microsoft/MTC_ComeSayHi,MIT License,C#,3
+646b7d4944bfe65f23891a8c,https://github.com/apache/commons-configuration,Apache License 2.0,Java,14
+646b849044bfe65f23891ab4,https://github.com/microsoft/Atlas,MIT License,C#,4
+646b0a4fad558202d9fd3d22,https://github.com/microsoft/fhir-server,MIT License,TSQL,21
+646b6f4f44bfe65f23891a6b,https://github.com/alibaba/cluster-contrast-reid,MIT License,Python,1
+646b097dad558202d9fd3d1a,https://github.com/google/TaglessCRM,Apache License 2.0,Python,12
+646b6f0e44bfe65f23891a65,https://github.com/microsoft/AI-Robot-Challenge-Lab,MIT License,Python,4
+646b632444bfe65f23891a31,https://github.com/apache/commons-net,Apache License 2.0,Java,121
+646b711144bfe65f23891a70,https://github.com/microsoft/oe-engine,MIT License,Go,1
+646b710844bfe65f23891a6e,https://github.com/google/privacy-sandbox-aggregation-service,Apache License 2.0,Go,39
+646b82a744bfe65f23891ab0,https://github.com/google/megalista,Apache License 2.0,Python,326
+646b848044bfe65f23891ab2,https://github.com/google/pigweed,Apache License 2.0,C++,679
+646b875544bfe65f23891ac7,https://github.com/apache/creadur-whisker,Apache License 2.0,Java,253
+646b876f44bfe65f23891acb,https://github.com/alibaba/table-computing,Apache License 2.0,Java,6
+646b991a44bfe65f23891ae8,https://github.com/apache/oltu,Apache License 2.0,Java,198
+646b885644bfe65f23891acd,https://github.com/microsoft/graspologic,MIT License,Python,388
+646b90cb44bfe65f23891ad9,https://github.com/alibaba/fastFFI,Apache License 2.0,Java,64
+646b911b44bfe65f23891add,https://github.com/apache/royale-asjs,Apache License 2.0,ActionScript,328
+646b90d344bfe65f23891adb,https://github.com/alibaba/open-simulator,Apache License 2.0,Go,10
+646b988944bfe65f23891ae6,https://github.com/alibaba/Elastic-Federated-Learning-Solution,Apache License 2.0,Python,158
+646bb84844bfe65f23891af6,https://github.com/microsoft/python-sample-vscode-django-tutorial,MIT License,Python,6
+646bb8ec44bfe65f23891afa,https://github.com/alibaba/EssentialMC2,MIT License,Python,329
+646bb83144bfe65f23891aee,https://github.com/google/distributed_point_functions,Apache License 2.0,C++,13
+646bba3244bfe65f23891afe,https://github.com/apache/commons-csv,Apache License 2.0,Java,2
+646bbc8d44bfe65f23891b0e,https://github.com/microsoft/Azure-DCAP-Client,MIT License,C++,10
+646bbed944bfe65f23891b1c,https://github.com/alibaba/ilogtail,Apache License 2.0,C++,105
+646bd5b844bfe65f23891b4f,https://github.com/google/iconvg,Apache License 2.0,C,2
+646bbe6f44bfe65f23891b1a,https://github.com/alibaba/t-game-sdk,MIT License,Python,421
+646bd57144bfe65f23891b3e,https://github.com/alibaba/Appactive,Apache License 2.0,Java,2
+646bd63844bfe65f23891b57,https://github.com/google/rdma-unit-test,Apache License 2.0,C++,3
+646bbb0744bfe65f23891b02,https://github.com/google/lecam-gan,Apache License 2.0,Jupyter Notebook,262
+646bbcd844bfe65f23891b10,https://github.com/apache/commons-beanutils,Apache License 2.0,Java,9
+646bc20044bfe65f23891b2c,https://github.com/apache/logging-log4j2,Apache License 2.0,Java,118
+646bbb9b44bfe65f23891b06,https://github.com/alibaba/proxima,Apache License 2.0,C++,331
+646bbc7844bfe65f23891b0c,https://github.com/alibaba/general-scene-interface,MIT License,TypeScript,2
+646bbc3944bfe65f23891b08,https://github.com/alibaba/TinyNeuralNetwork,MIT License,Python,2
+646bbcf244bfe65f23891b16,https://github.com/microsoft/SPTAG,MIT License,C++,2
+646bbc5f44bfe65f23891b0a,https://github.com/google/jax-cfd,Apache License 2.0,Jupyter Notebook,2
+646bd72544bfe65f23891b5b,https://github.com/microsoft/recommenders,MIT License,Python,657
+646bc0bb44bfe65f23891b2a,https://github.com/alibaba/xquic,Apache License 2.0,C,789
+646bd8e244bfe65f23891b6d,https://github.com/alibaba/lowcode-plugins,MIT License,TypeScript,2
+646bdb3e44bfe65f23891ba4,https://github.com/alibaba/pemja,Apache License 2.0,C,55
+646c008744bfe65f23891bdb,https://github.com/apache/commons-proxy,Apache License 2.0,Java,6
+646bdc7944bfe65f23891bb0,https://github.com/microsoft/Trill,MIT License,C#,278
+646c01f344bfe65f23891bed,https://github.com/alibaba/ClickSEG,Apache License 2.0,Python,79
+646bfbba44bfe65f23891bc8,https://github.com/alibaba/EasyParallelLibrary,Apache License 2.0,Python,954
+646bda8944bfe65f23891ba0,https://github.com/microsoft/MobileTrendVis,MIT License,JavaScript,20
+646bdc0944bfe65f23891bac,https://github.com/apache/commons-dbcp,Apache License 2.0,Java,115
+646bd8bc44bfe65f23891b63,https://github.com/apache/cordova-plugin-file,Apache License 2.0,JavaScript,1
+646bfad544bfe65f23891bc4,https://github.com/alibaba/GaiaX,Apache License 2.0,Kotlin,104
+646c015444bfe65f23891be7,https://github.com/microsoft/SparseSC,MIT License,Python,162
+646c023544bfe65f23891bef,https://github.com/apache/commons-functor,Apache License 2.0,Java,52
+646bdbdc44bfe65f23891baa,https://github.com/apache/devicemap-browsermap,Apache License 2.0,JavaScript,687
+646c01c144bfe65f23891beb,https://github.com/alibaba/GaiaSketch,Apache License 2.0,JavaScript,2
+646bdd3e44bfe65f23891bb3,https://github.com/apache/commons-pool,Apache License 2.0,Java,588
+646bfa3e44bfe65f23891bb9,https://github.com/apache/commons-jcs,Apache License 2.0,Java,64
+646bfa7944bfe65f23891bbc,https://github.com/google/yggdrasil-decision-forests,Apache License 2.0,C++,10
+646bfbd744bfe65f23891bca,https://github.com/apache/commons-jexl,Apache License 2.0,Java,10
+646c1d3d44bfe65f23891c24,https://github.com/apache/commons-bcel,Apache License 2.0,Java,6043
+646c034444bfe65f23891bff,https://github.com/alibaba/Ribut,MIT License,Java,118
+646c024a44bfe65f23891bf1,https://github.com/apache/commons-jci,Apache License 2.0,Java,15
+646c02b544bfe65f23891bf9,https://github.com/apache/commons-email,Apache License 2.0,Java,8
+646c047e44bfe65f23891c0d,https://github.com/microsoft/bion,MIT License,C#,27
+646c0bb044bfe65f23891c20,https://github.com/apache/commons-dbutils,Apache License 2.0,Java,1
+646c0ba344bfe65f23891c1e,https://github.com/alibaba/fast-modeling-language,Apache License 2.0,Java,22
+646c041744bfe65f23891c05,https://github.com/google/JacquardSDKAndroid,Apache License 2.0,Java,112
+646c05c144bfe65f23891c15,https://github.com/apache/commons-daemon,Apache License 2.0,C,5
+646c0b0f44bfe65f23891c18,https://github.com/google/polymorphicDSL,Apache License 2.0,Java,6792
+646c05a444bfe65f23891c11,https://github.com/alibaba/FederatedScope,Apache License 2.0,Python,1028
+646c03d244bfe65f23891c03,https://github.com/apache/commons-imaging,Apache License 2.0,Java,31
+646c1f9744bfe65f23891c36,https://github.com/apache/commons-vfs,Apache License 2.0,Java,664
+646c1d6644bfe65f23891c26,https://github.com/apache/commons-chain,Apache License 2.0,Java,34
+646c2c0144bfe65f23891c57,https://github.com/apache/manifoldcf-integration-solr-3.x,Apache License 2.0,Java,42
+646c32a344bfe65f23891c6e,https://github.com/microsoft/CameraTraps,MIT License,Jupyter Notebook,1227
+646c2eea44bfe65f23891c5b,https://github.com/google/init2winit,Apache License 2.0,Python,6
+646c1fc544bfe65f23891c3e,https://github.com/microsoft/BotFramework-DirectLine-DotNet,MIT License,C#,54
+646c1db044bfe65f23891c2e,https://github.com/microsoft/WinDbg-Samples,MIT License,C++,87
+646c2fb944bfe65f23891c64,https://github.com/apache/manifoldcf-integration-solr-4.x,Apache License 2.0,Java,21
+646c2f9444bfe65f23891c60,https://github.com/apache/manifoldcf-integration-sharepoint-2010,Apache License 2.0,C#,2
+646c246e44bfe65f23891c44,https://github.com/microsoft/Microsoft-MPI,MIT License,C++,146
+646c1f9e44bfe65f23891c38,https://github.com/apache/manifoldcf-integration-sharepoint-2007,Apache License 2.0,C#,2
+646c2fa244bfe65f23891c62,https://github.com/alibaba/power_image,MIT License,Dart,35
+646c1eec44bfe65f23891c34,https://github.com/alibaba/Deep-Vision,Apache License 2.0,Python,6
+646c547644bfe65f23891c96,https://github.com/google/ghost-userspace,"BSD 3-Clause ""New"" or ""Revised"" License",C,16
+646c598d44bfe65f23891ca1,https://github.com/google/maldoca,Apache License 2.0,C++,3
+646c532944bfe65f23891c90,https://github.com/alibaba/GraphAr,Apache License 2.0,C++,25
+646c32c944bfe65f23891c70,https://github.com/alibaba/PhotonLibOS,Apache License 2.0,C++,5
+646c5f5f44bfe65f23891cbd,https://github.com/google/gasket-driver,GNU General Public License v2.0,C,1
+646c33c644bfe65f23891c75,https://github.com/apache/cloudstack-docs,Apache License 2.0,HTML,973
+646c52c744bfe65f23891c8a,https://github.com/microsoft/vscode-node-sqlite3,"BSD 3-Clause ""New"" or ""Revised"" License",PLpgSQL,1
+646c343d44bfe65f23891c7f,https://github.com/alibaba/open-object,Apache License 2.0,Go,39
+646c597144bfe65f23891c9f,https://github.com/alibaba/feathub,Apache License 2.0,Python,1432
+646c9c0244bfe65f23891d19,https://github.com/microsoft/QuantumLibraries,MIT License,Q#,4
+646c697e44bfe65f23891cd7,https://github.com/google/ai-weather-climate,Apache License 2.0,Python,414
+646c96bd44bfe65f23891d10,https://github.com/apache/uima-uimafit,Apache License 2.0,Java,76
+646c67f844bfe65f23891ccf,https://github.com/alibaba/cloud-native-app-initializer,Apache License 2.0,Java,228
+646ca2dc44bfe65f23891d44,https://github.com/microsoft/ShaderConductor,MIT License,C++,5
+646ca3c444bfe65f23891d46,https://github.com/apache/couchdb-fauxton,Apache License 2.0,JavaScript,72
+646c8e1d44bfe65f23891ced,https://github.com/apache/uima-sandbox,Apache License 2.0,Java,61
+646c9ce444bfe65f23891d1b,https://github.com/microsoft/idfix,MIT License,C#,22
+646c64e544bfe65f23891ccd,https://github.com/google/prediction_framework,Apache License 2.0,Python,10
+646c8fa544bfe65f23891d02,https://github.com/apache/uima-uimacpp,Apache License 2.0,C++,51
+646c8e7b44bfe65f23891cf5,https://github.com/google/PINT,Apache License 2.0,C,466
+646c906d44bfe65f23891d08,https://github.com/alibaba/graphlearn-for-pytorch,Apache License 2.0,Python,323
+646c5f7f44bfe65f23891cc3,https://github.com/alibaba/Chat2DB,Apache License 2.0,Java,1
+646ca1af44bfe65f23891d27,https://github.com/apache/datafu,Apache License 2.0,Java,995
+646ca1e344bfe65f23891d2b,https://github.com/google/jaxopt,Apache License 2.0,Python,4
+646ca5a644bfe65f23891d4e,https://github.com/google/quiche,"BSD 3-Clause ""New"" or ""Revised"" License",C++,208
+646cabb844bfe65f23891d6d,https://github.com/apache/jackrabbit-filevault,Apache License 2.0,Java,289
+646cac9e44bfe65f23891d72,https://github.com/apache/jackrabbit-ocm,Apache License 2.0,Java,107
+646cabdd44bfe65f23891d6f,https://github.com/google/deepconsensus,"BSD 3-Clause ""New"" or ""Revised"" License",Python,9
+646ce25a44bfe65f23891d8b,https://github.com/apache/cloudstack-docs-admin,Apache License 2.0,HTML,1013
+646d015a44bfe65f23891d97,https://github.com/apache/cloudstack-docs-rn,Apache License 2.0,Python,1038
+646ce28244bfe65f23891d8d,https://github.com/microsoft/SEAL,MIT License,C++,11
+646d029b44bfe65f23891da2,https://github.com/microsoft/FreeBSD-Test-Automation,Apache License 2.0,PowerShell,3
+646d3b2144bfe65f23891e43,https://github.com/google/rune,Apache License 2.0,C,62
+646d53f244bfe65f23891e8b,https://github.com/microsoft/ai4eutils,MIT License,Jupyter Notebook,13
+646d212f44bfe65f23891e01,https://github.com/google/adh-deployment-manager,Apache License 2.0,Python,35
+646d345344bfe65f23891e37,https://github.com/google/hctr2,MIT License,C,9
+646d03f544bfe65f23891dbc,https://github.com/microsoft/BCTech,MIT License,,2
+646d446344bfe65f23891e4f,https://github.com/google/flaxformer,Apache License 2.0,Python,35
+646d4fb544bfe65f23891e66,https://github.com/google/rust-scudo,Apache License 2.0,Rust,1
+646d0cfc44bfe65f23891dce,https://github.com/google/hypernerf,Apache License 2.0,Python,1
+646d1e7c44bfe65f23891de0,https://github.com/microsoft/Omex,MIT License,C#,4
+646d4c4c44bfe65f23891e59,https://github.com/google/learned_optimization,Apache License 2.0,Python,592
+646d522644bfe65f23891e79,https://github.com/apache/ant-ivyde,Apache License 2.0,Java,131
+646d6cb544bfe65f23891ea4,https://github.com/apache/parquet-cpp,Apache License 2.0,C++,119
+646d019a44bfe65f23891d9b,https://github.com/microsoft/Orb,MIT License,C++,22
+646d274f44bfe65f23891e11,https://github.com/google/android-auto-companion-android,Apache License 2.0,Kotlin,319
+646d4d2744bfe65f23891e5f,https://github.com/microsoft/AzureML-BERT,MIT License,Jupyter Notebook,442
+646d985844bfe65f23891ec1,https://github.com/google/parallel_accel,Apache License 2.0,Python,30
+646d6dbd44bfe65f23891ea6,https://github.com/apache/parquet-mr,Apache License 2.0,Java,407
+646d98e344bfe65f23891ed3,https://github.com/apache/incubator-optiq-csv,Apache License 2.0,Java,1
+646d98dc44bfe65f23891ed1,https://github.com/apache/ant-easyant-tasks,Apache License 2.0,Java,3
+646d36cb44bfe65f23891e3d,https://github.com/apache/flex-blazeds,Apache License 2.0,Java,253
+646d53c044bfe65f23891e83,https://github.com/microsoft/accessibility-insights-web,MIT License,TypeScript,1
+646d654444bfe65f23891e9b,https://github.com/google/aqt,Apache License 2.0,Python,266
+646d0cf044bfe65f23891dcc,https://github.com/google/dwh-assessment-extraction-tool,Apache License 2.0,Java,73
+646d328044bfe65f23891e28,https://github.com/apache/olingo-odata4-js,Apache License 2.0,JavaScript,38
+646d4f9944bfe65f23891e61,https://github.com/apache/portals-pluto,Apache License 2.0,Java,369
+646d30ad44bfe65f23891e1e,https://github.com/google/private-compute-services,Apache License 2.0,Java,174
+646d4c5844bfe65f23891e5d,https://github.com/google/mount-zip,GNU General Public License v3.0,C++,4
+646d9b6844bfe65f23891edc,https://github.com/apache/incubator-optiq-linq4j,Apache License 2.0,Java,392
+646d215444bfe65f23891e05,https://github.com/google/etils,Apache License 2.0,Jupyter Notebook,16
+646e81bb09afe705b910719d,https://github.com/google/mobile-data-download,Apache License 2.0,Java,165
+646e846c09afe705b91071b1,https://github.com/apache/ddlutils,Apache License 2.0,Java,5
+646e845209afe705b91071af,https://github.com/apache/celix,Apache License 2.0,C,611
+646e834209afe705b91071a7,https://github.com/google/sxg-validator,Apache License 2.0,JavaScript,6
+646d53a444bfe65f23891e81,https://github.com/apache/ant-ivy,Apache License 2.0,Java,468
+646d1e7244bfe65f23891dde,https://github.com/google/federated-compute,Apache License 2.0,C++,3
+646d1f6244bfe65f23891dfa,https://github.com/apache/streams,Apache License 2.0,Java,26
+646d7b9444bfe65f23891eb1,https://github.com/microsoft/release-stats,MIT License,TypeScript,68
+646d7bcf44bfe65f23891eb5,https://github.com/google/distla_core,Apache License 2.0,Python,5
+646d1e4d44bfe65f23891ddc,https://github.com/google/crosvm,"BSD 3-Clause ""New"" or ""Revised"" License",Rust,7
+646d343544bfe65f23891e33,https://github.com/apache/cordova-lib,Apache License 2.0,JavaScript,2
+646e833309afe705b91071a3,https://github.com/microsoft/Windows.UI.Composition-Win32-Samples,MIT License,C++,78
+646d98af44bfe65f23891ec3,https://github.com/apache/ant-easyant-core,Apache License 2.0,Java,78
+646d4b8544bfe65f23891e57,https://github.com/apache/gora,Apache License 2.0,Java,228
+646d632644bfe65f23891e95,https://github.com/microsoft/MFCStoreClient,MIT License,C++,6
+646d9b9344bfe65f23891ee0,https://github.com/google/silifuzz,Apache License 2.0,C++,64
+646d64b044bfe65f23891e99,https://github.com/google/cell_img,Apache License 2.0,Jupyter Notebook,8
+646d6dc444bfe65f23891ea8,https://github.com/google/crystalvalue,Apache License 2.0,Python,1
+646e99ae09afe705b91071e7,https://github.com/apache/pdfbox-docs,Apache License 2.0,HTML,871
+646e9dce09afe705b91071f0,https://github.com/google/vizier,Apache License 2.0,Python,500
+646e9fe909afe705b9107205,https://github.com/microsoft/mariadb-connector-j,GNU Lesser General Public License v2.1,Java,439
+646e976809afe705b91071d4,https://github.com/microsoft/Service-Fabric-POA,MIT License,C#,3
+646e990309afe705b91071e3,https://github.com/google/lightweight_mmm,Apache License 2.0,Python,2
+646e9e2409afe705b91071f7,https://github.com/apache/commons-text,Apache License 2.0,Java,32
+646eb14609afe705b9107226,https://github.com/apache/incubator-taverna-site,Apache License 2.0,HTML,515
+646e850909afe705b91071bb,https://github.com/apache/johnzon,Apache License 2.0,Java,79
+646e9c2409afe705b91071ee,https://github.com/google/earthengine-jupyter,Apache License 2.0,Jupyter Notebook,3
+646ea1de09afe705b910720e,https://github.com/microsoft/qTESLA-Library,MIT License,C,1
+646e98ef09afe705b91071e1,https://github.com/apache/karaf-decanter,Apache License 2.0,Java,121
+646e937a09afe705b91071ca,https://github.com/microsoft/BotFunctionalTestingService,MIT License,JavaScript,1
+646ea1cc09afe705b910720c,https://github.com/google/java-time-client,Apache License 2.0,Java,7
+646eb3c509afe705b9107233,https://github.com/google/cronet-transport-for-okhttp,Apache License 2.0,Java,1
+646eb50f09afe705b9107244,https://github.com/apache/incubator-samoa,Apache License 2.0,Java,499
+646eb3fe09afe705b910723d,https://github.com/google/product-dsa,Apache License 2.0,Python,5
+646ed45209afe705b9107252,https://github.com/apache/tinkerpop,Apache License 2.0,Java,1033
+646eb3ac09afe705b910722f,https://github.com/microsoft/calculator,MIT License,C++,161
+646ed88909afe705b9107285,https://github.com/apache/incubator-taverna-workbench-common-activities,Apache License 2.0,Java,4
+646ed8b209afe705b910728e,https://github.com/microsoft/Dynamics365FO-AppChecker,MIT License,C#,9
+646ee5e009afe705b91072b8,https://github.com/google/device-infra,Apache License 2.0,Java,116
+646ed82c09afe705b910727a,https://github.com/apache/incubator-taverna-server,Apache License 2.0,Java,9
+646ed5cd09afe705b9107261,https://github.com/apache/incubator-taverna-common-activities,Apache License 2.0,Java,47
+646ed86109afe705b9107281,https://github.com/apache/incubator-taverna-osgi,Apache License 2.0,Java,5
+646ee25a09afe705b91072a4,https://github.com/microsoft/MRLightingTools-Unity,MIT License,C#,38
+646ed49a09afe705b910725a,https://github.com/google/brain_autorl,Apache License 2.0,Python,43
+646ed65209afe705b9107263,https://github.com/apache/incubator-taverna-language,Apache License 2.0,Java,262
+646ed7c709afe705b9107271,https://github.com/google/fiddle,Apache License 2.0,Python,8
+646ee66e09afe705b91072ba,https://github.com/google/grizzly,Apache License 2.0,Python,341
+646ee8d709afe705b91072c9,https://github.com/microsoft/AttackSurfaceAnalyzer,MIT License,C#,35
+646eea8e09afe705b91072cb,https://github.com/apache/samza,Apache License 2.0,Java,201
+646ee68c09afe705b91072be,https://github.com/microsoft/BotFramework-Composer,MIT License,TypeScript,1
+646eef5309afe705b91072f4,https://github.com/apache/dubbo-rpc-jsonrpc,Apache License 2.0,Java,2
+646eedca09afe705b91072ee,https://github.com/google/paranoid_crypto,Apache License 2.0,Python,44
+646eeaf009afe705b91072d3,https://github.com/google/referring-manipulation,Apache License 2.0,Python,4
+646eeff209afe705b91072f6,https://github.com/apache/incubator-myriad,Apache License 2.0,Java,363
+646ef32b09afe705b91072fe,https://github.com/google/orbax,Apache License 2.0,Python,37
+646ef30609afe705b91072fc,https://github.com/apache/singa,Apache License 2.0,C++,2217
+646ef40509afe705b9107304,https://github.com/google/pyglove,Apache License 2.0,Python,408
+646ef5d909afe705b910730c,https://github.com/google/bigspicy,Apache License 2.0,Python,5
+646f24c209afe705b910735c,https://github.com/microsoft/lisa,MIT License,Python,784
+646f232009afe705b9107358,https://github.com/google/libhoth,Apache License 2.0,C,3
+646f362c09afe705b910738d,https://github.com/google/rubik,Apache License 2.0,Python,355
+646f33d709afe705b9107379,https://github.com/apache/incubator-taverna-mobile,Apache License 2.0,Java,91
+646f366709afe705b9107391,https://github.com/microsoft/DataStreamerSamples,MIT License,C#,7
+646f35a209afe705b9107389,https://github.com/microsoft/DirectML,MIT License,Python,528
+646f3f1709afe705b91073a9,https://github.com/microsoft/data-accelerator,MIT License,C#,335
+646f239709afe705b910735a,https://github.com/google/praxis,Apache License 2.0,Python,7
+646f365d09afe705b910738f,https://github.com/google/sealedcomputing,Apache License 2.0,C++,72
+646f230d09afe705b9107354,https://github.com/microsoft/immersive-reader-sdk,MIT License,HTML,34
+646f059809afe705b910733a,https://github.com/google/longbet,Apache License 2.0,C++,21
+646f22c809afe705b910734c,https://github.com/microsoft/vcrt-forwarders,MIT License,C++,11
+646f348409afe705b9107387,https://github.com/apache/incubator-taverna-databundle-viewer,Apache License 2.0,Ruby,27
+646f6d5c09afe705b910740d,https://github.com/microsoft/TiltInteractionForMobileVisualization,MIT License,JavaScript,49
+646f8f0d09afe705b910743c,https://github.com/apache/shardingsphere-elasticjob,Apache License 2.0,Java,82
+646f464f09afe705b91073be,https://github.com/microsoft/Application-Insights-Istio-Adapter,MIT License,C#,14
+646f46cf09afe705b91073c0,https://github.com/apache/datasketches-java,Apache License 2.0,Java,262
+646f655909afe705b91073f9,https://github.com/google/gce-rescue,Apache License 2.0,Python,4
+646f661509afe705b9107407,https://github.com/apache/nifi-site,Apache License 2.0,SCSS,266
+646f877d09afe705b910741e,https://github.com/apache/fluo-recipes,Apache License 2.0,Java,20
+646f879d09afe705b9107428,https://github.com/apache/freemarker-docgen,Apache License 2.0,Java,2
+646f8bfb09afe705b9107438,https://github.com/microsoft/EmbeddedSocial-Service,MIT License,C#,6
+646fb43609afe705b91074a4,https://github.com/microsoft/sonder-ui,MIT License,HTML,103
+646f8f1509afe705b9107440,https://github.com/microsoft/UE4TelemetryVisualizer,MIT License,C++,2
+646f901309afe705b9107452,https://github.com/apache/yetus,Apache License 2.0,Shell,926
+646f90c109afe705b9107463,https://github.com/google/cfr,MIT License,JavaScript,62
+646f972309afe705b910748b,https://github.com/microsoft/EmbeddedSocial-SyncService-for-OBA,MIT License,C#,1
+646f953a09afe705b9107472,https://github.com/apache/directory-fortress-core,Apache License 2.0,Java,261
+646f966709afe705b910747c,https://github.com/google/fhir-py,Apache License 2.0,Python,88
+646f8f3b09afe705b9107446,https://github.com/microsoft/AmbariBasedHadoopExporter,MIT License,C#,1
+646fba5809afe705b91074b6,https://github.com/microsoft/MapsSDK-Unity,MIT License,C#,210
+646f974509afe705b910749b,https://github.com/microsoft/tiny-calc,MIT License,TypeScript,50
+646fbc1809afe705b91074c6,https://github.com/microsoft/petridishnn,MIT License,Python,615
+646fbc4b09afe705b91074c8,https://github.com/google/mystyle,Apache License 2.0,Python,1
+646fbf2609afe705b91074d7,https://github.com/apache/whimsy,Apache License 2.0,Ruby,391
+646fdb5909afe705b91074f6,https://github.com/google/gematria,Apache License 2.0,Python,14
+646ff18909afe705b9107518,https://github.com/microsoft/tes-azure,MIT License,Python,1639
+646fdb2509afe705b91074eb,https://github.com/apache/brooklyn-ui,Apache License 2.0,JavaScript,13
+646fdd8209afe705b91074ff,https://github.com/google/nanolibc,Apache License 2.0,C,38
+646ffa7e09afe705b9107528,https://github.com/google/pyink,MIT License,Python,38
+647007c809afe705b9107542,https://github.com/google/bigwheels,Apache License 2.0,C++,72
+6470481c09afe705b9107602,https://github.com/microsoft/SeeingVRtoolkit,MIT License,C#,119
+6470478b09afe705b9107600,https://github.com/microsoft/UnityTelemetryVisualizer,MIT License,C#,2
+64701c3109afe705b91075b6,https://github.com/apache/mnemonic,Apache License 2.0,Java,4
+6470474b09afe705b91075f6,https://github.com/google/cel-java,Apache License 2.0,Java,7
+6470180f09afe705b91075aa,https://github.com/microsoft/RegFree_WinRT,MIT License,C#,12
+6470110109afe705b9107571,https://github.com/microsoft/axe-windows,MIT License,C#,283
+6470475909afe705b91075f8,https://github.com/microsoft/electionguard,MIT License,Python,5
+646ffa1c09afe705b9107522,https://github.com/google/data-quality-monitor,Apache License 2.0,Python,1
+6470159509afe705b9107596,https://github.com/google/Tightlock,Apache License 2.0,Python,23
+64700fe809afe705b910756f,https://github.com/google/private-compute-libraries,Apache License 2.0,Kotlin,8
+647030f309afe705b91075d0,https://github.com/google/belief-localization,Apache License 2.0,,1
+6470132109afe705b9107582,https://github.com/apache/aries-rsa,Apache License 2.0,Java,127
+646ffa2809afe705b9107526,https://github.com/apache/incubator-s2graph,Apache License 2.0,Scala,1
+6470310809afe705b91075d4,https://github.com/apache/commons-crypto,Apache License 2.0,Java,14
+6470147509afe705b9107584,https://github.com/apache/guacamole-client,Apache License 2.0,Java,107
+64700f7609afe705b9107562,https://github.com/google/cdc-file-transfer,Apache License 2.0,C++,9
+64702da009afe705b91075c4,https://github.com/microsoft/securitydev,MIT License,,346
+64702dbc09afe705b91075ca,https://github.com/google/comprehensive-rust,Apache License 2.0,Rust,32
+6470477509afe705b91075fa,https://github.com/microsoft/MLOps,MIT License,Jupyter Notebook,3
+6470493509afe705b9107606,https://github.com/microsoft/MLOpsSamples,MIT License,Python,1576
+647049bf09afe705b910760a,https://github.com/google/temporian,Apache License 2.0,Python,325
+64704a2109afe705b9107614,https://github.com/microsoft/MapsSDK-Native,MIT License,Java,528
+64704b8409afe705b910763a,https://github.com/apache/cordova-plugin-screen-orientation,Apache License 2.0,JavaScript,4
+647052ae09afe705b910765b,https://github.com/microsoft/MixedReality-SpectatorView,MIT License,C#,365
+64704f9209afe705b9107650,https://github.com/microsoft/vi-hds,MIT License,Python,8
+64704c2b09afe705b910763c,https://github.com/google/tsmok,Apache License 2.0,Python,405
+647052db09afe705b9107662,https://github.com/microsoft/ICSE2019,MIT License,HTML,1
+647053fd09afe705b910766a,https://github.com/microsoft/tensorwatch,MIT License,Jupyter Notebook,662
+647052c909afe705b910765e,https://github.com/google/compute-virtual-ethernet-dpdk,"BSD 3-Clause ""New"" or ""Revised"" License",C,8
+6470578309afe705b9107674,https://github.com/microsoft/AnsibleLabs,MIT License,Python,31
+6470b52009afe705b91076e3,https://github.com/microsoft/MSIX-Labs,MIT License,C#,21
+6470c7af09afe705b9107700,https://github.com/apache/hawq-docs,Apache License 2.0,HTML,27
+64705be709afe705b910769a,https://github.com/microsoft/dicom-server,MIT License,C#,25
+6470b2d209afe705b91076cf,https://github.com/microsoft/vscode-dts,MIT License,JavaScript,2
+64705cb309afe705b910769e,https://github.com/apache/juneau-website,Apache License 2.0,HTML,20
+64705b7809afe705b9107688,https://github.com/apache/qpid-cpp,Apache License 2.0,C++,1293
+6470c77d09afe705b91076f6,https://github.com/apache/commons-rng,Apache License 2.0,Java,86
+6470b2cb09afe705b91076cd,https://github.com/google/coding-competitions-archive,Apache License 2.0,HTML,417
+6470c83609afe705b9107704,https://github.com/apache/incubator-twill,Apache License 2.0,Java,305
+6470caaf09afe705b9107735,https://github.com/microsoft/iqsharp,MIT License,C#,14
+6470da0e09afe705b91077bd,https://github.com/apache/serf,Apache License 2.0,C,143
+6470c89509afe705b910771e,https://github.com/google/shopping_insider,Apache License 2.0,Python,7
+6470c93b09afe705b910772e,https://github.com/google/visualblocks,Apache License 2.0,Python,5
+6470d4e909afe705b91077a9,https://github.com/microsoft/dstc8-meta-dialog,MIT License,Python,21
+6470c92809afe705b9107726,https://github.com/google/bqflow,Apache License 2.0,Python,26
+6470e12a09afe705b91077cd,https://github.com/apache/openwhisk-package-alarms,Apache License 2.0,JavaScript,1
+6470e2f109afe705b91077db,https://github.com/microsoft/tf-gnn-samples,MIT License,Python,6
+6470e47409afe705b91077e6,https://github.com/microsoft/metric-transfer.pytorch,MIT License,Jupyter Notebook,1
+6470e3a709afe705b91077dd,https://github.com/microsoft/update-server-server-sync,MIT License,C#,14
+6470e3c809afe705b91077df,https://github.com/apache/commons-numbers,Apache License 2.0,Java,8
+6470fb7c09afe705b9107831,https://github.com/microsoft/simple_ado,MIT License,Python,40
+6470ea7409afe705b910780e,https://github.com/apache/accumulo-wikisearch,Apache License 2.0,Java,1098
+6470e2bc09afe705b91077d2,https://github.com/microsoft/mimalloc,MIT License,C,163
+6470fb8909afe705b9107833,https://github.com/apache/accumulo-examples,Apache License 2.0,Java,71
+6470e9dd09afe705b9107804,https://github.com/apache/echarts-examples,Apache License 2.0,TypeScript,54
+6470fba309afe705b9107836,https://github.com/microsoft/Relation-Aware-Global-Attention-Networks,MIT License,Python,1
+6470fdf909afe705b9107844,https://github.com/apache/carbondata-site,Apache License 2.0,HTML,2642
+6471029509afe705b910786e,https://github.com/microsoft/WinHttpPAL,MIT License,C++,1
+64713f2309afe705b91078a1,https://github.com/apache/freemarker-online-tester,Apache License 2.0,Java,107
+6471006f09afe705b9107856,https://github.com/apache/accumulo-testing,Apache License 2.0,Java,24
+647102c609afe705b9107870,https://github.com/microsoft/HybridRow,MIT License,C#,21
+6471005409afe705b9107854,https://github.com/microsoft/Briefcase,MIT License,Python,2
+64713dc509afe705b910789d,https://github.com/apache/griffin,Apache License 2.0,Scala,68
+6470fe1b09afe705b9107848,https://github.com/microsoft/RdlMigration,MIT License,C#,2
+64712fe109afe705b9107875,https://github.com/apache/flagon,Apache License 2.0,HTML,1
+64713d7909afe705b910789b,https://github.com/microsoft/mso,MIT License,C++,61
+647131af09afe705b9107886,https://github.com/apache/ratis,Apache License 2.0,Java,22
+647131c209afe705b910788b,https://github.com/microsoft/AspNetCore-React-WebApp,MIT License,C#,2
+6471028d09afe705b910786c,https://github.com/microsoft/synckusto,MIT License,C#,6
+6471324c09afe705b910788d,https://github.com/microsoft/update-client-server-sync,MIT License,C#,4
+6471313a09afe705b910787f,https://github.com/microsoft/aerial_wildlife_detection,MIT License,Python,142
+64715c6509afe705b91078c6,https://github.com/apache/activemq-nms-openwire,Apache License 2.0,C#,102
+6472183d09afe705b9107a26,https://github.com/apache/sling-org-apache-sling-auth-form,Apache License 2.0,Java,1
+6471f8c309afe705b91079db,https://github.com/apache/jackrabbit-filevault-package-maven-plugin,Apache License 2.0,Java,111
+6471610b09afe705b91078e8,https://github.com/microsoft/flamegrill,MIT License,HTML,2
+647161d309afe705b91078fa,https://github.com/microsoft/FHIR-Converter,MIT License,Liquid,10
+64719a4709afe705b9107951,https://github.com/microsoft/backfill,MIT License,TypeScript,1
+6471f72e09afe705b91079b4,https://github.com/microsoft/verona,MIT License,C++,2
+6471450e09afe705b91078ad,https://github.com/apache/activemq-nms-amqp,Apache License 2.0,C#,73
+64715ffb09afe705b91078e5,https://github.com/apache/calcite-avatica,Apache License 2.0,Java,568
+64715ce009afe705b91078d0,https://github.com/apache/datasketches-memory,Apache License 2.0,Java,1
+64715af309afe705b91078bd,https://github.com/apache/activemq-nms-stomp,Apache License 2.0,C#,66
+647217cf09afe705b9107a18,https://github.com/apache/pdfbox-jbig2,Apache License 2.0,Java,11
+64715b6809afe705b91078c0,https://github.com/apache/activemq-nms-msmq,Apache License 2.0,C#,52
+6471d9e709afe705b9107998,https://github.com/microsoft/vSlice,MIT License,C#,2
+64717d7f09afe705b910791a,https://github.com/apache/openwhisk-utilities,Apache License 2.0,Python,8
+6471612809afe705b91078ec,https://github.com/apache/cordova-node-xcode,Apache License 2.0,JavaScript,14
+64719b6c09afe705b9107955,https://github.com/apache/incubator-livy,Apache License 2.0,Scala,968
+6471dbf609afe705b91079a0,https://github.com/microsoft/ShortStack,MIT License,C#,1
+6472181509afe705b9107a24,https://github.com/apache/sling-org-apache-sling-api,Apache License 2.0,Java,23
+647144b509afe705b91078a7,https://github.com/microsoft/vert-papers,MIT License,Python,395
+647195d909afe705b9107943,https://github.com/microsoft/security-devops-action,MIT License,JavaScript,324
+6471f7b109afe705b91079c2,https://github.com/microsoft/react-native-windows-samples,MIT License,C#,31
+6471f84509afe705b91079ce,https://github.com/microsoft/CromwellOnAzure,MIT License,C#,11
+647217eb09afe705b9107a1a,https://github.com/microsoft/BotFramework-WeChat,MIT License,C#,33
+64715f1f09afe705b91078e0,https://github.com/microsoft/MSBuildForUnity,MIT License,C#,36
+6471d21e09afe705b9107974,https://github.com/apache/qpid-interop-test,Apache License 2.0,Python,9
+6471bd6f09afe705b9107960,https://github.com/microsoft/DialoGPT,MIT License,Python,322
+6471410209afe705b91078a5,https://github.com/apache/geode-site,Apache License 2.0,JavaScript,81
+647161a109afe705b91078ee,https://github.com/apache/logging-log4cxx,Apache License 2.0,C++,72
+6471800409afe705b9107920,https://github.com/apache/servicecomb-service-center,Apache License 2.0,Go,14
+6471d16609afe705b910796c,https://github.com/apache/geronimo-config,Apache License 2.0,Java,13
+64716e2b09afe705b910790f,https://github.com/microsoft/Olive,MIT License,Python,5
+6471f93709afe705b91079dd,https://github.com/microsoft/appcenter-rest-python,MIT License,Python,323
+6471959a09afe705b910793f,https://github.com/apache/mesos-site,Apache License 2.0,HTML,961
+6472169509afe705b91079fe,https://github.com/microsoft/DiceWeb,MIT License,Pawn,108
+64715cc609afe705b91078c8,https://github.com/microsoft/CollectServiceFabricData,MIT License,Roff,250
+6471cb4809afe705b9107968,https://github.com/microsoft/SPM-Tracker,MIT License,Python,26
+6471cb0609afe705b9107963,https://github.com/apache/servicecomb-pack,Apache License 2.0,Java,17
+6471cb1a09afe705b9107966,https://github.com/microsoft/multiview-human-pose-estimation-pytorch,MIT License,Python,2
+64721af509afe705b9107a56,https://github.com/apache/sling-org-apache-sling-commons-scheduler,Apache License 2.0,Java,6
+647219fb09afe705b9107a30,https://github.com/apache/sling-org-apache-sling-auth-core,Apache License 2.0,Java,2
+64721b6209afe705b9107a68,https://github.com/apache/sling-org-apache-sling-engine,Apache License 2.0,Java,5
+64721abc09afe705b9107a48,https://github.com/apache/sling-org-apache-sling-commons-logservice,Apache License 2.0,Java,6
+64721bcc09afe705b9107a76,https://github.com/microsoft/iomt-fhir,MIT License,C#,1
+64721c1c09afe705b9107a8e,https://github.com/apache/sling-org-apache-sling-discovery-commons,Apache License 2.0,Java,7
+64721bfa09afe705b9107a80,https://github.com/microsoft/kestrel-inline-sockets,MIT License,C#,1
+64721b0609afe705b9107a60,https://github.com/apache/sling-org-apache-sling-commons-osgi,Apache License 2.0,Java,2
+64721d1d09afe705b9107a9e,https://github.com/microsoft/MT-DNN,MIT License,Python,292
+64721bf409afe705b9107a7c,https://github.com/apache/sling-org-apache-sling-caconfig-spi,Apache License 2.0,Java,1
+647219de09afe705b9107a2e,https://github.com/microsoft/Reactors,MIT License,Jupyter Notebook,1546
+64721a0209afe705b9107a32,https://github.com/microsoft/XboxGameBarSamples,MIT License,C#,1
+64721c1309afe705b9107a8c,https://github.com/microsoft/ReverseDNSGeolocation,MIT License,C#,4
+64721aa609afe705b9107a42,https://github.com/microsoft/CsWinRT,MIT License,C#,59
+64721bf009afe705b9107a7a,https://github.com/apache/sling-org-apache-sling-caconfig-impl,Apache License 2.0,Java,13
+64721c5309afe705b9107a94,https://github.com/apache/sling-org-apache-sling-discovery-base,Apache License 2.0,Java,1
+64721a3c09afe705b9107a3e,https://github.com/apache/sling-org-apache-sling-commons-log,Apache License 2.0,Java,1
+64721b9609afe705b9107a6a,https://github.com/apache/sling-org-apache-sling-bundleresource-impl,Apache License 2.0,Java,8
+64721c7e09afe705b9107a9a,https://github.com/apache/sling-org-apache-sling-discovery-impl,Apache License 2.0,Java,84
+64721c3e09afe705b9107a90,https://github.com/apache/sling-org-apache-sling-discovery-oak,Apache License 2.0,Java,64
+64721e0709afe705b9107aa8,https://github.com/apache/sling-org-apache-sling-discovery-support,Apache License 2.0,Java,6
+64721df709afe705b9107aa4,https://github.com/apache/sling-org-apache-sling-featureflags,Apache License 2.0,Java,258
+64721ddf09afe705b9107aa0,https://github.com/microsoft/MRDL_Unity_Surfaces,MIT License,C#,235
+64721efe09afe705b9107aba,https://github.com/microsoft/bono,MIT License,JavaScript,72
+64721e4109afe705b9107ab2,https://github.com/microsoft/Kuku,MIT License,C#,12
+6472216309afe705b9107aec,https://github.com/microsoft/Xaml-Islands-Samples,MIT License,C++,5
+6472216f09afe705b9107aee,https://github.com/apache/sling-org-apache-sling-models-integration-tests,Apache License 2.0,Java,40
+64721fea09afe705b9107adf,https://github.com/microsoft/macaw,MIT License,Python,424
+6472229f09afe705b9107af6,https://github.com/microsoft/msquic,MIT License,C,708
+64721f4309afe705b9107ad4,https://github.com/microsoft/windows-container-tools,MIT License,C++,6
+64721e2c09afe705b9107aae,https://github.com/apache/sling-org-apache-sling-event,Apache License 2.0,Java,37
+64721e5109afe705b9107ab8,https://github.com/apache/sling-org-apache-sling-fsresource,Apache License 2.0,Java,5
+64721f2209afe705b9107acb,https://github.com/microsoft/continuity,MIT License,C++,19
+6472248c09afe705b9107b2e,https://github.com/apache/sling-org-apache-sling-jcr-contentloader,Apache License 2.0,Java,7
+647223b109afe705b9107b1a,https://github.com/microsoft/customvision-tfjs,MIT License,JavaScript,6
+6472250009afe705b9107b40,https://github.com/apache/sling-org-apache-sling-jcr-jackrabbit-usermanager,Apache License 2.0,Java,17
+6472249709afe705b9107b30,https://github.com/apache/sling-org-apache-sling-jcr-davex,Apache License 2.0,Java,6
+6472251109afe705b9107b46,https://github.com/apache/sling-org-apache-sling-jcr-jackrabbit-base,Apache License 2.0,Java,9
+6472252309afe705b9107b4a,https://github.com/microsoft/AirSim-Drone-Racing-VAE-Imitation,MIT License,Python,11
+647223ff09afe705b9107b28,https://github.com/microsoft/trsp,MIT License,C++,3
+647223d209afe705b9107b20,https://github.com/apache/sling-org-apache-sling-jcr-base,Apache License 2.0,Java,25
+647222ac09afe705b9107afa,https://github.com/apache/sling-org-apache-sling-servlet-helpers,Apache License 2.0,Java,1
+6472254609afe705b9107b58,https://github.com/microsoft/nutter,MIT License,Python,3
+6472253c09afe705b9107b56,https://github.com/apache/sling-org-apache-sling-resourceaccesssecurity,Apache License 2.0,Java,1
+6472246b09afe705b9107b2c,https://github.com/microsoft/Microsoft-Rocket-Video-Analytics-Platform,MIT License,C#,10
+647222fe09afe705b9107b04,https://github.com/microsoft/azure-pipelines-evaluate-artifact-policies,MIT License,C#,17
+6472237c09afe705b9107b0a,https://github.com/apache/sling-org-apache-sling-validation-core,Apache License 2.0,Java,97
+6472255809afe705b9107b5a,https://github.com/apache/sling-org-apache-sling-jcr-resource,Apache License 2.0,Java,49
+64722d9609afe705b9107b66,https://github.com/apache/sling-org-apache-sling-scripting-core,Apache License 2.0,Java,29
+64722e3309afe705b9107b7a,https://github.com/apache/sling-org-apache-sling-scripting-javascript,Apache License 2.0,Java,74
+64722e4009afe705b9107b7c,https://github.com/apache/sling-org-apache-sling-scripting-jsp-taglib,Apache License 2.0,Java,53
+64722e6f09afe705b9107b86,https://github.com/apache/sling-org-apache-sling-scripting-sightly-compiler-java,Apache License 2.0,Java,7
+64722ecb09afe705b9107b8d,https://github.com/apache/sling-org-apache-sling-scripting-sightly-js-provider,Apache License 2.0,Java,187
+6472344809afe705b9107ba5,https://github.com/microsoft/playwright,Apache License 2.0,TypeScript,542
+64722ee309afe705b9107b8f,https://github.com/apache/sling-org-apache-sling-scripting-sightly,Apache License 2.0,Java,34
+64722f4109afe705b9107b9b,https://github.com/microsoft/Distilled-Sentence-Embedding,MIT License,Python,41
+64722fb209afe705b9107ba3,https://github.com/apache/sling-org-apache-sling-servlets-get,Apache License 2.0,Java,13
+6472364209afe705b9107bc4,https://github.com/apache/sling-org-apache-sling-jobs,Apache License 2.0,Java,6
+64722fa609afe705b9107b9f,https://github.com/apache/sling-org-apache-sling-servlets-resolver,Apache License 2.0,Java,52
+64722f0509afe705b9107b99,https://github.com/apache/sling-org-apache-sling-servlets-post,Apache License 2.0,Java,2
+647234c709afe705b9107bad,https://github.com/apache/sling-org-apache-sling-commons-html,Apache License 2.0,Java,178
+6472357709afe705b9107bb5,https://github.com/microsoft/platformer-ml-game,MIT License,Python,370
+6472368d09afe705b9107bce,https://github.com/microsoft/oac-explore,MIT License,Python,4
+647236c609afe705b9107bd5,https://github.com/apache/sling-org-apache-sling-resource-editor,Apache License 2.0,JavaScript,2
+6472371a09afe705b9107be9,https://github.com/apache/sling-org-apache-sling-commons-cache-impl,Apache License 2.0,,6
+64723c6f09afe705b9107c4a,https://github.com/apache/sling-org-apache-sling-superimposing,Apache License 2.0,Java,5
+64723aa209afe705b9107bfa,https://github.com/microsoft/Microsoft.Unity.Analyzers,MIT License,C#,6
+64723af009afe705b9107c01,https://github.com/microsoft/MixedReality-Unreal-Samples,MIT License,C++,2
+64723b8009afe705b9107c2e,https://github.com/microsoft/appcenter-Xamarin.Forms-Gallery-Demo,MIT License,C#,7
+64723bca09afe705b9107c3c,https://github.com/apache/sling-org-apache-sling-query,Apache License 2.0,Java,5
+647236fe09afe705b9107bdb,https://github.com/microsoft/PSRule.Monitor,MIT License,C#,1
+64723ada09afe705b9107bfd,https://github.com/microsoft/TeamCloud,MIT License,C#,4
+64723bbc09afe705b9107c3a,https://github.com/apache/sling-org-apache-sling-dynamic-include,Apache License 2.0,Java,5
+64723b5009afe705b9107c22,https://github.com/microsoft/mouselog,MIT License,JavaScript,12
+64723c9c09afe705b9107c52,https://github.com/apache/sling-org-apache-sling-tenant,Apache License 2.0,Java,25
+6472377109afe705b9107bf3,https://github.com/apache/sling-org-apache-sling-distribution-core,Apache License 2.0,Java,140
+64723bae09afe705b9107c34,https://github.com/microsoft/OCR-Form-Tools,MIT License,TypeScript,40
+64723f0509afe705b9107c63,https://github.com/apache/sling-org-apache-sling-jcr-js-nodetypes,Apache License 2.0,Java,16
+6472401009afe705b9107c6f,https://github.com/microsoft/presidio-research,MIT License,Python,961
+64723c7a09afe705b9107c4c,https://github.com/apache/sling-org-apache-sling-tracer,Apache License 2.0,Java,5
+64723ede09afe705b9107c56,https://github.com/microsoft/maro,MIT License,Python,202
+6472416709afe705b9107c99,https://github.com/apache/sling-org-apache-sling-installer-factory-subsystems-base,Apache License 2.0,Java,54
+647241a609afe705b9107c9b,https://github.com/microsoft/D3D11On12,MIT License,C++,92
+6472403c09afe705b9107c81,https://github.com/microsoft/Tools-for-Health-Data-Anonymization,MIT License,C#,4
+6472405609afe705b9107c8d,https://github.com/apache/sling-org-apache-sling-installer-core,Apache License 2.0,Java,7
+647240cf09afe705b9107c91,https://github.com/microsoft/D3D12TranslationLayer,MIT License,C++,193
+647241b409afe705b9107ca0,https://github.com/microsoft/surface-duo-sdk-samples,MIT License,Java,2
+64724db709afe705b9107cc4,https://github.com/microsoft/affectbased,MIT License,Python,275
+64724df109afe705b9107cca,https://github.com/apache/sling-org-apache-sling-starter-content,Apache License 2.0,Java,56
+64724de109afe705b9107cc8,https://github.com/microsoft/surface-duo-sdk-xamarin-samples,MIT License,C#,2
+6472539d09afe705b9107cf3,https://github.com/apache/sling-org-apache-sling-testing-clients,Apache License 2.0,Java,13
+64724e3209afe705b9107cce,https://github.com/microsoft/MixedReality-UXTools-Unreal,MIT License,C++,7
+647251eb09afe705b9107cd9,https://github.com/microsoft/playwright-dotnet,MIT License,C#,449
+6472538909afe705b9107cf0,https://github.com/microsoft/data-protection-mapping-project,MIT License,TypeScript,1
+64724e1409afe705b9107ccc,https://github.com/apache/sling-org-apache-sling-launchpad-integration-tests,Apache License 2.0,Java,9
+647252e309afe705b9107ce3,https://github.com/microsoft/LabanotationSuite,MIT License,JavaScript,147
+647253dc09afe705b9107cf5,https://github.com/microsoft/botframework-components,MIT License,C#,60
+6472547c09afe705b9107d07,https://github.com/apache/sling-org-apache-sling-testing-rules,Apache License 2.0,Java,2
+6472548709afe705b9107d0a,https://github.com/apache/sling-org-apache-sling-junit-performance,Apache License 2.0,Java,3
+6472554909afe705b9107d16,https://github.com/microsoft/spacy-ann-linker,MIT License,Python,645
+6472547509afe705b9107d05,https://github.com/apache/sling-org-apache-sling-junit-core,Apache License 2.0,Java,105
+647254bf09afe705b9107d12,https://github.com/apache/sling-org-apache-sling-testing-caconfig-mock-plugin,Apache License 2.0,Java,164
+647253fd09afe705b9107cf9,https://github.com/microsoft/verseagility,MIT License,Jupyter Notebook,6
+6472576f09afe705b9107d31,https://github.com/apache/sling-org-apache-sling-testing-sling-mock,Apache License 2.0,Java,4
+6472557009afe705b9107d1a,https://github.com/apache/sling-org-apache-sling-testing-osgi-mock,Apache License 2.0,Java,8
+6472580109afe705b9107d5d,https://github.com/microsoft/topologic,MIT License,Python,1
+6472775809afe705b9107db0,https://github.com/microsoft/PowerAppsTestAutomation,MIT License,C#,1
+647274f609afe705b9107d87,https://github.com/microsoft/LocalizedStringKit,MIT License,HTML,51
+6472773c09afe705b9107da7,https://github.com/apache/kibble-scanners,Apache License 2.0,Python,75
+6472774809afe705b9107da9,https://github.com/apache/karaf-reactive-components,Apache License 2.0,Java,1
+6472772609afe705b9107da5,https://github.com/microsoft/ProphetNet,MIT License,Python,1199
+647255e109afe705b9107d2b,https://github.com/apache/sling-org-apache-sling-testing-resourceresolver-mock,Apache License 2.0,Java,4
+6472748e09afe705b9107d76,https://github.com/microsoft/BotFramework-FunctionalTests,MIT License,C#,34
+6472778b09afe705b9107db2,https://github.com/apache/kibble-1,Apache License 2.0,Python,2
+647275b009afe705b9107d93,https://github.com/apache/sling-samples,Apache License 2.0,Java,3
+6472785c09afe705b9107dcc,https://github.com/apache/incubator-sdap-nexus,Apache License 2.0,Python,68
+6472756309afe705b9107d8d,https://github.com/apache/sling-ide-tooling,Apache License 2.0,Java,165
+6472749e09afe705b9107d7d,https://github.com/apache/sling-maven-launchpad-plugin,Apache License 2.0,Java,6
+6472780f09afe705b9107dc8,https://github.com/microsoft/reconner,MIT License,Python,1
+647279e109afe705b9107de0,https://github.com/microsoft/tf2-gnn,MIT License,Python,5
+6472797309afe705b9107dd3,https://github.com/apache/incubator-sdap-website,Apache License 2.0,HTML,18
+64727e5c09afe705b9107e11,https://github.com/microsoft/PowerPlatform-DataverseServiceClient,MIT License,C#,13
+64727ba109afe705b9107df4,https://github.com/microsoft/denoised-smoothing,MIT License,Jupyter Notebook,1
+6472805d09afe705b9107e29,https://github.com/microsoft/OSSGadget,MIT License,C#,18
+64727dcb09afe705b9107e04,https://github.com/microsoft/archai,MIT License,Python,1411
+64728caa09afe705b9107e35,https://github.com/microsoft/electionguard-python,MIT License,Python,1523
+64727c3009afe705b9107df8,https://github.com/microsoft/OfficeCppGuidelines,MIT License,Python,60
+64727e4709afe705b9107e0f,https://github.com/apache/sling-org-apache-sling-commons-testing,Apache License 2.0,Java,70
+64727c4a09afe705b9107dfc,https://github.com/microsoft/accessibility-insights-for-android-service,MIT License,Java,32
+64727ea609afe705b9107e15,https://github.com/apache/directory-mavibot,Apache License 2.0,Java,264
+64728ddc09afe705b9107e39,https://github.com/microsoft/PySiamTracking,MIT License,Python,1063
+64729ec809afe705b9107ec5,https://github.com/microsoft/msticnb,MIT License,Python,5
+6472909809afe705b9107e51,https://github.com/microsoft/hummingbird,MIT License,Python,594
+64731efc475ff29e8f54a7a6,https://github.com/microsoft/MLOS,MIT License,Python,2
+6472a01309afe705b9107ed3,https://github.com/microsoft/vOW4SIKE,MIT License,C,6
+647321f3475ff29e8f54a7c0,https://github.com/microsoft/jacdac-stm32x0,MIT License,C,7
+64729c8709afe705b9107e8e,https://github.com/apache/fineract-cn-accounting,Apache License 2.0,Java,1
+6472a02609afe705b9107edf,https://github.com/apache/fineract-cn-service-starter,Apache License 2.0,Java,4
+6472a06f09afe705b9107ee2,https://github.com/microsoft/fugue,MIT License,C++,89
+64731daa475ff29e8f54a78f,https://github.com/microsoft/AzureTrailblazerAcademy,MIT License,CSS,4
+64728dea09afe705b9107e3c,https://github.com/microsoft/AzUrlShortener,MIT License,C#,13
+64729c4009afe705b9107e84,https://github.com/apache/fineract-cn-customer,Apache License 2.0,Java,4
+64729c5e09afe705b9107e88,https://github.com/apache/fineract-cn-portfolio,Apache License 2.0,Java,2
+6472a07409afe705b9107ee4,https://github.com/apache/fineract-cn-group,Apache License 2.0,Java,1
+64732d60475ff29e8f54a7cf,https://github.com/microsoft/ExperimentTools,MIT License,Python,299
+64729d9509afe705b9107eac,https://github.com/apache/fineract-cn-rhythm,Apache License 2.0,Java,1
+64729d5809afe705b9107e9e,https://github.com/apache/fineract-cn-reporting,Apache License 2.0,Java,1
+64729ed909afe705b9107eca,https://github.com/apache/fineract-cn-command,Apache License 2.0,Java,11
+64732f70475ff29e8f54a7d1,https://github.com/microsoft/ContextualSP,MIT License,Python,2292
+64728e2009afe705b9107e45,https://github.com/microsoft/roman,MIT License,Python,5
+64729c3809afe705b9107e82,https://github.com/apache/fineract-cn-deposit-account-management,Apache License 2.0,Java,2
+64729d3f09afe705b9107e94,https://github.com/apache/fineract-cn-teller,Apache License 2.0,Java,4
+64729dc109afe705b9107ebf,https://github.com/apache/fineract-cn-anubis,Apache License 2.0,Java,3
+64732cb1475ff29e8f54a7cc,https://github.com/microsoft/MixingBoard,MIT License,Python,33
+64733840475ff29e8f54a80e,https://github.com/microsoft/commercial-marketplace-client-python,MIT License,Python,3
+647336e0475ff29e8f54a7ed,https://github.com/microsoft/WindowsAppSDK,MIT License,C++,92
+64733730475ff29e8f54a7f5,https://github.com/apache/datasketches-characterization,Apache License 2.0,Java,17
+6473375c475ff29e8f54a808,https://github.com/microsoft/commercial-marketplace-client-dotnet,MIT License,C#,3
+64733094475ff29e8f54a7d6,https://github.com/apache/kyuubi,Apache License 2.0,Scala,121
+64733707475ff29e8f54a7f3,https://github.com/apache/turbine-core,Apache License 2.0,Java,9
+64733f49475ff29e8f54a821,https://github.com/microsoft/MPNet,MIT License,Python,752
+64733889475ff29e8f54a818,https://github.com/apache/dubbo-spring-boot-project,Apache License 2.0,Java,8
+64736118475ff29e8f54a84b,https://github.com/microsoft/mageslam,MIT License,C++,5
+64737c38475ff29e8f54a872,https://github.com/apache/manifoldcf-integration-solr-6.x,Apache License 2.0,Java,22
+64737c26475ff29e8f54a86c,https://github.com/apache/manifoldcf-integration-solr-5.x,Apache License 2.0,Java,22
+64735e9e475ff29e8f54a845,https://github.com/microsoft/DiscoFaceGAN,MIT License,Python,1
+64737db3475ff29e8f54a8a1,https://github.com/microsoft/pyvisa-mock,MIT License,Python,8
+647341f8475ff29e8f54a83a,https://github.com/apache/fineract-cn-mobile,Apache License 2.0,Java,74
+64737c0b475ff29e8f54a868,https://github.com/microsoft/InnerEye-DeepLearning,MIT License,Python,46
+64737d06475ff29e8f54a887,https://github.com/microsoft/GroupCacheDotNet,MIT License,C#,209
+64737ddf475ff29e8f54a8aa,https://github.com/apache/fluo-examples,Apache License 2.0,Java,17
+64736154475ff29e8f54a84d,https://github.com/apache/incubator-nemo,Apache License 2.0,Java,234
+64735e61475ff29e8f54a843,https://github.com/microsoft/task_oriented_dialogue_as_dataflow_synthesis,MIT License,Python,2
+64737cc6475ff29e8f54a87e,https://github.com/apache/commons-geometry,Apache License 2.0,Java,161
+64737c55475ff29e8f54a87c,https://github.com/apache/manifoldcf-integration-solr-7.x,Apache License 2.0,Java,16
+64737d9c475ff29e8f54a89c,https://github.com/microsoft/electionguard-cpp,MIT License,C++,58
+64737d5a475ff29e8f54a88f,https://github.com/microsoft/media-foundation,MIT License,PowerShell,249
+6473775e475ff29e8f54a855,https://github.com/microsoft/knowledge-extraction-recipes-forms,MIT License,Jupyter Notebook,331
+6473417b475ff29e8f54a832,https://github.com/microsoft/AuthJanitor,MIT License,C#,3
+6473802c475ff29e8f54a8d2,https://github.com/apache/sling-org-apache-sling-feature-resolver,Apache License 2.0,Java,24
+64737e0b475ff29e8f54a8b0,https://github.com/microsoft/Microsoft-UI-UIAutomation,MIT License,C++,109
+64738002475ff29e8f54a8cc,https://github.com/microsoft/ptgnn,MIT License,Python,330
+64737f58475ff29e8f54a8c0,https://github.com/apache/sling-org-apache-sling-feature-analyser,Apache License 2.0,Java,29
+64738052475ff29e8f54a8db,https://github.com/apache/sling-slingfeature-maven-plugin,Apache License 2.0,Java,2
+64738026475ff29e8f54a8d0,https://github.com/apache/sling-org-apache-sling-feature-launcher,Apache License 2.0,Java,1
+64737f79475ff29e8f54a8ca,https://github.com/microsoft/onnxruntime-training-examples,MIT License,C++,5
+6473805e475ff29e8f54a8df,https://github.com/microsoft/bing-wordpress-url-submission-plugin,GNU General Public License v2.0,PHP,17
+647386f8475ff29e8f54a8f6,https://github.com/apache/datasketches-cpp,Apache License 2.0,C++,4
+647ac6eaabf7fef157a1f58f,https://github.com/microsoft/lage,MIT License,JavaScript,125
+647adaedabf7fef157a1f596,https://github.com/apache/dubbo-hessian-lite,Apache License 2.0,Java,3
+647ae442abf7fef157a1f5bf,https://github.com/apache/directory-scimple,Apache License 2.0,Java,76
+647ae040abf7fef157a1f5ae,https://github.com/apache/incubator-warble-server,Apache License 2.0,CoffeeScript,2
+647ae670abf7fef157a1f5e8,https://github.com/apache/incubator-hugegraph-commons,Apache License 2.0,Java,283
+647ae0c0abf7fef157a1f5b0,https://github.com/microsoft/batch-processing-kit,MIT License,Python,328
+647adb38abf7fef157a1f5a5,https://github.com/microsoft/microsoft-bonsai-api,MIT License,Jupyter Notebook,33
+647ae485abf7fef157a1f5cc,https://github.com/apache/sling-org-apache-sling-app-cms,Apache License 2.0,Java,2
+647aea77abf7fef157a1f602,https://github.com/apache/db-jdo,Apache License 2.0,Java,147
+647aeaffabf7fef157a1f608,https://github.com/microsoft/QuantumEllipticCurves,MIT License,Q#,256
+647ae49dabf7fef157a1f5ce,https://github.com/apache/dubbo-php-framework,Apache License 2.0,PHP,8
+647ae454abf7fef157a1f5c2,https://github.com/microsoft/build20AcceleratedSpark,MIT License,Jupyter Notebook,8
+647aea9eabf7fef157a1f606,https://github.com/apache/tcl-rivet,Apache License 2.0,C,70
+647aeccdabf7fef157a1f620,https://github.com/microsoft/jacdac-c,MIT License,C,568
+647aecd4abf7fef157a1f622,https://github.com/apache/hbase-operator-tools,Apache License 2.0,Java,11
+647b09edabf7fef157a1f635,https://github.com/microsoft/ORBIT-Dataset,MIT License,Python,34
+647b144fabf7fef157a1f682,https://github.com/apache/ambari-logsearch,Apache License 2.0,Java,241
+647aec41abf7fef157a1f618,https://github.com/microsoft/ANCE,MIT License,Python,636
+647aec50abf7fef157a1f61c,https://github.com/apache/hbase-connectors,Apache License 2.0,Scala,30
+647b09a3abf7fef157a1f62f,https://github.com/microsoft/DeBERTa,MIT License,Python,1
+647b0beeabf7fef157a1f648,https://github.com/microsoft/Dynamics-365-FastTrack-Implementation-Assets,MIT License,Jupyter Notebook,23
+647b1027abf7fef157a1f661,https://github.com/microsoft/secmgmt-open-powershell,MIT License,C#,46
+647aececabf7fef157a1f628,https://github.com/microsoft/opendatacloud,MIT License,C#,2
+647b097cabf7fef157a1f62d,https://github.com/apache/ignite-teamcity-bot,Apache License 2.0,Java,7
+647b13f3abf7fef157a1f680,https://github.com/microsoft/genalog,MIT License,Jupyter Notebook,6
+647b1566abf7fef157a1f68a,https://github.com/microsoft/CodeBERT,MIT License,Python,1215
+647b146cabf7fef157a1f686,https://github.com/apache/ambari-infra,Apache License 2.0,Java,33
+647b4314abf7fef157a1f6e0,https://github.com/apache/sling-org-apache-sling-feature-extension-apiregions,Apache License 2.0,Java,7
+647b436fabf7fef157a1f6e8,https://github.com/apache/incubator-milagro-crypto-js,Apache License 2.0,JavaScript,4
+647b1a69abf7fef157a1f6a4,https://github.com/microsoft/InnerEye-CreateDataset,MIT License,C#,3
+647b4339abf7fef157a1f6e4,https://github.com/microsoft/Bringing-Old-Photos-Back-to-Life,MIT License,Python,18
+647b215eabf7fef157a1f6c1,https://github.com/microsoft/Windows-IoT-Samples,MIT License,C++,57
+647b1ac2abf7fef157a1f6b4,https://github.com/apache/rocketmq-spring,Apache License 2.0,Java,2
+647b42edabf7fef157a1f6d6,https://github.com/apache/pulsar-manager,Apache License 2.0,Vue,47
+647b2162abf7fef157a1f6c3,https://github.com/apache/sling-org-apache-sling-scripting-sightly-runtime,Apache License 2.0,Java,2
+647b4321abf7fef157a1f6e2,https://github.com/apache/pulsar-dotpulsar,Apache License 2.0,C#,12
+647b5023abf7fef157a1f707,https://github.com/apache/groovy-website,Apache License 2.0,Groovy,1306
+647b4d0cabf7fef157a1f701,https://github.com/apache/geode-benchmarks,Apache License 2.0,Java,3
+647b56d5abf7fef157a1f726,https://github.com/microsoft/PowerApps-Language-Tooling,MIT License,C#,18
+647b5597abf7fef157a1f720,https://github.com/apache/servicecomb-saga-actuator,Apache License 2.0,Java,26
+647b588dabf7fef157a1f734,https://github.com/apache/dubbo-go-hessian2,Apache License 2.0,Go,1
+647b5756abf7fef157a1f731,https://github.com/apache/cassandra-sidecar,Apache License 2.0,Java,21
+647b5968abf7fef157a1f73f,https://github.com/microsoft/infersharp,MIT License,C#,4
+647b5958abf7fef157a1f73b,https://github.com/microsoft/intrinsic-private-sgd,MIT License,Python,1
+647b7705abf7fef157a1f74e,https://github.com/microsoft/responsible-ai-toolbox,MIT License,TypeScript,911
+647b5949abf7fef157a1f739,https://github.com/apache/phoenix-connectors,Apache License 2.0,Java,67
+647b5988abf7fef157a1f741,https://github.com/apache/aries-journaled-events,Apache License 2.0,Java,11
+647b7a03abf7fef157a1f765,https://github.com/apache/incubator-baremaps,Apache License 2.0,Java,6
+647b8b21abf7fef157a1f798,https://github.com/microsoft/fastseq,MIT License,Python,42
+647b9e79abf7fef157a1f7e7,https://github.com/microsoft/TelemetryLogsGeneratorAndBenchmark,MIT License,C#,60
+647ba899abf7fef157a1f80c,https://github.com/microsoft/voxelpose-pytorch,MIT License,Python,1
+647b9aadabf7fef157a1f7b7,https://github.com/microsoft/devicescript-esp32,MIT License,C,6
+647b9c09abf7fef157a1f7cd,https://github.com/apache/airavata-custos,Apache License 2.0,Python,1479
+647b8ae2abf7fef157a1f793,https://github.com/apache/mina-vysper,Apache License 2.0,Java,815
+647b82e5abf7fef157a1f781,https://github.com/apache/mina-ftpserver,Apache License 2.0,Java,421
+647ba0e7abf7fef157a1f7fc,https://github.com/apache/dolphinscheduler,Apache License 2.0,Java,511
+647b9af4abf7fef157a1f7b9,https://github.com/apache/commons-skin,Apache License 2.0,JavaScript,16
+647b9cbfabf7fef157a1f7d6,https://github.com/apache/camel-k-runtime,Apache License 2.0,Java,2
+647ba1f1abf7fef157a1f803,https://github.com/microsoft/CSS_SQL_Networking_Tools,MIT License,C#,41
+647b9eddabf7fef157a1f7e9,https://github.com/apache/servicecomb-samples,Apache License 2.0,Java,30
+647b9f57abf7fef157a1f7f1,https://github.com/microsoft/MixedReality-Unreal-KippysEscape,MIT License,C++,2
+647b9b67abf7fef157a1f7cb,https://github.com/microsoft/PSRule.Rules.GitHub,MIT License,C#,3
+647b8ebfabf7fef157a1f7a0,https://github.com/microsoft/OAT,MIT License,C#,1
+647b7a0cabf7fef157a1f769,https://github.com/apache/jclouds-examples,Apache License 2.0,Java,4
+647ba882abf7fef157a1f80a,https://github.com/apache/sling-org-apache-sling-feature-cpconverter,Apache License 2.0,Java,8
+647b88a1abf7fef157a1f78b,https://github.com/microsoft/privGAN,MIT License,Jupyter Notebook,2
+647b9e62abf7fef157a1f7e1,https://github.com/microsoft/onefuzz,MIT License,Rust,5
+647b7a19abf7fef157a1f76b,https://github.com/microsoft/BackwardCompatibilityML,MIT License,HTML,6
+647ba99dabf7fef157a1f810,https://github.com/microsoft/SNR,MIT License,Jupyter Notebook,376
+647b7a70abf7fef157a1f777,https://github.com/apache/flex-radii8,Apache License 2.0,ActionScript,383
+647b9e3aabf7fef157a1f7dd,https://github.com/microsoft/restler-fuzzer,MIT License,Python,1637
+647bafdeabf7fef157a1f841,https://github.com/apache/sling-org-apache-sling-distribution-journal-kafka,Apache License 2.0,Java,14
+647bad1babf7fef157a1f824,https://github.com/microsoft/win_pmu,MIT License,C,77
+647bab9fabf7fef157a1f818,https://github.com/apache/incubator-tuweni,Apache License 2.0,Java,341
+647bb2d1abf7fef157a1f851,https://github.com/apache/sling-org-apache-sling-distribution-journal-it,Apache License 2.0,Java,326
+647bb626abf7fef157a1f865,https://github.com/microsoft/Dynamics365-CustomerInsights-Client-Libraries,MIT License,JavaScript,528
+647ba9b2abf7fef157a1f812,https://github.com/apache/aries-cdi,Apache License 2.0,Java,21
+647baff2abf7fef157a1f845,https://github.com/apache/sling-org-apache-sling-distribution-journal,Apache License 2.0,Java,25
+647bb6feabf7fef157a1f86c,https://github.com/apache/netbeans-webskin,Apache License 2.0,JavaScript,50
+647bb828abf7fef157a1f883,https://github.com/microsoft/CognitiveServicesLanguageUtilities,MIT License,C#,4
+647bb3e7abf7fef157a1f85b,https://github.com/apache/db-jdo-site,Apache License 2.0,HTML,6
+647bb42eabf7fef157a1f863,https://github.com/apache/hbase-filesystem,Apache License 2.0,Java,2
+647bacc2abf7fef157a1f822,https://github.com/apache/dubbo-getty,Apache License 2.0,Go,26
+647ba9faabf7fef157a1f814,https://github.com/microsoft/RecursiveExtractor,MIT License,C#,39
+647bb7a8abf7fef157a1f875,https://github.com/microsoft/streamer,MIT License,TypeScript,12
+647bad6babf7fef157a1f82d,https://github.com/apache/apisix,Apache License 2.0,Lua,19
+647bb841abf7fef157a1f885,https://github.com/microsoft/customvision-tfjs-node,MIT License,JavaScript,6
+647bbbf0abf7fef157a1f8be,https://github.com/apache/rocketmq-ons,Apache License 2.0,Java,71
+647bbba9abf7fef157a1f8ba,https://github.com/microsoft/FLAML,MIT License,Jupyter Notebook,99
+647bbb47abf7fef157a1f8ae,https://github.com/apache/rocketmq-exporter,Apache License 2.0,Java,5
+647bbf0babf7fef157a1f8ce,https://github.com/apache/solr-operator,Apache License 2.0,Go,397
+647bb8bdabf7fef157a1f88d,https://github.com/apache/geronimo-batchee,Apache License 2.0,Java,541
+647bbb16abf7fef157a1f89c,https://github.com/apache/incubator-streampark,Apache License 2.0,Java,47
+647bc0e8abf7fef157a1f8d9,https://github.com/apache/camel-quarkus,Apache License 2.0,Java,225
+647bbb4fabf7fef157a1f8b0,https://github.com/microsoft/Audio-Manager-for-Unity,MIT License,C#,4
+647bba87abf7fef157a1f890,https://github.com/microsoft/qlib,MIT License,Python,190
+647bc113abf7fef157a1f8df,https://github.com/apache/airavata-mft,Apache License 2.0,Java,93
+647bcc77abf7fef157a1f8f7,https://github.com/apache/causeway-app-demo,Apache License 2.0,Java,2
+647bccaeabf7fef157a1f8fb,https://github.com/microsoft/Guan,MIT License,C#,33
+647be7e5abf7fef157a1f908,https://github.com/apache/incubator-teaclave,Apache License 2.0,Rust,1836
+647be8d5abf7fef157a1f920,https://github.com/microsoft/Dynamics-365-Fraud-Protection-ManualReview,MIT License,TypeScript,5
+647bea77abf7fef157a1f93f,https://github.com/apache/rocketmq-ons-cpp,Apache License 2.0,C++,43
+647be91aabf7fef157a1f928,https://github.com/microsoft/qlib-server,MIT License,Python,4
+647be7f3abf7fef157a1f90c,https://github.com/microsoft/Dynamics-AX-Payroll-US,MIT License,C#,3
+647beb5aabf7fef157a1f941,https://github.com/apache/incubator-kvrocks,Apache License 2.0,C++,474
+647bebf1abf7fef157a1f948,https://github.com/microsoft/DistrOpt,MIT License,C++,1
+647becababf7fef157a1f94a,https://github.com/apache/security-vulnogram,MIT License,JavaScript,2
+647bf18babf7fef157a1f966,https://github.com/microsoft/aragog,MIT License,C++,223
+647bed19abf7fef157a1f952,https://github.com/apache/cassandra-diff,Apache License 2.0,Java,26
+647becd9abf7fef157a1f94e,https://github.com/microsoft/omnichannel-chat-sdk,MIT License,TypeScript,122
+647bf08aabf7fef157a1f95b,https://github.com/microsoft/onnx-server-openenclave,MIT License,C,4
+647bebe9abf7fef157a1f946,https://github.com/apache/mxnet-ci,Apache License 2.0,Python,9
+647bfbc3abf7fef157a1f977,https://github.com/apache/maven-mvnd,Apache License 2.0,Java,44
+647c089babf7fef157a1f995,https://github.com/apache/any23-server,Apache License 2.0,Java,2
+647c3ee9abf7fef157a1fa08,https://github.com/apache/fineract-cn-interoperation,Apache License 2.0,Java,1
+647c3698abf7fef157a1f9d5,https://github.com/apache/ws-wss4j,Apache License 2.0,Java,126
+647c3f70abf7fef157a1fa18,https://github.com/microsoft/playwright-java,Apache License 2.0,Java,25
+647c55ebabf7fef157a1fa36,https://github.com/microsoft/asconnect,MIT License,Python,1
+647c0e7eabf7fef157a1f9a7,https://github.com/apache/cassandra-website,Apache License 2.0,CSS,1
+647c5c1aabf7fef157a1fa3e,https://github.com/apache/xerces-c,Apache License 2.0,C++,2270
+647c5d8cabf7fef157a1fa46,https://github.com/apache/rocketmq-connect,Apache License 2.0,Java,855
+647c040aabf7fef157a1f985,https://github.com/microsoft/onefuzz-samples,MIT License,,12
+647c2f60abf7fef157a1f9b6,https://github.com/apache/archiva-components,Apache License 2.0,Java,26
+647c0ad4abf7fef157a1f99e,https://github.com/apache/tvm-site,Apache License 2.0,JavaScript,30
+647bfb98abf7fef157a1f975,https://github.com/apache/eventmesh,Apache License 2.0,Java,8628
+647c3af3abf7fef157a1f9e4,https://github.com/apache/streampipes-website,Apache License 2.0,HTML,891
+647c5ef6abf7fef157a1fa4c,https://github.com/apache/dubbo-go-pixiu,Apache License 2.0,Go,2106
+647c5f80abf7fef157a1fa5c,https://github.com/apache/camel-examples,Apache License 2.0,,216
+647c5f86abf7fef157a1fa5e,https://github.com/microsoft/bonsai-decision-support-interface,MIT License,Python,3
+647c896eabf7fef157a1fa81,https://github.com/apache/cassandra-in-jvm-dtest-api,Apache License 2.0,Java,1
+647c89baabf7fef157a1fa85,https://github.com/apache/felix-atomos,Apache License 2.0,Java,98
+647c89e2abf7fef157a1fa8f,https://github.com/apache/skywalking-agent-test-tool,Apache License 2.0,Java,6
+647c969cabf7fef157a1fabb,https://github.com/apache/axis-axis2-c-rampart,Apache License 2.0,C,12
+647c5f3cabf7fef157a1fa4f,https://github.com/microsoft/onnxruntime-extensions,MIT License,Python,19
+647c89d7abf7fef157a1fa8d,https://github.com/apache/httpd-tests,Apache License 2.0,Perl,12
+647c8fa1abf7fef157a1fab6,https://github.com/apache/axis-axis2-c-core,Apache License 2.0,C,1642
+647c8e57abf7fef157a1faa6,https://github.com/apache/incubator-nlpcraft-java-client,Apache License 2.0,Java,275
+647c9920abf7fef157a1fad5,https://github.com/microsoft/AutoCrane,MIT License,C#,6
+647ca69cabf7fef157a1faff,https://github.com/apache/velocity-site,Apache License 2.0,HTML,16
+647cac9aabf7fef157a1fb55,https://github.com/apache/skywalking-python,Apache License 2.0,Python,1
+647ca6a8abf7fef157a1fb05,https://github.com/apache/airavata-custos-portal,Apache License 2.0,Vue,7
+647c9a05abf7fef157a1fadb,https://github.com/apache/axis-axis1-c,Apache License 2.0,C++,218
+647c992fabf7fef157a1fad8,https://github.com/microsoft/RelationNet2,MIT License,Python,1
+647c9a1cabf7fef157a1fadf,https://github.com/apache/axis-axis2-java-sandesha,Apache License 2.0,Java,6
+647ca99cabf7fef157a1fb35,https://github.com/apache/flink-training,Apache License 2.0,Java,39
+647cac12abf7fef157a1fb45,https://github.com/apache/uima-async-scaleout,Apache License 2.0,Java,138
+647caa34abf7fef157a1fb3b,https://github.com/apache/flink-benchmarks,Apache License 2.0,Java,92
+647cab4fabf7fef157a1fb3d,https://github.com/apache/incubator-nlpcraft-website,Apache License 2.0,HTML,278
+647c97a7abf7fef157a1fac9,https://github.com/apache/axis-axis2-java-kandula,Apache License 2.0,Java,16
+647ca68dabf7fef157a1faf9,https://github.com/microsoft/RxKql,Apache License 2.0,C#,670
+647caebbabf7fef157a1fb58,https://github.com/microsoft/sketch360,MIT License,JavaScript,246
+647ca6adabf7fef157a1fb07,https://github.com/microsoft/SyslogDecode,MIT License,C#,3
+647c9c6aabf7fef157a1faea,https://github.com/microsoft/K-Adapter,MIT License,Python,2028
+647ca945abf7fef157a1fb2a,https://github.com/microsoft/react-native-winrt,MIT License,C++,1
+647ca776abf7fef157a1fb0f,https://github.com/apache/tomcat-taglibs-standard,Apache License 2.0,Java,177
+647ca58cabf7fef157a1faf4,https://github.com/microsoft/gdls_star,MIT License,C++,169
+647ca7ddabf7fef157a1fb1e,https://github.com/microsoft/sarif-pattern-matcher,MIT License,C#,27
+647cb6cbabf7fef157a1fba6,https://github.com/microsoft/bing-search-sdk-for-python,MIT License,Python,11
+647cc7caabf7fef157a1fbe6,https://github.com/apache/dolphinscheduler-maven-plugin,Apache License 2.0,Java,1
+647cc7ecabf7fef157a1fbf1,https://github.com/microsoft/service-fabric-healer,MIT License,C#,4
+647cc8b9abf7fef157a1fc03,https://github.com/apache/airavata-django-portal-sdk,Apache License 2.0,Python,1
+647cb557abf7fef157a1fb88,https://github.com/microsoft/msrecruit-scheduling-engine,MIT License,C#,31
+647cc540abf7fef157a1fbd5,https://github.com/microsoft/DirectX-Headers,MIT License,C,10
+647cb590abf7fef157a1fb8c,https://github.com/apache/incubator-sdap-ingester,Apache License 2.0,Python,8
+647cb62dabf7fef157a1fb93,https://github.com/apache/incubator-liminal,Apache License 2.0,Python,83
+647ccc4fabf7fef157a1fc19,https://github.com/microsoft/normalized_trend_filtering,MIT License,Jupyter Notebook,4
+647cc98babf7fef157a1fc07,https://github.com/microsoft/FHIR-Analytics-Pipelines,MIT License,TSQL,319
+647cddbbabf7fef157a1fc3f,https://github.com/microsoft/CSSClientAppsXamarinSampleCode,MIT License,C#,10
+647cc516abf7fef157a1fbce,https://github.com/microsoft/vision-evaluation,MIT License,Python,5
+647cb578abf7fef157a1fb8a,https://github.com/microsoft/bing-search-sdk-for-net,MIT License,C#,172
+647ccc7cabf7fef157a1fc1e,https://github.com/microsoft/CausalGrid,MIT License,HTML,36
+647cd8bfabf7fef157a1fc2d,https://github.com/microsoft/Microsoft-Performance-Tools-Linux-Android,MIT License,C#,72
+647cde0babf7fef157a1fc4b,https://github.com/microsoft/UnifiedRedisPlatform.Core,MIT License,C#,89
+647cb5f0abf7fef157a1fb8e,https://github.com/apache/commons-graph,Apache License 2.0,Java,168
+647cc799abf7fef157a1fbd7,https://github.com/apache/age,Apache License 2.0,C,4456
+647cb17eabf7fef157a1fb77,https://github.com/microsoft/bayesianize,MIT License,Python,13
+647cb716abf7fef157a1fbbb,https://github.com/apache/shardingsphere-ui,Apache License 2.0,Java,4
+647cc802abf7fef157a1fbf7,https://github.com/microsoft/PlanetaryComputerDataCatalog,MIT License,TypeScript,2
+647cc7baabf7fef157a1fbe1,https://github.com/apache/shardingsphere-elasticjob-ui,Apache License 2.0,Java,8
+647cc86dabf7fef157a1fbfa,https://github.com/microsoft/CsWin32,MIT License,C#,168
+647cdf0eabf7fef157a1fc54,https://github.com/apache/foundation-site,Apache License 2.0,CSS,1314
+647cdf35abf7fef157a1fc5b,https://github.com/apache/cassandra-harry,Apache License 2.0,Java,17
+647ce447abf7fef157a1fc7e,https://github.com/apache/incubator-hugegraph-computer,Apache License 2.0,Java,156
+647ce032abf7fef157a1fc6b,https://github.com/microsoft/superbenchmark,MIT License,Python,56
+647cde44abf7fef157a1fc52,https://github.com/microsoft/fnl_paper,MIT License,Python,7
+647ce4f0abf7fef157a1fc82,https://github.com/microsoft/MSMARCO-Passage-Ranking-Submissions,MIT License,Python,13
+647cdf1babf7fef157a1fc58,https://github.com/microsoft/AppInsights.EnterpriseTelemetry,MIT License,C#,4
+647ce547abf7fef157a1fc84,https://github.com/apache/accumulo-classloaders,Apache License 2.0,Java,166
+647cfd30abf7fef157a1fc8d,https://github.com/apache/dubbo-go-samples,Apache License 2.0,Go,19220
+647cfd79abf7fef157a1fc8f,https://github.com/microsoft/kiota,MIT License,C#,28
+647cfee4abf7fef157a1fc95,https://github.com/apache/hop-website,Apache License 2.0,CSS,135
+647cfeefabf7fef157a1fc99,https://github.com/microsoft/PullRequestQuantifier,MIT License,C#,1
+647e5f03df8fd7516c0d0b67,https://github.com/microsoft/Extensible-Storage-Engine,MIT License,C++,22
+647d03c6abf7fef157a1fccd,https://github.com/microsoft/omop-sars-cov2-pretest-probability,MIT License,Python,263
+647e6248df8fd7516c0d0b7e,https://github.com/microsoft/gestureBotDesignKit,MIT License,JavaScript,513
+647cff4cabf7fef157a1fc9f,https://github.com/apache/thrift-website,Apache License 2.0,CSS,55
+647cffcfabf7fef157a1fcb3,https://github.com/microsoft/qdk-python,MIT License,Python,53
+647d035cabf7fef157a1fcc7,https://github.com/apache/ignite-python-thin-client,Apache License 2.0,Python,336
+647e6379df8fd7516c0d0b86,https://github.com/apache/solr-sandbox,Apache License 2.0,Java,4
+647d008dabf7fef157a1fcbc,https://github.com/microsoft/NubesGen,MIT License,HCL,2
+647d04e5abf7fef157a1fcd1,https://github.com/microsoft/Data-Appliance-GX,MIT License,Java,219
+647e5f31df8fd7516c0d0b75,https://github.com/microsoft/gqlmapi,MIT License,C++,75
+647e6405df8fd7516c0d0b88,https://github.com/microsoft/pybryt,MIT License,Python,318
+647d0463abf7fef157a1fccf,https://github.com/microsoft/SQLToolsDiag,MIT License,C#,16
+647d04f8abf7fef157a1fcd4,https://github.com/apache/camel-kamelets,Apache License 2.0,Java,5
+647e659cdf8fd7516c0d0bb4,https://github.com/microsoft/durabletask-mssql,MIT License,C#,2
+647e66cfdf8fd7516c0d0bb6,https://github.com/microsoft/scene_graph_benchmark,MIT License,Python,753
+647e6550df8fd7516c0d0ba8,https://github.com/microsoft/ConvertToSARIF,MIT License,C#,15
+647e6461df8fd7516c0d0b8d,https://github.com/microsoft/AppliedRoboticsResearchLibrary,MIT License,,3
+647e717cdf8fd7516c0d0bc6,https://github.com/apache/camel-performance-tests,Apache License 2.0,Java,6
+647e7330df8fd7516c0d0bec,https://github.com/apache/flink-statefun-playground,Apache License 2.0,Java,1305
+647e714bdf8fd7516c0d0bc0,https://github.com/apache/solr-site,Apache License 2.0,HTML,13
+647e66eddf8fd7516c0d0bb8,https://github.com/microsoft/AIForAccessibility-Samples,MIT License,JavaScript,8
+647e982bdf8fd7516c0d0c31,https://github.com/microsoft/Akoustos,MIT License,Jupyter Notebook,2
+647e7568df8fd7516c0d0bf2,https://github.com/microsoft/do-client,MIT License,C++,1
+647e9523df8fd7516c0d0c20,https://github.com/apache/sling-org-apache-sling-auth-saml2,Apache License 2.0,Java,9
+647e9558df8fd7516c0d0c2a,https://github.com/microsoft/DepthGauger,MIT License,Java,10
+647e9d09df8fd7516c0d0c5e,https://github.com/apache/ctakes-site,Apache License 2.0,HTML,1036
+647e9848df8fd7516c0d0c3c,https://github.com/microsoft/waflab,MIT License,Go,10
+647e9544df8fd7516c0d0c24,https://github.com/microsoft/Game-Control-Puzzle-Event-Administration-Tools,MIT License,TypeScript,14
+647e9940df8fd7516c0d0c4a,https://github.com/microsoft/farmbeatsforstudents,MIT License,Python,4
+647e9d3edf8fd7516c0d0c60,https://github.com/microsoft/delta-kusto,MIT License,C#,209
+647eda89df8fd7516c0d0c72,https://github.com/microsoft/SCoRE,MIT License,Python,587
+647edc2bdf8fd7516c0d0c78,https://github.com/apache/openwebbeans-site,Apache License 2.0,HTML,2279
+647edd38df8fd7516c0d0c9c,https://github.com/microsoft/ProDA,MIT License,Python,14
+647edae2df8fd7516c0d0c74,https://github.com/apache/olingo-site,Apache License 2.0,HTML,23
+647eddf6df8fd7516c0d0ca2,https://github.com/apache/nutch-webapp,Apache License 2.0,Java,148
+647edea4df8fd7516c0d0caf,https://github.com/microsoft/Microsoft-Vision-Model,MIT License,Python,1
+647edf02df8fd7516c0d0cbb,https://github.com/microsoft/fhir-proxy,MIT License,C#,4
+647edef7df8fd7516c0d0cb9,https://github.com/apache/apisix-python-plugin-runner,Apache License 2.0,Python,38
+647ee570df8fd7516c0d0ccf,https://github.com/microsoft/IoT-For-Beginners,MIT License,C++,25
+647ee44adf8fd7516c0d0cc5,https://github.com/microsoft/FastAD,MIT License,Python,245
+647eec6adf8fd7516c0d0cd3,https://github.com/apache/skywalking-java,Apache License 2.0,Java,1583
+647ede96df8fd7516c0d0cab,https://github.com/apache/rocketmq-streams,Apache License 2.0,Java,4
+647eed6adf8fd7516c0d0cd9,https://github.com/apache/rocketmq-flink,Apache License 2.0,Java,15
+647eee84df8fd7516c0d0cf1,https://github.com/apache/turbine-fulcrum-yaafi,Apache License 2.0,Java,43
+647eee3bdf8fd7516c0d0ced,https://github.com/apache/turbine-fulcrum-pool,Apache License 2.0,Java,1
+647ef1afdf8fd7516c0d0d36,https://github.com/microsoft/powerbi-jupyter,MIT License,Python,1
+647eed6edf8fd7516c0d0cdb,https://github.com/apache/turbine-fulcrum-cache,Apache License 2.0,,1
+647ef0c5df8fd7516c0d0d0d,https://github.com/apache/turbine-fulcrum-yaafi-crypto,Apache License 2.0,Java,31
+647ef0dfdf8fd7516c0d0d10,https://github.com/microsoft/uprove-javascript-sdk,MIT License,JavaScript,12
+647ef2c1df8fd7516c0d0d42,https://github.com/apache/datasketches-experimentation,Apache License 2.0,Jupyter Notebook,259
+647eed7ddf8fd7516c0d0cdf,https://github.com/apache/skywalking-banyandb-java-client,Apache License 2.0,Java,8
+647ef19edf8fd7516c0d0d32,https://github.com/apache/camel-karavan,Apache License 2.0,TypeScript,1
+647ef253df8fd7516c0d0d3e,https://github.com/microsoft/rural-crowdsourcing-toolkit,MIT License,TypeScript,7
+647efa81df8fd7516c0d0d5f,https://github.com/microsoft/beginners-django,MIT License,CSS,5
+647efc15df8fd7516c0d0d8b,https://github.com/microsoft/hibernation-setup-tool,MIT License,C,230
+647efc4fdf8fd7516c0d0d8f,https://github.com/microsoft/Swin-Transformer,MIT License,Python,94
+647efdd9df8fd7516c0d0dbe,https://github.com/apache/doris-manager,Apache License 2.0,Java,120
+647efbacdf8fd7516c0d0d89,https://github.com/apache/maven-build-cache-extension,Apache License 2.0,Java,11
+647ef498df8fd7516c0d0d45,https://github.com/microsoft/fluentui-blazor,MIT License,C#,3
+647efc74df8fd7516c0d0d92,https://github.com/apache/ratis-hadoop-projects,Apache License 2.0,Java,3
+647ef9a4df8fd7516c0d0d5b,https://github.com/microsoft/WinLog,MIT License,C#,15
+647efce0df8fd7516c0d0d9a,https://github.com/apache/rocketmq-mqtt,Apache License 2.0,Java,6
+647efe1adf8fd7516c0d0dca,https://github.com/apache/rocketmq-client-csharp,Apache License 2.0,C#,4
+647efec8df8fd7516c0d0dd5,https://github.com/apache/doris-flink-connector,Apache License 2.0,Java,25
+647f0659df8fd7516c0d0e02,https://github.com/microsoft/ebpf-for-windows,MIT License,C,1168
+647f06b0df8fd7516c0d0e06,https://github.com/microsoft/InnerEye-DICOM-RT,MIT License,C#,220
+647f039fdf8fd7516c0d0dec,https://github.com/apache/shardingsphere-on-cloud,Apache License 2.0,Go,15
+647efe48df8fd7516c0d0dd0,https://github.com/apache/flink-kubernetes-operator,Apache License 2.0,Java,27
+647f06e2df8fd7516c0d0e0a,https://github.com/microsoft/CtP,MIT License,Python,16
+647f0762df8fd7516c0d0e14,https://github.com/microsoft/MetaXL,MIT License,Python,16
+647f0496df8fd7516c0d0df8,https://github.com/microsoft/fusion-dev-ebook,MIT License,TSQL,8
+647f1b6edf8fd7516c0d0e5d,https://github.com/microsoft/SEED-Encoder,MIT License,Python,637
+647f193adf8fd7516c0d0e54,https://github.com/microsoft/SEAL-Embedded,MIT License,C,7
+647f07cedf8fd7516c0d0e2a,https://github.com/microsoft/aadb2c-starter-kit,MIT License,JavaScript,8
+647f08b2df8fd7516c0d0e2e,https://github.com/microsoft/clarification-qgen-globalinfo,MIT License,Python,379
+647f0917df8fd7516c0d0e36,https://github.com/apache/qpid-proton-dotnet,Apache License 2.0,C#,44
+647f0817df8fd7516c0d0e2c,https://github.com/microsoft/onnxruntime-inference-examples,MIT License,Python,3
+647f1a9cdf8fd7516c0d0e59,https://github.com/microsoft/InnerEye-Gateway,MIT License,C#,30
+647f179ddf8fd7516c0d0e48,https://github.com/microsoft/vision-longformer,MIT License,Python,7
+647f1c00df8fd7516c0d0e5f,https://github.com/microsoft/HaDes,MIT License,Python,397
+647f1d44df8fd7516c0d0e69,https://github.com/microsoft/S2R-DepthNet,MIT License,Python,2
+647f2516df8fd7516c0d0ead,https://github.com/microsoft/nn-Meter,MIT License,Python,337
+647f2477df8fd7516c0d0ea6,https://github.com/apache/flink-connector-opensearch,Apache License 2.0,Java,39
+647f2459df8fd7516c0d0ea4,https://github.com/apache/pulsar-client-reactive,Apache License 2.0,Java,14
+647f1d68df8fd7516c0d0e70,https://github.com/apache/arrow-nanoarrow,Apache License 2.0,C,12
+647f236edf8fd7516c0d0e98,https://github.com/apache/unomi-tracker,Apache License 2.0,JavaScript,32
+647f26afdf8fd7516c0d0ecf,https://github.com/apache/flink-connector-mongodb,Apache License 2.0,Java,14
+647f2532df8fd7516c0d0eb3,https://github.com/microsoft/glider_tasklet_crawler,MIT License,Python,1
+647f2799df8fd7516c0d0ee7,https://github.com/microsoft/SymCrypt-OpenSSL,MIT License,C,1
+647f2688df8fd7516c0d0ec4,https://github.com/microsoft/PyMarlin,MIT License,Python,466
+647f2547df8fd7516c0d0eb6,https://github.com/apache/dubbo-test-tools,Apache License 2.0,Java,27
+647f26bddf8fd7516c0d0ed1,https://github.com/apache/netbeans-native-installers,Apache License 2.0,C,4
+647f27fcdf8fd7516c0d0ee9,https://github.com/apache/incubator-pekko-http,Apache License 2.0,Scala,12
+647f25c4df8fd7516c0d0ebc,https://github.com/apache/seatunnel-web,Apache License 2.0,Java,12
+647f25fadf8fd7516c0d0ec2,https://github.com/apache/pulsar-client-python,Apache License 2.0,Python,6
+647f25b4df8fd7516c0d0eb8,https://github.com/apache/pulsar-client-cpp,Apache License 2.0,C++,121
+647f345fdf8fd7516c0d0efb,https://github.com/microsoft/strategically_efficient_rl,MIT License,Python,1588
+647f3280df8fd7516c0d0ef9,https://github.com/apache/incubator-pekko-platform-guide,Apache License 2.0,Java,20
+647f34eddf8fd7516c0d0f07,https://github.com/apache/incubator-pekko-connectors-kafka,Apache License 2.0,Scala,262
+647f34bddf8fd7516c0d0f05,https://github.com/apache/incubator-pekko-samples,Apache License 2.0,Scala,98
+647f3770df8fd7516c0d0f1a,https://github.com/apache/iotdb-tsfile-viewer,Apache License 2.0,Java,1
+647f37d3df8fd7516c0d0f20,https://github.com/microsoft/CBM,MIT License,Jupyter Notebook,263
+647f3acedf8fd7516c0d0f4a,https://github.com/microsoft/wifi-ztp,MIT License,C,488
+647f3c8ddf8fd7516c0d0f6b,https://github.com/microsoft/torchgeo,MIT License,Python,3
+647f407ddf8fd7516c0d0f7b,https://github.com/apache/dubbo-initializer,Apache License 2.0,Java,240
+647f3cc8df8fd7516c0d0f6f,https://github.com/microsoft/vOW4SIKE_on_HW,MIT License,C,64
+647f3602df8fd7516c0d0f10,https://github.com/apache/incubator-pekko-connectors,Apache License 2.0,Scala,64
+647f3c47df8fd7516c0d0f65,https://github.com/apache/netbeans-nbpackage,Apache License 2.0,Java,2
+647f368cdf8fd7516c0d0f14,https://github.com/microsoft/VisionLongformerForObjectDetection,MIT License,Python,7
+647f3af5df8fd7516c0d0f4c,https://github.com/microsoft/table-transformer,MIT License,Python,8
+647f4097df8fd7516c0d0f7f,https://github.com/microsoft/CvT,MIT License,Python,11
+647f36c7df8fd7516c0d0f18,https://github.com/apache/dolphinscheduler-sdk-python,Apache License 2.0,Python,63
+647f3c06df8fd7516c0d0f56,https://github.com/apache/logging-log4j-samples,Apache License 2.0,Java,5
+647f528fdf8fd7516c0d1005,https://github.com/apache/flume-hadoop,Apache License 2.0,Java,5
+647f494bdf8fd7516c0d0f95,https://github.com/microsoft/azure-cli,MIT License,Python,1648
+647f5481df8fd7516c0d1031,https://github.com/microsoft/Table2Charts,MIT License,Python,403
+647f5022df8fd7516c0d0fcb,https://github.com/apache/flume-legacy,Apache License 2.0,Java,268
+647f5091df8fd7516c0d0fff,https://github.com/apache/incubator-paimon-presto,Apache License 2.0,Java,12
+647f53b8df8fd7516c0d1027,https://github.com/apache/cassandra-analytics,Apache License 2.0,Java,351
+647f495fdf8fd7516c0d0f97,https://github.com/apache/arrow-flight-sql-postgresql,Apache License 2.0,C++,15
+647f53e3df8fd7516c0d102f,https://github.com/microsoft/DynamicHead,MIT License,Python,7
+647f4c29df8fd7516c0d0faf,https://github.com/microsoft/VisualTrueType,MIT License,C++,1
+647f4ab5df8fd7516c0d0fa2,https://github.com/microsoft/HoloLensNavigationForRobots,MIT License,C++,3
+647f4a32df8fd7516c0d0f9d,https://github.com/apache/iotdb-backup-tool,Apache License 2.0,Java,1
+647f5770df8fd7516c0d1043,https://github.com/microsoft/TAP,MIT License,Python,31
+647f8b61df8fd7516c0d10bf,https://github.com/microsoft/msvc-code-analysis-action,MIT License,JavaScript,490
+647f706cdf8fd7516c0d109f,https://github.com/microsoft/service-fabric-yarp,MIT License,C#,6
+647f5778df8fd7516c0d1047,https://github.com/apache/hadoop-api-shim,Apache License 2.0,Java,1
+647f6a09df8fd7516c0d1069,https://github.com/microsoft/Broadcast-Development-Kit,MIT License,C#,2
+647f700ddf8fd7516c0d108d,https://github.com/microsoft/bird-acoustics-rcnn,MIT License,Jupyter Notebook,6
+647f56f9df8fd7516c0d1033,https://github.com/microsoft/muzic,MIT License,Python,3709
+647f581fdf8fd7516c0d1049,https://github.com/microsoft/MetaST,MIT License,Python,438
+647f5859df8fd7516c0d105a,https://github.com/microsoft/prv_accountant,MIT License,Python,1
+647f5704df8fd7516c0d1035,https://github.com/apache/iotdb-client-csharp,Apache License 2.0,C#,5
+647f7123df8fd7516c0d10b4,https://github.com/microsoft/quilla,MIT License,Python,61
+647f8b07df8fd7516c0d10bd,https://github.com/microsoft/ogc-api-fast-features,MIT License,Python,41
+647f8c42df8fd7516c0d10cd,https://github.com/microsoft/esvit,MIT License,Python,14
+647f8c09df8fd7516c0d10c9,https://github.com/microsoft/CSWin-Transformer,MIT License,Python,14
+647f8e6cdf8fd7516c0d10ee,https://github.com/microsoft/Focal-Transformer,MIT License,Python,14
+647f8f5edf8fd7516c0d1102,https://github.com/microsoft/D3D9On12,MIT License,C++,308
+647f90b3df8fd7516c0d1128,https://github.com/microsoft/subseasonal_toolkit,MIT License,Python,15
+647f8f0bdf8fd7516c0d1100,https://github.com/microsoft/UDA,MIT License,Python,1
+647f8be6df8fd7516c0d10c7,https://github.com/microsoft/hi-ml,MIT License,Python,63
+647f91cbdf8fd7516c0d1131,https://github.com/microsoft/jacdac-dotnet,MIT License,C#,6
+647f8fb0df8fd7516c0d110e,https://github.com/microsoft/gctoolkit,MIT License,Java,136
+647f8ffbdf8fd7516c0d111e,https://github.com/microsoft/DVMP,MIT License,Python,18
+647f8e1bdf8fd7516c0d10e0,https://github.com/microsoft/KC,MIT License,Python,923
+647f8e4ddf8fd7516c0d10ec,https://github.com/microsoft/MRS,MIT License,Python,8
+647f8fdcdf8fd7516c0d111c,https://github.com/microsoft/VisualXpress,MIT License,C#,5
+647f972cdf8fd7516c0d115c,https://github.com/microsoft/lightgbm-benchmark,MIT License,Python,2
+647f931fdf8fd7516c0d114a,https://github.com/microsoft/Acoustic-Perception-for-Virtual-AI-Agents,MIT License,C++,15
+647f939fdf8fd7516c0d1158,https://github.com/microsoft/SoftTeacher,MIT License,Python,32
+647fd494df8fd7516c0d1188,https://github.com/microsoft/station-b-libraries,MIT License,Python,1206
+647fd18ddf8fd7516c0d1181,https://github.com/microsoft/Forerunner,GNU Lesser General Public License v3.0,Go,8
+647f9c04df8fd7516c0d1174,https://github.com/microsoft/dsb,MIT License,C,929
+647fd58adf8fd7516c0d1194,https://github.com/microsoft/agdiag,MIT License,C#,17
+647fd599df8fd7516c0d1196,https://github.com/microsoft/parallax-loader,MIT License,TypeScript,20
+647fd62fdf8fd7516c0d11c0,https://github.com/microsoft/SGSDI,MIT License,Python,2
+647fd86edf8fd7516c0d11c2,https://github.com/microsoft/dstoolkit-km-solution-accelerator,MIT License,C#,903
+647fd900df8fd7516c0d11c4,https://github.com/microsoft/dstoolkit-ml-ops-for-databricks,MIT License,Python,361
+647fd4b3df8fd7516c0d118e,https://github.com/microsoft/planetary-computer-apis,MIT License,Python,14
+647ff82edf8fd7516c0d11ce,https://github.com/microsoft/graph-drilldown,MIT License,TypeScript,4
+647ff811df8fd7516c0d11cc,https://github.com/microsoft/MoPQ,MIT License,Python,306
+647ff8acdf8fd7516c0d11e2,https://github.com/microsoft/semantic_parsing_with_constrained_lm,MIT License,Python,16
+647ffa5bdf8fd7516c0d11f4,https://github.com/microsoft/cai-advanced-processing-service,MIT License,Python,972
+647ff97ddf8fd7516c0d11ec,https://github.com/microsoft/building-damage-assessment-cnn-siamese,MIT License,Jupyter Notebook,644
+6480058cdf8fd7516c0d1261,https://github.com/microsoft/SizeBench,MIT License,C#,65
+648004cfdf8fd7516c0d1253,https://github.com/microsoft/HittER,MIT License,Python,10
+64800eb3df8fd7516c0d12d9,https://github.com/microsoft/NeuralSpeech,MIT License,Python,78
+64800f84df8fd7516c0d12f8,https://github.com/microsoft/workshop-library,MIT License,Jupyter Notebook,7
+648005a0df8fd7516c0d1263,https://github.com/microsoft/oea-dai-hack,MIT License,Jupyter Notebook,1
+6480068cdf8fd7516c0d1275,https://github.com/microsoft/python-inference-script,MIT License,C++,41
+64800a31df8fd7516c0d12b0,https://github.com/microsoft/power-fx-host-samples,MIT License,,4
+648006d2df8fd7516c0d1277,https://github.com/microsoft/neurips21-self-supervised-bug-detection-and-repair,MIT License,Python,9
+64800a5ddf8fd7516c0d12ba,https://github.com/microsoft/SPACH,MIT License,Python,7
+64802297df8fd7516c0d130e,https://github.com/microsoft/AzureKeyVaultManagedHSMEngine,MIT License,C,15
+64800f03df8fd7516c0d12ea,https://github.com/microsoft/oZKS,MIT License,C++,12
+648022dedf8fd7516c0d1312,https://github.com/microsoft/msrflute,MIT License,Python,92
+64800f4cdf8fd7516c0d12ee,https://github.com/microsoft/mwcci-converge,MIT License,TypeScript,5
+647ffabadf8fd7516c0d11f6,https://github.com/microsoft/MixedReality-GraphicsTools-Unity,MIT License,C#,14
+64802496df8fd7516c0d132a,https://github.com/microsoft/GLIP,MIT License,Python,833
+647ffd9cdf8fd7516c0d1217,https://github.com/microsoft/Accera,MIT License,C++,71
+64800fc1df8fd7516c0d1306,https://github.com/microsoft/jacdac-python,MIT License,Python,2
+647ffacbdf8fd7516c0d11fa,https://github.com/microsoft/cai-test-training-tool,MIT License,C#,6
+6480232ddf8fd7516c0d1322,https://github.com/microsoft/indexnow-wordpress-plugin,GNU General Public License v2.0,JavaScript,43
+648004b7df8fd7516c0d1251,https://github.com/microsoft/Stochastic-Mixture-of-Experts,MIT License,Python,1
+64800644df8fd7516c0d1267,https://github.com/microsoft/aui-cli,MIT License,Python,15
+648004f3df8fd7516c0d1255,https://github.com/microsoft/responsible-ai-toolbox-mitigations,MIT License,Jupyter Notebook,14
+648022a4df8fd7516c0d1310,https://github.com/microsoft/component-detection,MIT License,C#,4
+64802303df8fd7516c0d1318,https://github.com/microsoft/SimMIM,MIT License,Python,7
+648001f6df8fd7516c0d122b,https://github.com/microsoft/Dr-Jekyll-and-Mr-Hyde-The-Strange-Case-of-Off-Policy-Policy-Updates,MIT License,Python,9
+64800ee2df8fd7516c0d12e8,https://github.com/microsoft/omnichannel-chat-sdk-samples,MIT License,TypeScript,1
+64800f99df8fd7516c0d12fc,https://github.com/microsoft/sarif-tools,MIT License,Python,33
+64802f61df8fd7516c0d134a,https://github.com/microsoft/HardLog,GNU General Public License v2.0,C,87
+648024bddf8fd7516c0d132c,https://github.com/microsoft/omnichannel-voice-video-calling-react-native,MIT License,Swift,120
+64803180df8fd7516c0d137c,https://github.com/microsoft/Playvirtual,MIT License,Python,10
+6480310fdf8fd7516c0d1364,https://github.com/microsoft/UniCL,MIT License,Python,14
+6480312adf8fd7516c0d136a,https://github.com/microsoft/fl-simulation,MIT License,Python,23
+64802f3fdf8fd7516c0d1342,https://github.com/microsoft/ActivateAzurewithDevOps,MIT License,HTML,2300
+64803222df8fd7516c0d1382,https://github.com/microsoft/protein-uq,MIT License,Shell,323
+6480253ddf8fd7516c0d133c,https://github.com/microsoft/StyleSwin,MIT License,Python,17
+64802f72df8fd7516c0d134c,https://github.com/microsoft/BANG,MIT License,Python,4
+6480303adf8fd7516c0d1354,https://github.com/microsoft/AR2,MIT License,Python,263
+64802512df8fd7516c0d1338,https://github.com/microsoft/VQ-Diffusion,MIT License,Python,6
+648030afdf8fd7516c0d135a,https://github.com/microsoft/hidtools,MIT License,C#,16
+64803469df8fd7516c0d138c,https://github.com/microsoft/ArchProbe,MIT License,C++,7
+648035f2df8fd7516c0d13ba,https://github.com/microsoft/toga,MIT License,Python,761
+64803956df8fd7516c0d13e8,https://github.com/microsoft/segar,MIT License,Python,3
+6480378edf8fd7516c0d13d0,https://github.com/microsoft/P.910,MIT License,HTML,1
+64806524df8fd7516c0d14b3,https://github.com/microsoft/vscode-pylint,MIT License,Python,6
+64803966df8fd7516c0d13ea,https://github.com/microsoft/ebpf-for-windows-demo,MIT License,C++,11
+64803f2cdf8fd7516c0d1416,https://github.com/microsoft/SpeechT5,MIT License,Python,6
+6480411edf8fd7516c0d1442,https://github.com/microsoft/ActiveMLP,MIT License,Python,22
+648067c0df8fd7516c0d14ba,https://github.com/microsoft/qiskit-qir,MIT License,Python,397
+6480418cdf8fd7516c0d1446,https://github.com/microsoft/COMPASS,MIT License,Python,37
+648068b3df8fd7516c0d14c2,https://github.com/microsoft/FocalNet,MIT License,Python,43
+648034b5df8fd7516c0d13a2,https://github.com/microsoft/python-import-mocker,MIT License,Python,3
+6480387edf8fd7516c0d13db,https://github.com/microsoft/V8ManagedWrapper,MIT License,C#,100
+6480690cdf8fd7516c0d14cb,https://github.com/microsoft/devicescript,MIT License,TypeScript,69
+6480372ddf8fd7516c0d13c4,https://github.com/microsoft/ada,MIT License,C++,82
+64803f43df8fd7516c0d141a,https://github.com/microsoft/query-builder-for-digital-twins,MIT License,C#,6
+648045f7df8fd7516c0d1474,https://github.com/microsoft/planetary-computer-tasks,MIT License,Python,49
+64804652df8fd7516c0d1476,https://github.com/microsoft/onnxscript,MIT License,Python,44
+64803ea0df8fd7516c0d140a,https://github.com/microsoft/adatest,MIT License,Jupyter Notebook,2
+64806411df8fd7516c0d14a3,https://github.com/microsoft/wolfMQTT,GNU General Public License v2.0,C,2
+64803893df8fd7516c0d13df,https://github.com/microsoft/durabletask-java,MIT License,Java,30
+64803a5edf8fd7516c0d13ee,https://github.com/microsoft/DirectStorage,MIT License,C++,869
+648063eedf8fd7516c0d149d,https://github.com/microsoft/component-object-model-sample,MIT License,C++,11
+64803818df8fd7516c0d13d7,https://github.com/microsoft/nxs,MIT License,Python,273
+64804369df8fd7516c0d1452,https://github.com/microsoft/molecule-generation,MIT License,Python,14
+6480444cdf8fd7516c0d1466,https://github.com/microsoft/APSINet,MIT License,C#,26
+64803e5edf8fd7516c0d1400,https://github.com/microsoft/dev-tunnels,MIT License,C#,3
+648040f3df8fd7516c0d143e,https://github.com/microsoft/azure-rest-api-specs,MIT License,TypeScript,45
+648064e9df8fd7516c0d14af,https://github.com/microsoft/kiota-http-dotnet,MIT License,C#,1
+64806515df8fd7516c0d14b1,https://github.com/microsoft/PyCodeGPT,MIT License,Python,8
+64806d7bdf8fd7516c0d14e7,https://github.com/microsoft/carbon-aware-sdk,MIT License,C#,10
+64806e85df8fd7516c0d14e9,https://github.com/microsoft/RegionCLIP,Apache License 2.0,Python,636
+64806bfcdf8fd7516c0d14e3,https://github.com/microsoft/gr-azure,GNU General Public License v3.0,Python,564
+64806d6bdf8fd7516c0d14e5,https://github.com/microsoft/SwinBERT,MIT License,Python,412
+64808e10df8fd7516c0d1547,https://github.com/microsoft/xdp-for-windows,MIT License,C,850
+64806f48df8fd7516c0d150d,https://github.com/microsoft/DualOctreeGNN,MIT License,Python,22
+64808cb8df8fd7516c0d1543,https://github.com/microsoft/LightAIMD,MIT License,C,24
+64809116df8fd7516c0d155f,https://github.com/microsoft/coyote-workshop,MIT License,C#,3
+6480a081df8fd7516c0d1594,https://github.com/microsoft/WALNUT,MIT License,Python,7
+6480a655df8fd7516c0d15cd,https://github.com/microsoft/assent-app,MIT License,C#,10
+64808c3cdf8fd7516c0d153b,https://github.com/microsoft/MLNETExcel,MIT License,C#,2
+6480a60ddf8fd7516c0d15c3,https://github.com/microsoft/vscode-wasm,MIT License,TypeScript,19
+6480a713df8fd7516c0d15db,https://github.com/microsoft/MR_RetailExperienceWorkshop,MIT License,ShaderLab,10
+64808e65df8fd7516c0d1551,https://github.com/microsoft/store-submission,MIT License,JavaScript,172
+6480979ddf8fd7516c0d1561,https://github.com/microsoft/azure-sdk-for-js,MIT License,,2
+64808ec3df8fd7516c0d1555,https://github.com/microsoft/deepspeed-gpt-neox,Apache License 2.0,Python,3
+64808c56df8fd7516c0d153f,https://github.com/microsoft/PowerApps-TestEngine,MIT License,C#,25
+64809a96df8fd7516c0d1585,https://github.com/microsoft/ZappysPlayground,MIT License,C#,41
+6480988adf8fd7516c0d1567,https://github.com/microsoft/DeepGNN,MIT License,Python,415
+6480a76edf8fd7516c0d15e3,https://github.com/microsoft/dtdl-model-generator,MIT License,C#,89
+6480996bdf8fd7516c0d1571,https://github.com/microsoft/Exp-HAIC,MIT License,HTML,7
+64808bf5df8fd7516c0d152d,https://github.com/microsoft/compositional-generalization-span-level-attention,MIT License,Python,10
+6480a616df8fd7516c0d15c5,https://github.com/microsoft/mixedreality.dmx.gatekeeper,MIT License,C#,3
+64809b3ddf8fd7516c0d1587,https://github.com/microsoft/HydraLab,MIT License,Java,138
+648098addf8fd7516c0d1569,https://github.com/microsoft/automatic-rule-induction,MIT License,Python,13
+6480a11edf8fd7516c0d1596,https://github.com/microsoft/Semi-supervised-learning,MIT License,Python,381
+6480a5f3df8fd7516c0d15bf,https://github.com/microsoft/mixedreality.dmx.core,MIT License,C#,144
+6480aa1adf8fd7516c0d15f0,https://github.com/microsoft/azurestackhubdocsfeeder,MIT License,HTML,2227
+6480b263df8fd7516c0d1603,https://github.com/microsoft/FIBER,MIT License,Python,831
+6480b295df8fd7516c0d1613,https://github.com/microsoft/sbom-tool,MIT License,C#,5
+6480b416df8fd7516c0d163d,https://github.com/microsoft/causica,MIT License,Python,2
+6480b3eadf8fd7516c0d1635,https://github.com/microsoft/z3guide,MIT License,JavaScript,28
+6480c0cddf8fd7516c0d1684,https://github.com/microsoft/distance-learner,MIT License,Python,30
+6480c031df8fd7516c0d167e,https://github.com/microsoft/prompt-engine-py,MIT License,Python,2
+6480b2fedf8fd7516c0d1621,https://github.com/microsoft/MoCapAct,MIT License,Python,1
+6480aa59df8fd7516c0d15f6,https://github.com/microsoft/VisualStudioMIEnginePictureViewer,MIT License,C#,1
+6480b4f9df8fd7516c0d165d,https://github.com/microsoft/BridgeTower,MIT License,Python,17
+6480c00bdf8fd7516c0d1676,https://github.com/microsoft/dstoolkit-kg-search,MIT License,SCSS,214
+6480c0fddf8fd7516c0d168e,https://github.com/microsoft/foldingdiff,MIT License,Jupyter Notebook,2
+6480c1c1df8fd7516c0d1692,https://github.com/microsoft/graphing,MIT License,Python,402
+6480c33adf8fd7516c0d16b8,https://github.com/microsoft/CodeT,MIT License,Python,403
+6480c1e0df8fd7516c0d169c,https://github.com/microsoft/Flash_University,MIT License,C#,1
+6480cc68df8fd7516c0d16fb,https://github.com/microsoft/ics-forensics-tools,MIT License,Python,278
+6480cbeadf8fd7516c0d16f5,https://github.com/microsoft/Azure-Threat-Research-Matrix,MIT License,HTML,358
+6480c9cbdf8fd7516c0d16e6,https://github.com/microsoft/msstore-cli,MIT License,C#,11
+6480d72bdf8fd7516c0d172d,https://github.com/microsoft/azure-health-data-services-toolkit,MIT License,C#,5
+6480d7d9df8fd7516c0d174b,https://github.com/microsoft/DGT,MIT License,Python,38
+6480f6c4df8fd7516c0d1789,https://github.com/microsoft/farmvibes-ai,MIT License,Jupyter Notebook,2
+6480d74adf8fd7516c0d1733,https://github.com/microsoft/quick-authentication-mobile,MIT License,Java,7
+64812303df8fd7516c0d17f1,https://github.com/microsoft/Mask-based-Latent-Reconstruction,MIT License,Python,19
+648127bbdf8fd7516c0d185e,https://github.com/microsoft/verona-rt,MIT License,C++,89
+648121dadf8fd7516c0d17c7,https://github.com/microsoft/kql-query-store,MIT License,Jupyter Notebook,79
+6480d8e7df8fd7516c0d1757,https://github.com/microsoft/dstoolkit-route-optimization,MIT License,Python,6
+64810043df8fd7516c0d17a6,https://github.com/microsoft/monza,MIT License,C++,2
+64812362df8fd7516c0d1807,https://github.com/microsoft/taccl,MIT License,Python,98
+648122d8df8fd7516c0d17e9,https://github.com/microsoft/UniSumm,MIT License,Python,7
+64812467df8fd7516c0d1833,https://github.com/microsoft/dstoolkit-mlops-databricks,MIT License,Python,44
+6481286fdf8fd7516c0d1877,https://github.com/microsoft/ga4gh-tes,MIT License,C#,52
+648128a2df8fd7516c0d1887,https://github.com/microsoft/responsible-ai-toolbox-tracker,MIT License,TypeScript,2
+64810033df8fd7516c0d17a2,https://github.com/microsoft/molucn,MIT License,Python,1
+64812f0fdf8fd7516c0d18ba,https://github.com/microsoft/VRL3,MIT License,Python,22
+6480cd19df8fd7516c0d171f,https://github.com/microsoft/kiota-serialization-json-python,MIT License,Python,3
+6480cd30df8fd7516c0d1725,https://github.com/microsoft/kiota-serialization-text-python,MIT License,Python,4
+6480d759df8fd7516c0d1735,https://github.com/microsoft/vscode-flake8,MIT License,Python,6
+6480d7a2df8fd7516c0d1747,https://github.com/microsoft/flink-on-azure,MIT License,Java,2
+6480d92fdf8fd7516c0d175f,https://github.com/microsoft/Remote-Lab,MIT License,C#,26
+6481282fdf8fd7516c0d186f,https://github.com/microsoft/robustlearn,MIT License,Python,12
+648126a3df8fd7516c0d1854,https://github.com/microsoft/NBLyzer,MIT License,Jupyter Notebook,100
+6481288ddf8fd7516c0d1881,https://github.com/microsoft/MMLMCalibration,MIT License,Python,1
+64812af6df8fd7516c0d18b0,https://github.com/microsoft/CASPR,MIT License,Python,9
+6480cd10df8fd7516c0d171d,https://github.com/microsoft/kiota-abstractions-python,MIT License,Python,42
+6480d97edf8fd7516c0d1773,https://github.com/microsoft/codal-jacdac,MIT License,C++,2
+64812accdf8fd7516c0d18a8,https://github.com/microsoft/VirtualClient,MIT License,C#,41
+6480f700df8fd7516c0d178f,https://github.com/microsoft/vscode-figma-icons,MIT License,TypeScript,129
+6481221edf8fd7516c0d17d7,https://github.com/microsoft/autorl-research,MIT License,Python,11
+64812777df8fd7516c0d185a,https://github.com/microsoft/electionguard-core2,MIT License,C#,108
+64812f74df8fd7516c0d18ca,https://github.com/microsoft/digital-content-distribution-toolkit-client,MIT License,Kotlin,130
+6480d954df8fd7516c0d1763,https://github.com/microsoft/InclusivenessAnalyzer,MIT License,JavaScript,329
+6480f7f3df8fd7516c0d1799,https://github.com/microsoft/LSKV,MIT License,Python,443
+64810450df8fd7516c0d17ac,https://github.com/microsoft/dev-tunnels-ssh,MIT License,C#,2
+648121f9df8fd7516c0d17d1,https://github.com/microsoft/batch-effects-normalization,MIT License,Jupyter Notebook,8
+6481226adf8fd7516c0d17db,https://github.com/microsoft/robotics.pretraining.workshop.icra,MIT License,CSS,5
+648123d9df8fd7516c0d1817,https://github.com/microsoft/sarifer,MIT License,C#,4
+648125ebdf8fd7516c0d1842,https://github.com/microsoft/pdearena,MIT License,Python,7
+64813007df8fd7516c0d18da,https://github.com/microsoft/dfd-sl-ado-extension,MIT License,PowerShell,74
+64814e6ddf8fd7516c0d1902,https://github.com/microsoft/syntheseus,MIT License,Jupyter Notebook,2
+64812fb3df8fd7516c0d18ce,https://github.com/microsoft/digital-content-distribution-toolkit,MIT License,C#,66
+6481304ddf8fd7516c0d18ea,https://github.com/microsoft/binder,MIT License,Python,1
+6481507bdf8fd7516c0d192a,https://github.com/microsoft/AzureDeepStreamAccelerator,MIT License,Python,826
+64814e50df8fd7516c0d18fc,https://github.com/microsoft/SimXNS,MIT License,Python,556
+64814f3adf8fd7516c0d1916,https://github.com/microsoft/X-Decoder,MIT License,Python,30
+64814ef6df8fd7516c0d1914,https://github.com/microsoft/Dual-write-automations,MIT License,C#,4
+64815275df8fd7516c0d193a,https://github.com/microsoft/i-Code,MIT License,Jupyter Notebook,1114
+6481713edf8fd7516c0d194b,https://github.com/microsoft/mysqltoolsservice,MIT License,Python,883
+64817162df8fd7516c0d194d,https://github.com/microsoft/ExtreMA,MIT License,Python,16

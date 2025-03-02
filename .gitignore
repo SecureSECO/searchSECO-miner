@@ -169,3 +169,7 @@ build
 .pnp.*
 
 .temp/
+results/*
+python_script
+
+SECOoutput.txt
