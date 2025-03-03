@@ -56,7 +56,6 @@ sudo -u postgres psql
 
 """
 
-
 # Get repository links from a csv file
 
 try:

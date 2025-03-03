@@ -259,67 +259,6 @@ def save_to_csv(df, repo_url, input_project_id, save_dir):
 def create_dataFrame(matches, repo_url):
 
     try:
-        """
-        with open(filepath, 'w', newline='', encoding='utf-8') as csvfile:
-            writer = csv.writer(csvfile)
-            
-            # Write header
-            header = ['Hash', 'Project ID', 'Version', 'License', 'Method Name','File Location', 'Function Code', 'Repository URL', 'Query Project']
-            writer.writerow(header)
-            
-            # Write data
-            for i, match in enumerate(matches, 1):
-                try:
-                    #print(f"Writing match {i}/{len(matches)} to CSV...")
-
-                    #print("project info:", variant['method_name'])
-
-                    project_id = match['method_name'].split(',')[1].split(' ')[3]
-                    project_version = None
-                    project_license = None
-                    project_license, release_info, project_version = get_github_repo_info(repo_url)
-                    #print("project release info: {}, {}, {}".format(project_license, release_info, project_version))
-                    method_name = match['method_name'].split(',')[0]
-                    
-                    # Write original function
-                    writer.writerow([
-                        match['hash'],
-                        project_id,
-                        project_version,
-                        project_license,
-                        method_name,
-                        f"{match['method_file']}:{match['method_line']}",
-                        match['function_code'] or "Code not available",
-                        '; '.join(match['found_in']),
-                        "Yes"
-
-                    ])
-                    
-                    # Write variants
-                    for variant in match['variants']:
-                        #print("project info:", variant['method_name'])
-
-                        method_name = variant['method_name'].split(',')[0].split(':')[1].strip()
-                        project_id = variant['method_name'].split(',')[1].split(':')[1].strip()
-                        project_version = variant['method_name'].split(',')[2].split(':')[1].strip()
-                        project_license = variant['method_name'].split(',')[3].split(':')[1].strip()
-                        
-                        #print("project info: {}, {}, {}, {}".format(method_name, project_id, project_version, project_license))
-
-                        writer.writerow([
-                            match['hash'],
-                            project_id,
-                            project_version,
-                            project_license,
-                            method_name,
-                            f"{variant['method_file']}:{variant['method_line']}",
-                            variant['function_code'] or "Code not available",
-                            variant['url'],
-                            "No"
-                        ])
-                except Exception as e:
-                    print(f"Error: {e}")
-        """
         #import pandas as pd
 
         # Initialize an empty list to store data
@@ -350,6 +289,7 @@ def create_dataFrame(matches, repo_url):
 
                 # Process and add variants
                 for variant in match['variants']:
+                    print("variant details: ", variant['method_name'])
                     method_name = variant['method_name'].split(',')[0].split(':')[1].strip()
                     project_id = variant['method_name'].split(',')[1].split(':')[1].strip()
                     project_version = variant['method_name'].split(',')[2].split(':')[1].strip()
@@ -473,30 +413,6 @@ def check_license_compatibility(df):
     print("Total number of incompatibility: ", incompatibility_count)
     return df
 
-"""
-def parse_csv(file):
-    df = pd.read_csv("./"+file)
-
-    # Create a dictionary mapping each Project ID to a set of Hash values
-    project_hashes = df.groupby("Project ID")["Hash"].apply(set).to_dict()
-
-    # Compute the intersection between each pair of projects
-    commonality = {}
-
-    for (proj1, hashes1), (proj2, hashes2) in combinations(project_hashes.items(), 2):
-        intersection = hashes1.intersection(hashes2)
-        commonality[(proj1, proj2)] = (len(intersection), intersection)
-
-    # Find the pair with the maximum commonality
-    max_pair = max(commonality, key=lambda k: commonality[k][0])
-    max_common_count, max_common_hashes = commonality[max_pair]
-
-    # Print results
-    print(f"Maximum common hashes are between Project ID {max_pair[0]} and {max_pair[1]} with {max_common_count} common hashes.")
-    print("Common Hash Values:")
-    print(max_common_hashes)
-"""
-
 def get_db_repos():
 
     # Database connection details
@@ -537,12 +453,16 @@ def main():
 
     conn = get_db_repos()
     cur = conn.cursor()
-    cur.execute("SELECT _id, link, license, language, licenseconflicts, is_active FROM repositories WHERE  is_active=True;")
+    cur.execute("SELECT _id, link, license, language, licenseconflicts, is_active FROM repositories WHERE is_active=True;")
+    # Run for a particular repository for unit testing
+    #cur.execute("UPDATE repositories SET is_active = %s WHERE link = %s;", (True, 'https://github.com/alibaba/EasyTransfer'))
+    #cur.execute("SELECT _id, link, license, language, licenseconflicts, is_active, project_id FROM repositories WHERE link = 'https://github.com/alibaba/EasyTransfer';")
+    
     repos = cur.fetchall()
     cur.close()
     conn.close()
 
-    #print(repos)
+    print("Total number of repositories attempting: ", len(repos))
     
     for repo in repos:
 
