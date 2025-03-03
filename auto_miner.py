@@ -289,7 +289,7 @@ def create_dataFrame(matches, repo_url):
 
                 # Process and add variants
                 for variant in match['variants']:
-                    print("variant details: ", variant['method_name'])
+                    #print("variant details: ", variant['method_name'])
                     method_name = variant['method_name'].split(',')[0].split(':')[1].strip()
                     project_id = variant['method_name'].split(',')[1].split(':')[1].strip()
                     project_version = variant['method_name'].split(',')[2].split(':')[1].strip()

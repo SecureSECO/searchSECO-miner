@@ -22,6 +22,7 @@ CREATE DATABASE github_repos;
 
 CREATE TABLE repositories (
     _id VARCHAR(50) PRIMARY KEY,
+    project_id VARCHAR(50),
     link TEXT,
     license TEXT,
     language TEXT,
@@ -32,7 +33,7 @@ CREATE TABLE repositories (
 CREATE TABLE repository_data (
     _id VARCHAR(100) PRIMARY KEY,
     hash TEXT NOT NULL,
-    project_id BIGINT NOT NULL,
+    project_id VARCHAR(50),
     version BIGINT NOT NULL,
     license TEXT,
     method_name TEXT,
@@ -52,7 +53,6 @@ ALTER TABLE repositories ADD COLUMN project_id VARCHAR(50);
 sudo -u postgres psql
 \c github_repos;
 \l
-
 
 """
 
