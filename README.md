@@ -115,4 +115,6 @@ Jansen, S., Farshidi, S., Gousios, G., Visser, J., Storm, T. V. D., & Bruntink, 
 
 Deekshitha, S. Farshidi, J. Maassen, R. Bakhshi, R. Van Nieuwpoort and S. Jansen, "FAIRSECO: An Extensible Framework for Impact Measurement of Research Software," 2023 IEEE 19th International Conference on e-Science (e-Science), Limassol, Cyprus, 2023, pp. 1-10, doi: 10.1109/e-Science58273.2023.10254664. https://ieeexplore.ieee.org/document/10254664
 
-Islam Aminul, Jansen Slinger (2024). Securing Software Ecosystems through Repository Mining. The 15th International Conference on Software Business (ICSOB 2024), NOVEMBER 18-20, 2024, Utrecht, The Netherlands, Vol-3921. https://ceur-ws.org/Vol-3921/phd-paper8.pdf
+Islam Aminul, Jansen Slinger. (2024). Securing Software Ecosystems through Repository Mining. The 15th International Conference on Software Business (ICSOB 2024), NOVEMBER 18-20, 2024, Utrecht, The Netherlands, Vol-3921. https://ceur-ws.org/Vol-3921/phd-paper8.pdf
+
+Islam Aminul, Krishna Kaipa, Jansen Slinger. (2024). Work in Progress Paper: Detecting Method Level License Conflicts in the Worldwide Software Ecosystem. BENEVOL’24: Belgium-Dutch Software Evolution Workshop.
