@@ -117,4 +117,4 @@ Deekshitha, S. Farshidi, J. Maassen, R. Bakhshi, R. Van Nieuwpoort and S. Jansen
 
 Islam Aminul, Jansen Slinger. (2024). Securing Software Ecosystems through Repository Mining. The 15th International Conference on Software Business (ICSOB 2024), NOVEMBER 18-20, 2024, Utrecht, The Netherlands, Vol-3921. https://ceur-ws.org/Vol-3921/phd-paper8.pdf
 
-Islam Aminul, Krishna Kaipa, Jansen Slinger. (2024). Work in Progress Paper: Detecting Method Level License Conflicts in the Worldwide Software Ecosystem. BENEVOL’24: Belgium-Dutch Software Evolution Workshop.
+Islam Aminul, Krishna Kaipa, Jansen Slinger. (2024). Work in Progress Paper: Detecting Method Level License Conflicts in the Worldwide Software Ecosystem. BENEVOL’24: Belgium-Dutch Software Evolution Workshop.Conference link: https://benevol2024.github.io/
