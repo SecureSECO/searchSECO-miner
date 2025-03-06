@@ -20,10 +20,10 @@ conn = psycopg2.connect(
 """
 CREATE DATABASE github_repos;
 
-CREATE TABLE repositories (
+CREATE TABLE repository (
     _id VARCHAR(50) PRIMARY KEY,
     project_id VARCHAR(50),
-    link TEXT,
+    repository_url TEXT,
     license TEXT,
     language TEXT,
     licenseConflicts INT,
@@ -34,7 +34,7 @@ CREATE TABLE repository_data (
     _id VARCHAR(100) PRIMARY KEY,
     hash TEXT NOT NULL,
     project_id VARCHAR(50),
-    version BIGINT NOT NULL,
+    version TEXT,
     license TEXT,
     method_name TEXT,
     file_location TEXT,
@@ -44,15 +44,28 @@ CREATE TABLE repository_data (
     violation TEXT
 );
 
+DROP TABLE repository_data;
+
 UPDATE repositories SET is_active = TRUE WHERE is_active = FALSE;
 
 ALTER TABLE repositories ADD COLUMN project_id VARCHAR(50);
+
+SELECT COUNT(*) 
+FROM repository_data 
+WHERE violation ILIKE '%incompatible%';
+
+SELECT COUNT(DISTINCT project_id) 
+FROM repository_data
+WHERE query_project = 'Yes' AND violation ILIKE '%incompatible%';
+
 
 #Commands
 
 sudo -u postgres psql
 \c github_repos;
 \l
+# Check other sources for linces
+- keep a note even if not violated license
 
 """
 
