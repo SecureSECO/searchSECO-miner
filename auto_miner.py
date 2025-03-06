@@ -393,6 +393,7 @@ def can_reuse_code(source_license: License, target_license: License) -> bool:
 def check_license_compatibility(df):
     #df = pd.read_csv(file)
     df["Violation"] = ""
+    df["Source_project"] = ""
     incompatibility_count = 0 
     # Sorting by Version (timestamp) within each hash group
     df = df.sort_values(by=["Hash", "Version"])
@@ -400,6 +401,7 @@ def check_license_compatibility(df):
     license_list=["MIT", "Apache-2.0", "BSD-3-Clause", "MPL-2.0", "GPLv3", "LGPL-3.0"] 
     for function_hash, group in grouped:
         base_license = normalize_license(group.iloc[0]["License"])  # Normalize first row's license
+        source_project_id=group.iloc[0]["Project ID"]
         
         for idx, row in group.iloc[1:].iterrows(): # Compare the first row's license with rest of the others
             license_type = normalize_license(row["License"])
@@ -407,6 +409,7 @@ def check_license_compatibility(df):
                 df.at[idx, "Violation"] = "Undetermined"
             elif not can_reuse_code(base_license, license_type):
                 df.at[idx, "Violation"] = f"{license_type} incompatible with {base_license}"
+                df.at[idx, "Source_project"] = source_project_id
                 incompatibility_count += 1
                 #print(f"Incompatible licenses detected for function {function_hash}: {base_license} vs {license_type}")
     #df.to_csv(file, index=False)
