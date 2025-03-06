@@ -456,16 +456,16 @@ def main():
 
     conn = get_db_repos()
     cur = conn.cursor()
-    cur.execute("SELECT _id, link, license, language, licenseconflicts, is_active FROM repositories WHERE is_active=True;")
+    #cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE is_active=True;")
     # Run for a particular repository for unit testing
-    #cur.execute("UPDATE repositories SET is_active = %s WHERE link = %s;", (True, 'https://github.com/alibaba/EasyTransfer'))
-    #cur.execute("SELECT _id, link, license, language, licenseconflicts, is_active, project_id FROM repositories WHERE link = 'https://github.com/alibaba/EasyTransfer';")
+    cur.execute("UPDATE searchrepos SET is_active = %s WHERE repository_url = %s;", (True, 'https://github.com/alibaba/arthas'))
+    cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, project_id FROM searchrepos WHERE repository_url = 'https://github.com/alibaba/arthas';")
     
     repos = cur.fetchall()
     cur.close()
     conn.close()
 
-    print("Total number of repositories attempting: ", len(repos))
+    print("Total number of searchrepos attempting: ", len(repos))
     
     for repo in repos:
 
@@ -513,7 +513,7 @@ def main():
            
             conn = get_db_repos()
             cur = conn.cursor()
-            cur.execute("UPDATE repositories SET is_active = %s, project_id = %s WHERE _id = %s;", (False, input_project_id, repo_id))
+            cur.execute("UPDATE searchrepos SET is_active = %s, project_id = %s WHERE _id = %s;", (False, input_project_id, repo_id))
             conn.commit()
             cur.close()
             conn.close()

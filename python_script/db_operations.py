@@ -20,9 +20,32 @@ conn = psycopg2.connect(
 """
 CREATE DATABASE github_repos;
 
-CREATE TABLE repository (
-    _id VARCHAR(50) PRIMARY KEY,
+CREATE TABLE repo_collection (
+    id SERIAL PRIMARY KEY,
     project_id VARCHAR(50),
+    organization TEXT,
+    html_url TEXT,
+    fork BOOLEAN,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+    pushed_at TIMESTAMP,
+    git_url TEXT,
+    size INT,
+    stargazers_count INT,
+    watchers_count INT,
+    language TEXT,
+    forks_count INT,
+    archived BOOLEAN,
+    disabled BOOLEAN,
+    open_issues_count INT,
+    license TEXT NULL, -- Some values are empty, so allow NULL
+    allow_forking BOOLEAN
+);
+
+CREATE TABLE searchrepos (
+    _id VARCHAR(50) PRIMARY KEY,
+    organization VARCHAR(50),
+    project_id VARCHAR(100),
     repository_url TEXT,
     license TEXT,
     language TEXT,
@@ -58,6 +81,23 @@ SELECT COUNT(DISTINCT project_id)
 FROM repository_data
 WHERE query_project = 'Yes' AND violation ILIKE '%incompatible%';
 
+INSERT INTO searchrepos (
+    _id, organization, project_id, repository_url, license, language, 
+    licenseConflicts, is_active
+) VALUES (
+    TO_CHAR(NOW(), 'YYYYMMDDHH24MISSUS'),  -- Unique timestamp-based ID
+    'alibaba',  -- Organization
+    '',  -- project_id (Empty)
+    'https://github.com/alibaba/arthas',  -- Repository URL
+    NULL,  -- License (Unknown)
+    NULL,  -- Language (Unknown)
+    0,  -- licenseConflicts (Default)
+    TRUE  -- is_active (Default)
+);
+
+DELETE FROM searchrepos 
+WHERE organization = 'alibaba' 
+AND repository_url = 'https://github.com/alibaba/arthas/';
 
 #Commands
 
