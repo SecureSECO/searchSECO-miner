@@ -46,6 +46,7 @@ CREATE TABLE searchrepos (
     _id VARCHAR(50) PRIMARY KEY,
     organization VARCHAR(50),
     project_id VARCHAR(100),
+    project_version VARCHAR(100),
     repository_url TEXT,
     license TEXT,
     language TEXT,

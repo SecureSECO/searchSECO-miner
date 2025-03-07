@@ -8,7 +8,6 @@ import re
 from datetime import datetime
 from urllib.parse import urlparse
 
-# Get all CSV files in the current directory
 
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 

@@ -1,6 +1,6 @@
 import subprocess
 import os
-import csv
+#import csv
 import re
 from datetime import datetime
 import requests
@@ -8,8 +8,8 @@ import time
 import sys
 import psycopg2
 import pandas as pd
-from itertools import combinations
-from typing import Dict
+#from itertools import combinations
+from python_script.licenses import compatibility_matrix, license_mapping
 from dotenv import load_dotenv
 load_dotenv("./src/config/.env")
 
@@ -272,6 +272,7 @@ def create_dataFrame(matches, repo_url):
                 project_version = None
                 project_license = None
                 project_license, release_info, project_version = get_github_repo_info(repo_url)
+                input_project_version = project_version
                 method_name = match['method_name'].split(',')[0]
 
                 # Add original function to the data list
@@ -322,7 +323,7 @@ def create_dataFrame(matches, repo_url):
     except Exception as e:
         print(f"Error: {e}")
 
-    return df, input_project_id
+    return df, input_project_id, input_project_version
 
 
 def run_searchseco_check(repo_url):
@@ -352,42 +353,10 @@ def run_searchseco_check(repo_url):
         print(f"Error running SearchSECO check: {e}")
         return None
 
-License = str
-
-# Mapping different representations to a standard license name
-license_mapping = {
-    "MIT": "MIT",
-    "MIT License": "MIT",
-    "Apache 2.0": "Apache-2.0",
-    "Apache License 2.0": "Apache-2.0",
-    "BSD 3-Clause": "BSD-3-Clause",
-    "BSD 3-Clause":'BSD 3-Clause "New" or "Revised"',
-    "BSD License": "BSD-3-Clause",
-    "GPL-3.0": "GPLv3",
-    "GNU General Public License v3.0": "GPLv3",
-    "LGPL-3.0": "LGPL-3.0",
-    "GNU Lesser General Public License v3.0": "LGPL-3.0",
-    "Mozilla Public License 2.0": "MPL-2.0",
-    "-":"Undefined",
-    "Other":"Undefined",
-    "other":"Undefined",
-    "":"Undefined",
-}
-
-# Compatibility matrix
-compatibility_matrix: Dict[License, Dict[License, bool]] = {
-    "MIT": {"MIT": True, "Apache-2.0": True, "BSD-3-Clause": True, "MPL-2.0": True, "GPLv3": False, "LGPL-3.0": False},
-    "Apache-2.0": {"MIT": True, "Apache-2.0": True, "BSD-3-Clause": True, "MPL-2.0": True, "GPLv3": False, "LGPL-3.0": False},
-    "BSD-3-Clause": {"MIT": True, "Apache-2.0": True, "BSD-3-Clause": True, "MPL-2.0": True, "GPLv3": False, "LGPL-3.0": False},
-    "MPL-2.0": {"MIT": True, "Apache-2.0": True, "BSD-3-Clause": True, "MPL-2.0": True, "GPLv3": False, "LGPL-3.0": False},
-    "GPLv3": {"MIT": True, "Apache-2.0": True, "BSD-3-Clause": True, "MPL-2.0": True, "GPLv3": True, "LGPL-3.0": True},
-    "LGPL-3.0": {"MIT": True, "Apache-2.0": True, "BSD-3-Clause": True, "MPL-2.0": True, "GPLv3": True, "LGPL-3.0": True},
-}
-
 def normalize_license(license_name: str) -> str:
     return license_mapping.get(license_name, license_name)  # Default to original if not found
 
-def can_reuse_code(source_license: License, target_license: License) -> bool:
+def can_reuse_code(source_license: str, target_license: str) -> bool:
     return compatibility_matrix.get(target_license, {}).get(source_license, False)
 
 def check_license_compatibility(df):
@@ -456,10 +425,10 @@ def main():
 
     conn = get_db_repos()
     cur = conn.cursor()
-    #cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE is_active=True;")
+    cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE is_active=True;")
     # Run for a particular repository for unit testing
-    cur.execute("UPDATE searchrepos SET is_active = %s WHERE repository_url = %s;", (True, 'https://github.com/alibaba/arthas'))
-    cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, project_id FROM searchrepos WHERE repository_url = 'https://github.com/alibaba/arthas';")
+    #cur.execute("UPDATE searchrepos SET is_active = %s WHERE repository_url = %s;", (True, 'https://github.com/alibaba/arthas'))
+    #cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, project_id FROM searchrepos WHERE repository_url = 'https://github.com/alibaba/arthas';")
     
     repos = cur.fetchall()
     cur.close()
@@ -471,7 +440,7 @@ def main():
 
         repo_data = {
             "_id": repo[0],
-            "link": repo[1],
+            "repo_url": repo[1],
             "license": repo[2],
             "language": repo[3],
             "licenseconflicts": repo[4],
@@ -500,7 +469,7 @@ def main():
                 continue
             
             print("Fetching function code and creating a dataframe...")
-            df, input_project_id = create_dataFrame(matches, repo_url)
+            df, input_project_id, input_project_version = create_dataFrame(matches, repo_url)
             #parse_csv(filename)
 
             df = check_license_compatibility(df)
@@ -513,7 +482,7 @@ def main():
            
             conn = get_db_repos()
             cur = conn.cursor()
-            cur.execute("UPDATE searchrepos SET is_active = %s, project_id = %s WHERE _id = %s;", (False, input_project_id, repo_id))
+            cur.execute("UPDATE searchrepos SET is_active = %s, project_id = %s,  project_version = %s WHERE _id = %s;", (False, input_project_id, input_project_version, repo_id))
             conn.commit()
             cur.close()
             conn.close()
