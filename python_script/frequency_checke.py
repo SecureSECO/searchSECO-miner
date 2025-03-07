@@ -3,8 +3,6 @@ import os
 import glob
 import csv
 import matplotlib.pyplot as plt
-import seaborn as sns
-import re
 from datetime import datetime
 from urllib.parse import urlparse
 

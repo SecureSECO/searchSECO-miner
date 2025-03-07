@@ -1,15 +1,13 @@
 import subprocess
 import os
-#import csv
 import re
 from datetime import datetime
 import requests
 import time
 import sys
-import psycopg2
 import pandas as pd
-#from itertools import combinations
 from python_script.licenses import compatibility_matrix, license_mapping
+from python_script.db_operations import get_db_repos
 from dotenv import load_dotenv
 load_dotenv("./src/config/.env")
 
@@ -50,7 +48,7 @@ def get_function_code_from_github(url, retry_count=3):
                             if '{' in line:
                                 in_function = True
                                 brace_count = line.count('{') - line.count('}')
-                                if brace_count == 0 and line.strip().endswith(';'):  # One-line function
+                                if brace_count == 0 and line.strip().endswith(';'):
                                     break
                         else:
                             function_code.append(line)
@@ -76,12 +74,12 @@ def get_function_code_from_github(url, retry_count=3):
                 print(f"HTTP {response.status_code} error for {url}")
                 
             if attempt < retry_count - 1:
-                time.sleep(2)  # Wait before retry
+                time.sleep(2)  
                 
         except Exception as e:
             print(f"Error fetching code from {url}: {e}")
             if attempt < retry_count - 1:
-                time.sleep(2)  # Wait before retry
+                time.sleep(2) 
                 
     return None
 
@@ -363,6 +361,7 @@ def check_license_compatibility(df):
     #df = pd.read_csv(file)
     df["Violation"] = ""
     df["Source_project"] = ""
+    df["Source_project_version"] = ""
     incompatibility_count = 0 
     # Sorting by Version (timestamp) within each hash group
     df = df.sort_values(by=["Hash", "Version"])
@@ -371,6 +370,7 @@ def check_license_compatibility(df):
     for function_hash, group in grouped:
         base_license = normalize_license(group.iloc[0]["License"])  # Normalize first row's license
         source_project_id=group.iloc[0]["Project ID"]
+        Source_project_version=group.iloc[0]["Version"]
         
         for idx, row in group.iloc[1:].iterrows(): # Compare the first row's license with rest of the others
             license_type = normalize_license(row["License"])
@@ -379,45 +379,15 @@ def check_license_compatibility(df):
             elif not can_reuse_code(base_license, license_type):
                 df.at[idx, "Violation"] = f"{license_type} incompatible with {base_license}"
                 df.at[idx, "Source_project"] = source_project_id
+                df["Source_project_version"] = Source_project_version
                 incompatibility_count += 1
                 #print(f"Incompatible licenses detected for function {function_hash}: {base_license} vs {license_type}")
-    #df.to_csv(file, index=False)
+                
     print("Total number of incompatibility: ", incompatibility_count)
     return df
 
-def get_db_repos():
-
-    # Database connection details
-    DB_NAME = "github_repos"
-    DB_USER = "postgres"
-    DB_PASSWORD = "Sphings@19"
-    DB_HOST = "localhost"
-    DB_PORT = "5432"
-
-    # Connect to PostgreSQL
-    conn = psycopg2.connect(
-        dbname=DB_NAME,
-        user=DB_USER,
-        password=DB_PASSWORD,
-        host=DB_HOST,
-        port=DB_PORT
-    )
-
-    return conn
-
 
 def main():
-    
-    """
-    # Get the repository URL from command-line arguments
-    repos = sys.argv[1]
-
-    df = pd.read_csv("./input_files/"+repos)
-
-    repos = df['link'].to_list()
-
-    repos = repos[31:60]
-    """
 
     get_fun_code = lambda x: False if x == "N" else True
     fun_code = get_fun_code(sys.argv[1])
@@ -425,10 +395,10 @@ def main():
 
     conn = get_db_repos()
     cur = conn.cursor()
-    cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE is_active=True;")
+    #cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE is_active=True;")
     # Run for a particular repository for unit testing
-    #cur.execute("UPDATE searchrepos SET is_active = %s WHERE repository_url = %s;", (True, 'https://github.com/alibaba/arthas'))
-    #cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, project_id FROM searchrepos WHERE repository_url = 'https://github.com/alibaba/arthas';")
+    cur.execute("UPDATE searchrepos SET is_active = %s WHERE repository_url = %s;", (True, 'https://github.com/shibingli/webconsole'))
+    cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, project_id FROM searchrepos WHERE repository_url = 'https://github.com/shibingli/webconsole';")
     
     repos = cur.fetchall()
     cur.close()
@@ -451,8 +421,6 @@ def main():
             repo_id=repo[0]
 
             repo_url=repo[1]
-            
-            #print(repo_url)
         
             print("Running SearchSECO analysis...")
             output = run_searchseco_check(repo_url)
@@ -476,9 +444,6 @@ def main():
 
             print("Saving results to CSV...")
             save_to_csv(df, repo_url, input_project_id, save_dir="results")
-            
-            #print(f"Results have been saved to {filename}")
-            #print(f"Found {len(matches)} matching methods")
            
             conn = get_db_repos()
             cur = conn.cursor()
