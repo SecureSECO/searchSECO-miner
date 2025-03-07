@@ -65,8 +65,12 @@ CREATE TABLE repository_data (
     function_code TEXT,
     repository_url TEXT,
     query_project TEXT,
-    violation TEXT
+    violation TEXT,
+    CONSTRAINT unique_hash_project_version UNIQUE (hash, project_id, version)  -- Unique constraint added here
 );
+
+ALTER TABLE repository_data 
+ADD CONSTRAINT unique_hash_project_version UNIQUE (hash, project_id, version);
 
 DROP TABLE repository_data;
 
