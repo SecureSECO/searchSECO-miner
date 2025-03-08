@@ -172,8 +172,7 @@ def parse_matches(output, repo_url, fun_code):
     if not matches:
         return []
 
-    # Get function code for each match and its variants
- 
+    # Get function code for each match and its variants if parameter is not 'N'
     if fun_code:
         for i, match in enumerate(matches, 1):
             #print(f"\nProcessing match {i}/{len(matches)}")
@@ -387,9 +386,7 @@ def main():
     fun_code = get_fun_code(sys.argv[1])
     custom_url = ""
     if len(sys.argv) > 2:
-        custom_url = get_fun_code(sys.argv[2])
-    
-    #print("fun_code: ", get_fun_code(sys.argv[1]))
+        custom_url = sys.argv[2]
 
     #custom_url ="https://github.com/microsoft/simple-filter-mixer"
     repos = get_search_repos(custom_url)
