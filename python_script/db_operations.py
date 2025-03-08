@@ -1,6 +1,6 @@
 import psycopg2
 
-def get_db_repos():
+def get_db_conn():
 
     # Database connection details
     DB_NAME = "github_repos"
@@ -20,6 +20,30 @@ def get_db_repos():
 
     return conn
 
+def update_searchrepos(input_project_id, input_project_version, repo_id):
+    conn = get_db_conn()
+    cur = conn.cursor()
+    cur.execute("UPDATE searchrepos SET is_active = %s, project_id = %s,  project_version = %s WHERE _id = %s;", (False, input_project_id, input_project_version, repo_id))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def get_search_repos(custom_url):
+    conn = get_db_conn()
+    cur = conn.cursor()
+
+    if len(custom_url)<1:
+        cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE is_active=True;")
+    else:
+        # Run for a particular repository for unit testing
+        # 'https://github.com/microsoft/cocos2d-x'
+        cur.execute("UPDATE searchrepos SET is_active = %s WHERE repository_url = %s;", (True, custom_url))
+        cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, project_id FROM searchrepos WHERE repository_url = %s;", (custom_url,))
+
+    repos = cur.fetchall()
+    cur.close()
+    conn.close()
+    return repos
 
 """
 CREATE DATABASE github_repos;

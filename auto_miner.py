@@ -7,9 +7,12 @@ import time
 import sys
 import pandas as pd
 from python_script.licenses import compatibility_matrix, license_mapping
-from python_script.db_operations import get_db_repos
+from python_script.db_operations import update_searchrepos, get_search_repos
 from dotenv import load_dotenv
 load_dotenv("./src/config/.env")
+
+LICENSE_LIST = ["MIT", "Apache-2.0", "BSD-3-Clause", "MPL-2.0", "GPLv3", "LGPL-3.0", "AGPL-3.0", "EPL-2.0", "Unlicense", "ISC"] 
+
 
 def get_function_code_from_github(url, retry_count=3):
     """Extract function code from GitHub URL with retries and better error handling"""
@@ -171,7 +174,6 @@ def parse_matches(output, repo_url, fun_code):
 
     # Get function code for each match and its variants
  
-    #print("\nFetching function code for matches...")
     if fun_code:
         for i, match in enumerate(matches, 1):
             #print(f"\nProcessing match {i}/{len(matches)}")
@@ -257,7 +259,6 @@ def save_to_csv(df, repo_url, input_project_id, save_dir):
 def create_dataFrame(matches, repo_url):
 
     try:
-        #import pandas as pd
 
         # Initialize an empty list to store data
         data = []
@@ -288,6 +289,9 @@ def create_dataFrame(matches, repo_url):
 
                 # Process and add variants
                 for variant in match['variants']:
+                    elements= variant['method_name'].split(',')
+                    if(len(elements)<4): 
+                        continue
                     #print("variant details: ", variant['method_name'])
                     method_name = variant['method_name'].split(',')[0].split(':')[1].strip()
                     project_id = variant['method_name'].split(',')[1].split(':')[1].strip()
@@ -313,10 +317,6 @@ def create_dataFrame(matches, repo_url):
         columns = ['Hash', 'Project ID', 'Version', 'License', 'Method Name', 'File Location', 
                 'Function Code', 'Repository URL', 'Query Project']
         df = pd.DataFrame(data, columns=columns)
-
-        # Display or save the DataFrame
-        #print(df.head())  # Show first few rows
-        #df.to_csv(filepath, index=False)  # Optional: Save to CSV
         
     except Exception as e:
         print(f"Error: {e}")
@@ -327,16 +327,10 @@ def create_dataFrame(matches, repo_url):
 def run_searchseco_check(repo_url):
     """Run the SearchSECO check command and capture output"""
     try:
-        # Change directory to where the SearchSECO miner is installed
-        #miner_path = "."  # Adjust this path as needed
-        #os.chdir(miner_path)
         
         # Run the check command ###check
         cmd = f"npm run execute -- checkupload {repo_url} -V 5"
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
-        
-        # Change back to original directory
-        #os.chdir("..")
         
         # Debug output
         print("\nSearchSECO Output:")
@@ -366,20 +360,20 @@ def check_license_compatibility(df):
     # Sorting by Version (timestamp) within each hash group
     df = df.sort_values(by=["Hash", "Version"])
     grouped = df.groupby("Hash")
-    license_list=["MIT", "Apache-2.0", "BSD-3-Clause", "MPL-2.0", "GPLv3", "LGPL-3.0"] 
+
     for function_hash, group in grouped:
         base_license = normalize_license(group.iloc[0]["License"])  # Normalize first row's license
-        source_project_id=group.iloc[0]["Project ID"]
-        Source_project_version=group.iloc[0]["Version"]
+        source_project_id = group.iloc[0]["Project ID"]
+        Source_project_version = group.iloc[0]["Version"]
         
         for idx, row in group.iloc[1:].iterrows(): # Compare the first row's license with rest of the others
             license_type = normalize_license(row["License"])
-            if license_type not in license_list or base_license not in license_list:
+            if license_type not in LICENSE_LIST or base_license not in LICENSE_LIST:
                 df.at[idx, "Violation"] = "Undetermined"
             elif not can_reuse_code(base_license, license_type):
                 df.at[idx, "Violation"] = f"{license_type} incompatible with {base_license}"
                 df.at[idx, "Source_project"] = source_project_id
-                df["Source_project_version"] = Source_project_version
+                df.at[idx, "Source_project_version"] = Source_project_version
                 incompatibility_count += 1
                 #print(f"Incompatible licenses detected for function {function_hash}: {base_license} vs {license_type}")
                 
@@ -393,21 +387,13 @@ def main():
     fun_code = get_fun_code(sys.argv[1])
     print("fun_code: ", get_fun_code(sys.argv[1]))
 
-    conn = get_db_repos()
-    cur = conn.cursor()
-    #cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE is_active=True;")
-    # Run for a particular repository for unit testing
-    cur.execute("UPDATE searchrepos SET is_active = %s WHERE repository_url = %s;", (True, 'https://github.com/shibingli/webconsole'))
-    cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, project_id FROM searchrepos WHERE repository_url = 'https://github.com/shibingli/webconsole';")
-    
-    repos = cur.fetchall()
-    cur.close()
-    conn.close()
+    custom_url ="https://github.com/microsoft/simple-filter-mixer"  # provide a particularURL for testing
+    repos = get_search_repos(custom_url)
 
     print("Total number of searchrepos attempting: ", len(repos))
     
     for repo in repos:
-
+        """
         repo_data = {
             "_id": repo[0],
             "repo_url": repo[1],
@@ -416,8 +402,9 @@ def main():
             "licenseconflicts": repo[4],
             "is_active": repo[5]
         }
+        """
         
-        if repo_data["is_active"] == True:
+        if repo[5] == True:
             repo_id=repo[0]
 
             repo_url=repo[1]
@@ -444,13 +431,7 @@ def main():
 
             print("Saving results to CSV...")
             save_to_csv(df, repo_url, input_project_id, save_dir="results")
-           
-            conn = get_db_repos()
-            cur = conn.cursor()
-            cur.execute("UPDATE searchrepos SET is_active = %s, project_id = %s,  project_version = %s WHERE _id = %s;", (False, input_project_id, input_project_version, repo_id))
-            conn.commit()
-            cur.close()
-            conn.close()
+            update_searchrepos(input_project_id, input_project_version, repo_id)
     
 if __name__ == "__main__":
     main()
