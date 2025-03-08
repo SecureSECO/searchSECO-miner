@@ -385,9 +385,13 @@ def main():
 
     get_fun_code = lambda x: False if x == "N" else True
     fun_code = get_fun_code(sys.argv[1])
-    print("fun_code: ", get_fun_code(sys.argv[1]))
+    custom_url = ""
+    if len(sys.argv) > 2:
+        custom_url = get_fun_code(sys.argv[2])
+    
+    #print("fun_code: ", get_fun_code(sys.argv[1]))
 
-    custom_url ="https://github.com/microsoft/simple-filter-mixer"  # provide a particularURL for testing
+    #custom_url ="https://github.com/microsoft/simple-filter-mixer"
     repos = get_search_repos(custom_url)
 
     print("Total number of searchrepos attempting: ", len(repos))
@@ -426,7 +430,8 @@ def main():
             print("Fetching function code and creating a dataframe...")
             df, input_project_id, input_project_version = create_dataFrame(matches, repo_url)
             #parse_csv(filename)
-
+            print("checking license compatibility...")
+            
             df = check_license_compatibility(df)
 
             print("Saving results to CSV...")

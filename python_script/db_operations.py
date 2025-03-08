@@ -94,7 +94,7 @@ CREATE TABLE repository_data (
     repository_url TEXT,
     query_project TEXT,
     violation TEXT,
-    CONSTRAINT unique_hash_project_version UNIQUE (hash, project_id, version)  -- Unique constraint added here
+    UNIQUE (hash, project_id, version)
 );
 
 ALTER TABLE repository_data 
