@@ -188,6 +188,11 @@ def parse_matches(output, repo_url, fun_code):
     return matches
 
 
+import os
+import re
+import requests
+from datetime import datetime
+
 def get_github_repo_info(repo_url):
     match = re.match(r"https://github.com/([^/]+)/([^/]+)", repo_url)
     if not match:
@@ -218,24 +223,43 @@ def get_github_repo_info(repo_url):
             release_info = "No Releases Found"
             release_date = None
         
+        # Determine timestamp from release or last commit
         if release_date:
             timestamp = int(datetime.strptime(release_date, "%Y-%m-%dT%H:%M:%SZ").timestamp() * 1000)
         else:
-            # Fetch last commit date if no releases exist
+            # Fetch last commit date
             last_commit_url = f"{base_url}/commits?per_page=1&page=1"
             last_commit_response = requests.get(last_commit_url, headers=headers)
-            last_commit_response.raise_for_status()
-            last_commit_data = last_commit_response.json()
-            if last_commit_data:
-                last_commit_date = last_commit_data[0].get("commit", {}).get("author", {}).get("date", "No Commits Found")
-                timestamp = int(datetime.strptime(last_commit_date, "%Y-%m-%dT%H:%M:%SZ").timestamp() * 1000) if last_commit_date != "No Commits Found" else "No Commits Found"
+            
+            if last_commit_response.status_code == 403:  # Forbidden error
+                print("⚠️ 403 Forbidden: Trying repository metadata instead...")
+                repo_metadata_response = requests.get(base_url, headers=headers)
+                
+                if repo_metadata_response.status_code == 200:
+                    repo_metadata = repo_metadata_response.json()
+                    if repo_metadata.get("archived", False):
+                        print("⚠️ Repository is archived, commit data not available.")
+                        timestamp = "Repository Archived"
+                    else:
+                        timestamp = int(datetime.strptime(repo_metadata.get("pushed_at", "1970-01-01T00:00:00Z"), "%Y-%m-%dT%H:%M:%SZ").timestamp() * 1000)
+                else:
+                    timestamp = "Metadata Fetch Failed"
+            
+            elif last_commit_response.status_code == 200:
+                last_commit_data = last_commit_response.json()
+                if last_commit_data:
+                    last_commit_date = last_commit_data[0].get("commit", {}).get("author", {}).get("date", "No Commits Found")
+                    timestamp = int(datetime.strptime(last_commit_date, "%Y-%m-%dT%H:%M:%SZ").timestamp() * 1000) if last_commit_date != "No Commits Found" else "No Commits Found"
+                else:
+                    timestamp = "No Commits Found"
             else:
-                timestamp = "No Commits Found"
-        
+                timestamp = f"Commit Fetch Failed ({last_commit_response.status_code})"
+    
     except requests.exceptions.RequestException as e:
         return "Error fetching data", "Error fetching data", f"Error: {str(e)}"
     
     return license_info, release_info, timestamp
+
 
 
 def save_to_csv(df, repo_url, input_project_id, save_dir):
@@ -288,6 +312,7 @@ def create_dataFrame(matches, repo_url):
 
                 if (i%100==0):
                     print("Total {} hash has been processed".format(i))
+
                 # Process and add variants
                 for variant in match['variants']:
                     elements= variant['method_name'].split(',')
@@ -310,7 +335,9 @@ def create_dataFrame(matches, repo_url):
                         variant['url'],
                         "No"
                     ])
-            
+                
+                #if(i==400):
+                #        break
             except Exception as e:
                 print(f"Error processing match {i}: {e}")
 
