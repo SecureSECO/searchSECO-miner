@@ -286,17 +286,19 @@ def create_dataFrame(matches, repo_url):
                     "Yes"
                 ])
 
+                if (i%100==0):
+                    print("Total {} hash has been processed".format(i))
                 # Process and add variants
                 for variant in match['variants']:
                     elements= variant['method_name'].split(',')
                     if(len(elements)<4): 
                         continue
-                    #print("variant details: ", variant['method_name'])
+                
                     method_name = variant['method_name'].split(',')[0].split(':')[1].strip()
                     project_id = variant['method_name'].split(',')[1].split(':')[1].strip()
                     project_version = variant['method_name'].split(',')[2].split(':')[1].strip()
                     project_license = variant['method_name'].split(',')[3].split(':')[1].strip()
-
+                    
                     data.append([
                         match['hash'],
                         project_id,
@@ -381,15 +383,18 @@ def check_license_compatibility(df):
 
 
 def main():
-
-    get_fun_code = lambda x: False if x == "N" else True
-    fun_code = get_fun_code(sys.argv[1])
-    custom_url = ""
-    if len(sys.argv) > 2:
-        custom_url = sys.argv[2]
-
-    #custom_url ="https://github.com/microsoft/simple-filter-mixer"
-    repos = get_search_repos(custom_url)
+    """
+    python auto_miner.py N https://github.com/microsoft/simple-filter-mixer
+    python auto_miner.py N 20
+    python auto_miner.py N  # default is 100
+    
+    """
+    
+    fun_code = False if sys.argv[1] == "N" else True
+    search_repo = sys.argv[2] if len(sys.argv) > 2 else '100'
+    #print(search_repo)
+    
+    repos = get_search_repos(search_repo)
 
     print("Total number of searchrepos attempting: ", len(repos))
     

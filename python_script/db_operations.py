@@ -28,17 +28,34 @@ def update_searchrepos(input_project_id, input_project_version, repo_id):
     cur.close()
     conn.close()
 
-def get_search_repos(custom_url):
+def get_search_repos(search_repo):
     conn = get_db_conn()
     cur = conn.cursor()
 
-    if len(custom_url)<1:
-        cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE is_active=True;")
+    if search_repo and search_repo.isdigit():
+        cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE is_active=True LIMIT %s;", (int(search_repo),))
     else:
+        #print("search_repo: ", search_repo)
         # Run for a particular repository for unit testing
         # 'https://github.com/microsoft/cocos2d-x'
-        cur.execute("UPDATE searchrepos SET is_active = %s WHERE repository_url = %s;", (True, custom_url))
-        cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, project_id FROM searchrepos WHERE repository_url = %s;", (custom_url,))
+        cur.execute("UPDATE searchrepos SET is_active = %s WHERE repository_url = %s;", (True, search_repo))
+        if cur.rowcount == 0:
+            # If no rows were updated, insert a new record
+           cur.execute("""
+                INSERT INTO searchrepos (
+                    _id, organization, project_id, repository_url, license, language, licenseConflicts, is_active
+                ) VALUES (
+                    TO_CHAR(NOW(), 'YYYYMMDDHH24MISSUS'),  -- Unique timestamp-based ID
+                    'alibaba',  -- Organization
+                    '',  -- project_id (Empty)
+                    %s,  -- repository_url
+                    NULL,  -- License (Unknown)
+                    NULL,  -- Language (Unknown)
+                    0,  -- licenseConflicts (Default)
+                    %s  -- is_active (Default)
+                );
+            """, (search_repo, True))
+        cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, project_id FROM searchrepos WHERE repository_url = %s;", (search_repo,))
 
     repos = cur.fetchall()
     cur.close()
@@ -117,23 +134,23 @@ SELECT COUNT(DISTINCT project_id)
 FROM repository_data
 WHERE query_project = 'Yes' AND violation ILIKE '%incompatible%';
 
-INSERT INTO searchrepos (
-    _id, organization, project_id, repository_url, license, language, 
-    licenseConflicts, is_active
-) VALUES (
+INSERT INTO searchrepos (_id, organization, project_id, repository_url, license, language, licenseConflicts, is_active) VALUES (
     TO_CHAR(NOW(), 'YYYYMMDDHH24MISSUS'),  -- Unique timestamp-based ID
     'alibaba',  -- Organization
     '',  -- project_id (Empty)
-    'https://github.com/shibingli/webconsole',  -- Repository URL
+    'https://github.com/shibingli/webconsole',
     NULL,  -- License (Unknown)
     NULL,  -- Language (Unknown)
     0,  -- licenseConflicts (Default)
     TRUE  -- is_active (Default)
-);
+)
 
 DELETE FROM searchrepos 
 WHERE organization = 'alibaba' 
 AND repository_url = 'https://github.com/alibaba/arthas/';
+
+DELETE FROM searchrepos 
+WHERE epository_url = 'https://github.com/microsoft/simple-filter-mixer';
 
 SELECT * 
 FROM repository_data 
