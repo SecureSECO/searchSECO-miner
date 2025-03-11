@@ -9,6 +9,7 @@ import pandas as pd
 from python_script.licenses import compatibility_matrix, license_mapping
 from python_script.db_operations import update_searchrepos, get_search_repos
 from dotenv import load_dotenv
+
 load_dotenv("./src/config/.env")
 
 LICENSE_LIST = ["MIT", "Apache-2.0", "BSD-3-Clause", "MPL-2.0", "GPLv3", "LGPL-3.0", "AGPL-3.0", "EPL-2.0", "Unlicense", "ISC"] 
@@ -188,11 +189,6 @@ def parse_matches(output, repo_url, fun_code):
     return matches
 
 
-import os
-import re
-import requests
-from datetime import datetime
-
 def get_github_repo_info(repo_url):
     match = re.match(r"https://github.com/([^/]+)/([^/]+)", repo_url)
     if not match:
@@ -289,13 +285,22 @@ def create_dataFrame(matches, repo_url):
         # Iterate over matches and process data
         for i, match in enumerate(matches, 1):
             try:
+                #print("match method_name: ",  match['method_name'])
+                method_name = match['method_name'].split(',')[0]
+                project_id = match['method_name'].split(',')[1].split(':')[1].strip()
+                project_version = match['method_name'].split(',')[2].split(':')[1].strip()
+                project_license = match['method_name'].split(',')[3].split(':')[1].strip()
+                
+                """
                 project_id = match['method_name'].split(',')[1].split(' ')[3]
-                input_project_id = project_id
                 project_version = None
                 project_license = None
                 project_license, release_info, project_version = get_github_repo_info(repo_url)
+                """
+                #method_name = match['method_name'].split(',')[0]
+
+                input_project_id = project_id
                 input_project_version = project_version
-                method_name = match['method_name'].split(',')[0]
 
                 # Add original function to the data list
                 data.append([

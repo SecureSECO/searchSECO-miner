@@ -147,7 +147,7 @@ INSERT INTO searchrepos (_id, organization, project_id, repository_url, license,
 
 DELETE FROM searchrepos 
 WHERE organization = 'alibaba' 
-AND repository_url = 'https://github.com/alibaba/arthas/';
+AND repository_url = 'https://github.com/alibaba/arthas';
 
 DELETE FROM searchrepos 
 WHERE epository_url = 'https://github.com/microsoft/simple-filter-mixer';

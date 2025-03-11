@@ -246,9 +246,42 @@ export default class MatchPrinter {
 			hash: hashes[0].Hash,
 		});
 
-		hashes.forEach((hash, idx) => {
+		//////
 
-			currentReport += `  * Method ${hash.MethodName}, Project ID: ${projectID}, ${dbProjects.forEach} in file ${hash.FileName}, line ${hash.LineNumber}\n`;
+		const propertiesToExtract: (keyof ProjectInfoResponseItem)[] = ["pid", "vtime", "vhash", "license", "name", "url", "oid", "pv", "hashes"];
+
+		let firstProject: ProjectInfoResponseItem | undefined;
+		let found = false;
+
+		// Iterate through dbProjects to find the first matching project
+		for (const projectArray of dbProjects.values()) {
+			firstProject = projectArray.find(project => project.pid === projectID);
+			if (firstProject) {
+				found = true;
+				break;  // Stop searching after the first match is found
+			}
+		}
+		let valuesArray: any[] = new Array(propertiesToExtract.length).fill("N/A");
+		// If a project is found, create an array of values
+		if (found && firstProject) {
+			valuesArray = propertiesToExtract.map(prop => firstProject![prop] ?? "N/A"); // Default "N/A" for missing values
+
+			Logger.Debug(`Values for pid ${projectID}: ${valuesArray}`, Logger.GetCallerLocation());
+
+			// Example: Access specific values from the array
+			//Logger.Debug(`License: ${valuesArray[3]}`, Logger.GetCallerLocation()); // License is at index 3
+		} else {
+			Logger.Debug(`No project found for pid: ${projectID}`, Logger.GetCallerLocation());
+		}
+
+		
+		//////
+		
+		
+
+		hashes.forEach((hash, idx) => {
+			
+			currentReport += `  * Method ${hash.MethodName}, Project ID: ${projectID+', Version: '+ valuesArray[1]+', License: '+  valuesArray[3]} in file ${hash.FileName}, line ${hash.LineNumber}\n`;
 			currentReport += `    Authors of local method: \n`;
 
 			this._JSONbuilder.Add(`hashes[0].methods[${idx}]`, {
