@@ -264,7 +264,7 @@ export default class MatchPrinter {
 		let valuesArray: any[] = new Array(propertiesToExtract.length).fill("N/A");
 		// If a project is found, create an array of values
 		if (found && firstProject) {
-			valuesArray = propertiesToExtract.map(prop => firstProject![prop] ?? "N/A"); // Default "N/A" for missing values
+			valuesArray = propertiesToExtract.map(prop => firstProject![prop] ?? "N/A");
 
 			Logger.Debug(`Values for pid ${projectID}: ${valuesArray}`, Logger.GetCallerLocation());
 

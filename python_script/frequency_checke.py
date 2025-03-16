@@ -58,7 +58,12 @@ def analyze_projects(df):
         unique_hashes = group['Hash'].unique()
         
         # Get unique hashes with violations
-        violation_mask = (group['Violation'].notna()) & (group['Violation'] != "Undetermined")
+        violation_mask = (
+            (group['Violation'].notna()) & 
+            (group['Violation'] != "Undetermined") & 
+            #(group['Query Project'] == 'Yes') & 
+            (group['Violation'].str.contains('incompatible', case=False, na=False))
+        )
         violation_hashes = group[violation_mask]['Hash'].unique()
         
         # Get source files for this project

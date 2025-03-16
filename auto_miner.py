@@ -7,7 +7,7 @@ import time
 import sys
 import pandas as pd
 from python_script.licenses import compatibility_matrix, license_mapping
-from python_script.db_operations import update_searchrepos, get_search_repos
+from python_script.db_operations import update_searchrepos, get_search_repos, insert_into_rp_data
 from dotenv import load_dotenv
 
 load_dotenv("./src/config/.env")
@@ -258,12 +258,12 @@ def get_github_repo_info(repo_url):
 
 
 
-def save_to_csv(df, repo_url, input_project_id, save_dir):
+def save_to_csv(df, incompatibility_count, repo_url, input_project_id, save_dir):
     """Save matches to CSV file with function code and all repositories."""
     
     print("\nSaving results to CSV...")
     #timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"{repo_url.split('.com/')[1].replace('/','_')}_matches_{input_project_id}.csv"
+    filename = f"{repo_url.split('.com/')[1].replace('/','_')}_matches_{input_project_id}_{incompatibility_count}.csv"
     
     # Ensure the save directory exists
     os.makedirs(save_dir, exist_ok=True)
@@ -285,7 +285,7 @@ def create_dataFrame(matches, repo_url):
         # Iterate over matches and process data
         for i, match in enumerate(matches, 1):
             try:
-                #print("match method_name: ",  match['method_name'])
+                print("match method_name: ",  match['method_name'])
                 method_name = match['method_name'].split(',')[0]
                 project_id = match['method_name'].split(',')[1].split(':')[1].strip()
                 project_version = match['method_name'].split(',')[2].split(':')[1].strip()
@@ -323,8 +323,8 @@ def create_dataFrame(matches, repo_url):
                     elements= variant['method_name'].split(',')
                     if(len(elements)<4): 
                         continue
-                
-                    method_name = variant['method_name'].split(',')[0].split(':')[1].strip()
+                    print("Variant method_name: ",  variant['method_name'])
+                    method_name = match['method_name'].split(',')[0]
                     project_id = variant['method_name'].split(',')[1].split(':')[1].strip()
                     project_version = variant['method_name'].split(',')[2].split(':')[1].strip()
                     project_license = variant['method_name'].split(',')[3].split(':')[1].strip()
@@ -397,7 +397,7 @@ def check_license_compatibility(df):
     for function_hash, group in grouped:
         base_license = normalize_license(group.iloc[0]["License"])  # Normalize first row's license
         source_project_id = group.iloc[0]["Project ID"]
-        Source_project_version = group.iloc[0]["Version"]
+        source_project_version = group.iloc[0]["Version"]
         
         for idx, row in group.iloc[1:].iterrows(): # Compare the first row's license with rest of the others
             license_type = normalize_license(row["License"])
@@ -406,19 +406,19 @@ def check_license_compatibility(df):
             elif not can_reuse_code(base_license, license_type):
                 df.at[idx, "Violation"] = f"{license_type} incompatible with {base_license}"
                 df.at[idx, "Source_project"] = source_project_id
-                df.at[idx, "Source_project_version"] = Source_project_version
+                df.at[idx, "Source_project_version"] = source_project_version
                 incompatibility_count += 1
                 #print(f"Incompatible licenses detected for function {function_hash}: {base_license} vs {license_type}")
                 
     print("Total number of incompatibility: ", incompatibility_count)
-    return df
+    return df, incompatibility_count
 
 
 def main():
     """
     python auto_miner.py N https://github.com/microsoft/simple-filter-mixer
     python auto_miner.py N 20
-    python auto_miner.py N  # default is 100
+    python auto_miner.py N      # default is 100
     
     """
     
@@ -464,12 +464,16 @@ def main():
             print("Fetching function code and creating a dataframe...")
             df, input_project_id, input_project_version = create_dataFrame(matches, repo_url)
             #parse_csv(filename)
-            print("checking license compatibility...")
+            print("Checking license compatibility...")
             
-            df = check_license_compatibility(df)
+            df, incompatibility_count = check_license_compatibility(df)
+
+            print("Saving results to database...")
+
+            df = insert_into_rp_data(df)
 
             print("Saving results to CSV...")
-            save_to_csv(df, repo_url, input_project_id, save_dir="results")
+            save_to_csv(df, incompatibility_count, repo_url, input_project_id, save_dir="results")
             update_searchrepos(input_project_id, input_project_version, repo_id)
     
 if __name__ == "__main__":

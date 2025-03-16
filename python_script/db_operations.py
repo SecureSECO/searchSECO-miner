@@ -1,4 +1,8 @@
+import os
+import glob
 import psycopg2
+import pandas as pd
+from psycopg2.extras import execute_values
 
 def get_db_conn():
 
@@ -62,6 +66,71 @@ def get_search_repos(search_repo):
     conn.close()
     return repos
 
+def insert_into_rp_data(df):
+    try:
+        # Connect to PostgreSQL
+        conn = get_db_conn()
+
+        cur = conn.cursor()
+
+        # Rename CSV columns to match the database
+        df.rename(columns={
+            'Hash': 'hash',
+            'Project ID': 'project_id',
+            'Version': 'version',
+            'License': 'license',
+            'Method Name': 'method_name',
+            'File Location': 'file_location',
+            'Function Code': 'function_code',
+            'Repository URL': 'repository_url',
+            'Query Project': 'query_project',
+            'Violation': 'violation',
+            'Source_project': 'source_project',
+            'Source_project_version':'source_project_version'
+        }, inplace=True)
+
+
+        # Remove duplicates based on (hash, project_id)
+        df.drop_duplicates(subset=['hash', 'project_id', 'version'], inplace=True)
+
+        # Generate unique ID by combining hash and project_id
+        df['_id'] = df['hash'].astype(str) + "_" + df['project_id'].astype(str)
+
+        # Convert DataFrame to a list of tuples for batch insert
+        records_to_insert = [
+            (
+                row['_id'], row['hash'], row['project_id'], row['version'], row['license'], row['method_name'],
+                row['file_location'], row['function_code'], row['repository_url'], row['query_project'], row['violation'],
+                row['source_project'], row['source_project_version']
+            ) for _, row in df.iterrows()
+        ]
+
+        # Insert all records in bulk
+        insert_query = """
+        INSERT INTO repository_data (
+            _id, hash, project_id, version, license, method_name,
+            file_location, function_code, repository_url, query_project, violation, source_project, source_project_version
+        ) VALUES %s
+        ON CONFLICT (hash, project_id, version) DO NOTHING;
+        """
+        
+        execute_values(cur, insert_query, records_to_insert)
+
+        # Commit changes
+        conn.commit()
+        print(f"Inserted {len(records_to_insert)} new records successfully.")
+
+    except Exception as e:
+        print("Error:", e)
+
+    finally:
+        # Close connection
+        if conn:
+            cur.close()
+            conn.close()
+    return df
+
+
 """
 CREATE DATABASE github_repos;
 
@@ -110,7 +179,9 @@ CREATE TABLE repository_data (
     function_code TEXT,
     repository_url TEXT,
     query_project TEXT,
-    violation TEXT,
+    violation TEXT, 
+    source_project TEXT, 
+    source_project_version TEXT,
     UNIQUE (hash, project_id, version)
 );
 
