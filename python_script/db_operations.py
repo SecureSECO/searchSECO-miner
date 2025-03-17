@@ -89,7 +89,7 @@ def insert_into_rp_data(df):
             'Source_project_version':'source_project_version'
         }, inplace=True)
 
-
+        df = df[df['query_project'].str.len() <= 5]
         # Remove duplicates based on (hash, project_id)
         df.drop_duplicates(subset=['hash', 'project_id', 'version'], inplace=True)
 

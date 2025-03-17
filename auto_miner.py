@@ -271,7 +271,8 @@ def save_to_csv(df, incompatibility_count, repo_url, input_project_id, save_dir)
     # Full path for the CSV file
     filepath = os.path.join(save_dir, filename)
     
-    df.to_csv(filepath, index=False) 
+    #df.to_csv(filepath, index=False)
+    df.drop(columns=['_id'], errors='ignore').to_csv(filepath, index=False)
 
     print(f"Results saved to {filepath}")
 
