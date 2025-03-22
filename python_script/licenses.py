@@ -11,6 +11,7 @@ license_mapping = {
     "BSD 3-Clause \"New\" or \"Revised\"": "BSD-3-Clause",
     "BSD License": "BSD-3-Clause",
     "GPL-3.0": "GPLv3",
+    "GNU General Public License v2.0":"GPLv3",
     "GNU General Public License v3.0": "GPLv3",
     "GNU General Public License version 3.0": "GPLv3",
     "GNU GPL v3": "GPLv3",

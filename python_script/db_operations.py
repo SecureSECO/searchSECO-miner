@@ -185,9 +185,6 @@ CREATE TABLE repository_data (
     UNIQUE (hash, project_id, version)
 );
 
-ALTER TABLE repository_data 
-ADD CONSTRAINT unique_hash_project_version UNIQUE (hash, project_id, version);
-
 DROP TABLE repository_data;
 
 
