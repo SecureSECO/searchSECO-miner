@@ -404,6 +404,8 @@ def check_license_compatibility(df):
             license_type = normalize_license(row["License"])
             if license_type not in LICENSE_LIST or base_license not in LICENSE_LIST:
                 df.at[idx, "Violation"] = "Undetermined"
+                df.at[idx, "Source_project"] = source_project_id
+                df.at[idx, "Source_project_version"] = source_project_version
             elif not can_reuse_code(base_license, license_type):
                 df.at[idx, "Violation"] = f"{license_type} incompatible with {base_license}"
                 df.at[idx, "Source_project"] = source_project_id
