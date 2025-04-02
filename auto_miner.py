@@ -6,13 +6,13 @@ import requests
 import time
 import sys
 import pandas as pd
-from python_script.licenses import compatibility_matrix, license_mapping
+from python_script.licenses import compatibility_matrix, license_mapping, LICENSE_LIST
 from python_script.db_operations import update_searchrepos, get_search_repos, insert_into_rp_data
 from dotenv import load_dotenv
 
 load_dotenv("./src/config/.env")
 
-LICENSE_LIST = ["MIT", "Apache-2.0", "BSD-3-Clause", "MPL-2.0", "GPLv3", "LGPL-3.0", "AGPL-3.0", "EPL-2.0", "Unlicense", "ISC"] 
+#LICENSE_LIST = ["MIT", "Apache-2.0", "BSD-3-Clause", "MPL-2.0", "GPLv3", "LGPL-3.0", "AGPL-3.0", "EPL-2.0", "Unlicense", "ISC"] 
 
 
 def get_function_code_from_github(url, retry_count=3):
@@ -383,7 +383,10 @@ def normalize_license(license_name: str) -> str:
     return license_mapping.get(license_name, license_name)  # Default to original if not found
 
 def can_reuse_code(source_license: str, target_license: str) -> bool:
-    return compatibility_matrix.get(target_license, {}).get(source_license, False)
+    #return compatibility_matrix.get(target_license, {}).get(source_license, False)
+    print(target_license, source_license)
+    #print(compatibility_matrix[target_license][source_license])
+    return compatibility_matrix[target_license][source_license]
 
 def check_license_compatibility(df):
     #df = pd.read_csv(file)
@@ -410,7 +413,8 @@ def check_license_compatibility(df):
                 df.at[idx, "Violation"] = f"{license_type} incompatible with {base_license}"
                 df.at[idx, "Source_project"] = source_project_id
                 df.at[idx, "Source_project_version"] = source_project_version
-                incompatibility_count += 1
+                if df.at[idx, "Query Project"] == "Yes":
+                    incompatibility_count += 1
                 #print(f"Incompatible licenses detected for function {function_hash}: {base_license} vs {license_type}")
                 
     print("Total number of incompatibility: ", incompatibility_count)
@@ -422,7 +426,7 @@ def main():
     python auto_miner.py N https://github.com/microsoft/simple-filter-mixer
     python auto_miner.py N 20
     python auto_miner.py N      # default is 100
-    
+    # https://github.com/google/ios-webkit-debug-proxy
     """
     
     fun_code = False if sys.argv[1] == "N" else True

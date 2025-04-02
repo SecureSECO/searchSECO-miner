@@ -190,9 +190,8 @@ DROP TABLE repository_data;
 
 ######## Support queries #######
 
-UPDATE repositories SET is_active = TRUE WHERE is_active = FALSE;
+UPDATE searchrepos SET is_active = TRUE WHERE is_active = FALSE;
 
-ALTER TABLE repositories ADD COLUMN project_id VARCHAR(50);
 
 SELECT COUNT(*) 
 FROM repository_data 

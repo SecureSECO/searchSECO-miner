@@ -167,8 +167,8 @@ build
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-
+SECOoutput.txt
 .temp/
 results/*
-
-SECOoutput.txt
+python_script/check_license_conflict.py
+python_script/ios-webkit-debug-proxy
