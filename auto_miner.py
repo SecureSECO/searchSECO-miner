@@ -12,8 +12,6 @@ from dotenv import load_dotenv
 
 load_dotenv("./src/config/.env")
 
-#LICENSE_LIST = ["MIT", "Apache-2.0", "BSD-3-Clause", "MPL-2.0", "GPLv3", "LGPL-3.0", "AGPL-3.0", "EPL-2.0", "Unlicense", "ISC"] 
-
 
 def get_function_code_from_github(url, retry_count=3):
     """Extract function code from GitHub URL with retries and better error handling"""
@@ -419,7 +417,7 @@ def check_license_compatibility(df):
                 
     print("Total number of incompatibility: ", incompatibility_count)
     return df, incompatibility_count
-
+ 
 
 def main():
     """
@@ -436,7 +434,7 @@ def main():
     repos = get_search_repos(search_repo)
 
     print("Total number of searchrepos attempting: ", len(repos))
-    
+    count = 0
     for repo in repos:
         """
         repo_data = {
@@ -448,7 +446,7 @@ def main():
             "is_active": repo[5]
         }
         """
-        
+    
         if repo[5] == True:
             repo_id=repo[0]
 
@@ -482,6 +480,14 @@ def main():
             print("Saving results to CSV...")
             save_to_csv(df, incompatibility_count, repo_url, input_project_id, save_dir="results")
             update_searchrepos(input_project_id, input_project_version, repo_id)
-    
+        
+        count=count+1
+        
+        if count%50==0:
+            print("Sleeping for 5 minutes...")
+            time.sleep(300)  # 300 seconds = 5 minutes
+            print("Resuming execution...")
+
+
 if __name__ == "__main__":
     main()
