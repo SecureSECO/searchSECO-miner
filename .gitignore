@@ -172,3 +172,4 @@ SECOoutput.txt
 results/*
 python_script/check_license_conflict.py
 python_script/ios-webkit-debug-proxy
+shell_scripts/results

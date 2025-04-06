@@ -2,6 +2,7 @@ import os
 import glob
 import psycopg2
 import pandas as pd
+import datetime
 from psycopg2.extras import execute_values
 
 def get_db_conn():
@@ -37,7 +38,9 @@ def get_search_repos(search_repo):
     cur = conn.cursor()
 
     if search_repo and search_repo.isdigit():
-        cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE is_active=True LIMIT %s;", (int(search_repo),))
+        cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE is_active=True and has_picked=False LIMIT %s;", (int(search_repo),))
+        #picked_records = cur.fetchall()
+        
     else:
         #print("search_repo: ", search_repo)
         # Run for a particular repository for unit testing
@@ -62,6 +65,14 @@ def get_search_repos(search_repo):
         cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, project_id FROM searchrepos WHERE repository_url = %s;", (search_repo,))
 
     repos = cur.fetchall()
+    if repos:
+        picked_ids = [record[0] for record in repos]
+
+        cur.execute(
+            "UPDATE searchrepos SET has_picked=True WHERE _id IN %s;",
+            (tuple(picked_ids),)
+        )
+        conn.commit()
     cur.close()
     conn.close()
     return repos
@@ -94,12 +105,13 @@ def insert_into_rp_data(df):
         df.drop_duplicates(subset=['hash', 'project_id', 'version'], inplace=True)
 
         # Generate unique ID by combining hash and project_id
+        # df['hash'].astype(str) + "_" + df['project_id'].astype(str) + "_" +
         df['_id'] = df['hash'].astype(str) + "_" + df['project_id'].astype(str)
 
         # Convert DataFrame to a list of tuples for batch insert
         records_to_insert = [
             (
-                row['_id'], row['hash'], row['project_id'], row['version'], row['license'], row['method_name'],
+                row['_id']+ datetime.datetime.now().strftime("%Y%m%d%H%M%S%f"), row['hash'], row['project_id'], row['version'], row['license'], row['method_name'],
                 row['file_location'], row['function_code'], row['repository_url'], row['query_project'], row['violation'],
                 row['source_project'], row['source_project_version']
             ) for _, row in df.iterrows()
@@ -165,6 +177,7 @@ CREATE TABLE searchrepos (
     license TEXT,
     language TEXT,
     licenseConflicts INT,
+    has_picked BOOLEAN DEFAULT FALSE,
     is_active BOOLEAN DEFAULT TRUE
 );
 
@@ -192,6 +205,9 @@ DROP TABLE repository_data;
 
 UPDATE searchrepos SET is_active = TRUE WHERE is_active = FALSE;
 
+UPDATE searchrepos SET is_active = FALSE WHERE repository_url = 'https://github.com/microsoft/Pyjion';
+
+SELECT COUNT(*) FROM searchrepos WHERE is_active = FALSE;
 
 SELECT COUNT(*) 
 FROM repository_data 
@@ -237,7 +253,7 @@ sudo -u postgres psql
 # Check other sources for linces
 - keep a note even if not violated license
 
-### Vilation examples ###
+### Violation examples ###
 
 1. https://github.com/alibaba/arthas
 2. https://github.com/shibingli/webconsole

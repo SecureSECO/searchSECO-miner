@@ -259,7 +259,7 @@ def get_github_repo_info(repo_url):
 def save_to_csv(df, incompatibility_count, repo_url, input_project_id, save_dir):
     """Save matches to CSV file with function code and all repositories."""
     
-    print("\nSaving results to CSV...")
+    #print("\nSaving results to CSV...")
     #timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"{repo_url.split('.com/')[1].replace('/','_')}_matches_{input_project_id}_{incompatibility_count}.csv"
     
@@ -284,7 +284,7 @@ def create_dataFrame(matches, repo_url):
         # Iterate over matches and process data
         for i, match in enumerate(matches, 1):
             try:
-                print("match method_name: ",  match['method_name'])
+                #print("match method_name: ",  match['method_name'])
                 method_name = match['method_name'].split(',')[0]
                 project_id = match['method_name'].split(',')[1].split(':')[1].strip()
                 project_version = match['method_name'].split(',')[2].split(':')[1].strip()
@@ -322,7 +322,7 @@ def create_dataFrame(matches, repo_url):
                     elements= variant['method_name'].split(',')
                     if(len(elements)<4): 
                         continue
-                    print("Variant method_name: ",  variant['method_name'])
+                    #print("Variant method_name: ",  variant['method_name'])
                     method_name = match['method_name'].split(',')[0]
                     project_id = variant['method_name'].split(',')[1].split(':')[1].strip()
                     project_version = variant['method_name'].split(',')[2].split(':')[1].strip()
@@ -381,9 +381,7 @@ def normalize_license(license_name: str) -> str:
     return license_mapping.get(license_name, license_name)  # Default to original if not found
 
 def can_reuse_code(source_license: str, target_license: str) -> bool:
-    #return compatibility_matrix.get(target_license, {}).get(source_license, False)
-    print(target_license, source_license)
-    #print(compatibility_matrix[target_license][source_license])
+    
     return compatibility_matrix[target_license][source_license]
 
 def check_license_compatibility(df):
@@ -432,8 +430,9 @@ def main():
     #print(search_repo)
     
     repos = get_search_repos(search_repo)
-
+    
     print("Total number of searchrepos attempting: ", len(repos))
+    #print(repos)
     count = 0
     for repo in repos:
         """
@@ -464,6 +463,7 @@ def main():
             
             if not matches:
                 print("No matches found")
+                update_searchrepos("", "", repo_id)
                 continue
             
             print("Fetching function code and creating a dataframe...")
