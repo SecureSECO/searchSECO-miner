@@ -315,7 +315,7 @@ def create_dataFrame(matches, repo_url):
                 ])
 
                 if (i%100==0):
-                    print("Total {} hash has been processed".format(i))
+                    print("{} hash has been processed".format(i))
 
                 # Process and add variants
                 for variant in match['variants']:
