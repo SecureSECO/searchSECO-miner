@@ -419,10 +419,12 @@ def check_license_compatibility(df):
 
 def main():
     """
-    python auto_miner.py N https://github.com/microsoft/simple-filter-mixer
-    python auto_miner.py N 20
-    python auto_miner.py N      # default is 100
-    # https://github.com/google/ios-webkit-debug-proxy
+        Four ways of checking your repository(ies)
+        - A single repo: python auto_miner.py N https://github.com/microsoft/simple-filter-mixer
+        - X (=20) number of repo from database: python auto_miner.py N 20
+        - With a default value of X (=100): python auto_miner.py N      # default is 100
+        - With the shell script: run_python_miner.sh
+        # https://github.com/google/ios-webkit-debug-proxy
     """
     
     fun_code = False if sys.argv[1] == "N" else True

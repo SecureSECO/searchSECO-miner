@@ -36,10 +36,28 @@ CREATE TABLE searchrepos (
     is_active BOOLEAN DEFAULT TRUE
 );
 
+CREATE TABLE searchrepos (
+    _id VARCHAR(50) PRIMARY KEY,
+    organization VARCHAR(50),
+    project_id VARCHAR(100),
+    project_version VARCHAR(100),
+    repository_url TEXT,
+    license TEXT,
+    language TEXT,
+    match_found BOOLEAN DEFAULT FALSE,
+    licenseConflicts INT,
+    has_picked BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
+    processing_start_time TIMESTAMP,
+    processing_end_time TIMESTAMP
+);
+
+
 CREATE TABLE repository_data (
     _id VARCHAR(100) PRIMARY KEY,
     hash TEXT NOT NULL,
     project_id VARCHAR(50),
+    organization VARCHAR(50),
     version TEXT,
     license TEXT,
     method_name TEXT,
@@ -105,8 +123,6 @@ ORDER BY hash, version;
 sudo -u postgres psql
 \c github_repos;
 \l
-# Check other sources for linces
-- keep a note even if not violated license
 
 ### Violation examples ###
 
@@ -117,6 +133,10 @@ sudo -u postgres psql
 Next:
 - update searchrepos with the number of conflicts
 - update searchrepos with the processing start and end time
+- number of match found/not
+- add organization to repository_data
+- keep a note even if not violated license
+
 
 
 """

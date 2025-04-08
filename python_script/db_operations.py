@@ -38,7 +38,7 @@ def get_search_repos(search_repo):
     cur = conn.cursor()
 
     if search_repo and search_repo.isdigit():
-        cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE is_active=True and has_picked=False LIMIT %s;", (int(search_repo),))
+        cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE organization= 'Google' AND is_active=True AND has_picked=False LIMIT %s;", (int(search_repo),))
         #picked_records = cur.fetchall()
         
     else:
