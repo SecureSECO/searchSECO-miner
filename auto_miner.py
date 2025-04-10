@@ -93,9 +93,9 @@ def parse_matches(output, repo_url, fun_code):
     current_hash = None
     
     lines = output.split('\n')
-    total_matches = sum(1 for line in lines if line.startswith('Hash '))
+    #total_matches = sum(1 for line in lines if line.startswith('Hash '))
     current_match_num = 0
-    database=1
+    #database=1
     
     for line in lines:
         # Look for start of new match group (hash line)
