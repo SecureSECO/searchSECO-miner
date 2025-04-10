@@ -1,0 +1,2480 @@
+{
+  "headers": [
+    {
+      "tool_name": "scancode-toolkit",
+      "tool_version": "32.3.3",
+      "options": {
+        "input": [
+          "Lua-experimentation"
+        ],
+        "--json-pp": "scancode_output.json",
+        "--license": true
+      },
+      "notice": "Generated with ScanCode and provided on an \"AS IS\" BASIS, WITHOUT WARRANTIES\nOR CONDITIONS OF ANY KIND, either express or implied. No content created from\nScanCode should be considered or used as legal advice. Consult an Attorney\nfor any legal advice.\nScanCode is a free software code scanning tool from nexB Inc. and others.\nVisit https://github.com/nexB/scancode-toolkit/ for support and download.",
+      "start_timestamp": "2025-04-09T121432.967083",
+      "end_timestamp": "2025-04-09T121543.515529",
+      "output_format_version": "4.0.0",
+      "duration": 70.54846930503845,
+      "message": null,
+      "errors": [],
+      "warnings": [],
+      "extra_data": {
+        "system_environment": {
+          "operating_system": "linux",
+          "cpu_architecture": "64",
+          "platform": "Linux-5.15.0-136-generic-x86_64-with-glibc2.35",
+          "platform_version": "#147-Ubuntu SMP Sat Mar 15 15:53:30 UTC 2025",
+          "python_version": "3.12.3 | packaged by Anaconda, Inc. | (main, May  6 2024, 19:46:43) [GCC 11.2.0]"
+        },
+        "spdx_license_list_version": "3.26",
+        "files_count": 71
+      }
+    }
+  ],
+  "license_detections": [
+    {
+      "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0",
+      "license_expression": "mit",
+      "license_expression_spdx": "MIT",
+      "detection_count": 57,
+      "reference_matches": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "from_file": "Lua-experimentation/src/lapi.c",
+          "start_line": 4,
+          "end_line": 4,
+          "matcher": "2-aho",
+          "score": 99.0,
+          "matched_length": 6,
+          "match_coverage": 100.0,
+          "rule_relevance": 99,
+          "rule_identifier": "mit_917.RULE",
+          "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+        }
+      ]
+    },
+    {
+      "identifier": "mit-a71c6190-9bb5-8c3b-99f6-ffcfd0b28550",
+      "license_expression": "mit",
+      "license_expression_spdx": "MIT",
+      "detection_count": 2,
+      "reference_matches": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "from_file": "Lua-experimentation/doc/contents.html",
+          "start_line": 37,
+          "end_line": 38,
+          "matcher": "2-aho",
+          "score": 100.0,
+          "matched_length": 15,
+          "match_coverage": 100.0,
+          "rule_relevance": 100,
+          "rule_identifier": "mit_977.RULE",
+          "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_977.RULE"
+        }
+      ]
+    },
+    {
+      "identifier": "mit-5a4823e3-a592-d3a9-8112-8ad84beb0d71",
+      "license_expression": "mit",
+      "license_expression_spdx": "MIT",
+      "detection_count": 1,
+      "reference_matches": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "from_file": "Lua-experimentation/doc/readme.html",
+          "start_line": 381,
+          "end_line": 399,
+          "matcher": "2-aho",
+          "score": 100.0,
+          "matched_length": 161,
+          "match_coverage": 100.0,
+          "rule_relevance": 100,
+          "rule_identifier": "mit.LICENSE",
+          "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE"
+        }
+      ]
+    },
+    {
+      "identifier": "mit-6a73d11d-fe07-5088-1fc7-1189d9eda969",
+      "license_expression": "mit",
+      "license_expression_spdx": "MIT",
+      "detection_count": 1,
+      "reference_matches": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "from_file": "Lua-experimentation/src/lualib.h",
+          "start_line": 3,
+          "end_line": 4,
+          "matcher": "2-aho",
+          "score": 99.0,
+          "matched_length": 9,
+          "match_coverage": 100.0,
+          "rule_relevance": 99,
+          "rule_identifier": "mit_license-reference_58.RULE",
+          "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_license-reference_58.RULE"
+        },
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "from_file": "Lua-experimentation/src/lua.h",
+          "start_line": 423,
+          "end_line": 440,
+          "matcher": "2-aho",
+          "score": 100.0,
+          "matched_length": 161,
+          "match_coverage": 100.0,
+          "rule_relevance": 100,
+          "rule_identifier": "mit.LICENSE",
+          "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE"
+        }
+      ]
+    },
+    {
+      "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a",
+      "license_expression": "mit",
+      "license_expression_spdx": "MIT",
+      "detection_count": 1,
+      "reference_matches": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "from_file": "Lua-experimentation/src/lua.h",
+          "start_line": 423,
+          "end_line": 440,
+          "matcher": "2-aho",
+          "score": 100.0,
+          "matched_length": 161,
+          "match_coverage": 100.0,
+          "rule_relevance": 100,
+          "rule_identifier": "mit.LICENSE",
+          "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE"
+        }
+      ]
+    },
+    {
+      "identifier": "mit-d8d9574a-5f75-349e-ecbe-b76e9c4bbe8b",
+      "license_expression": "mit",
+      "license_expression_spdx": "MIT",
+      "detection_count": 1,
+      "reference_matches": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "from_file": "Lua-experimentation/doc/readme.html",
+          "start_line": 57,
+          "end_line": 58,
+          "matcher": "2-aho",
+          "score": 100.0,
+          "matched_length": 5,
+          "match_coverage": 100.0,
+          "rule_relevance": 100,
+          "rule_identifier": "mit_982.RULE",
+          "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_982.RULE"
+        }
+      ]
+    },
+    {
+      "identifier": "unknown_license_reference_and_mit-cc1af82a-9de0-2834-358e-6acef1398ead",
+      "license_expression": "unknown-license-reference AND mit",
+      "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference AND MIT",
+      "detection_count": 1,
+      "reference_matches": [
+        {
+          "license_expression": "unknown-license-reference",
+          "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference",
+          "from_file": "Lua-experimentation/doc/readme.html",
+          "start_line": 360,
+          "end_line": 360,
+          "matcher": "2-aho",
+          "score": 100.0,
+          "matched_length": 7,
+          "match_coverage": 100.0,
+          "rule_relevance": 100,
+          "rule_identifier": "unknown-license-reference_299.RULE",
+          "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/unknown-license-reference_299.RULE"
+        },
+        {
+          "license_expression": "unknown-license-reference",
+          "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference",
+          "from_file": "Lua-experimentation/doc/readme.html",
+          "start_line": 361,
+          "end_line": 361,
+          "matcher": "2-aho",
+          "score": 100.0,
+          "matched_length": 2,
+          "match_coverage": 100.0,
+          "rule_relevance": 100,
+          "rule_identifier": "unknown-license-reference_301.RULE",
+          "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/unknown-license-reference_301.RULE"
+        },
+        {
+          "license_expression": "unknown-license-reference",
+          "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference",
+          "from_file": "Lua-experimentation/doc/readme.html",
+          "start_line": 361,
+          "end_line": 361,
+          "matcher": "2-aho",
+          "score": 100.0,
+          "matched_length": 2,
+          "match_coverage": 100.0,
+          "rule_relevance": 100,
+          "rule_identifier": "unknown-license-reference_301.RULE",
+          "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/unknown-license-reference_301.RULE"
+        },
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "from_file": "Lua-experimentation/doc/readme.html",
+          "start_line": 365,
+          "end_line": 372,
+          "matcher": "2-aho",
+          "score": 100.0,
+          "matched_length": 70,
+          "match_coverage": 100.0,
+          "rule_relevance": 100,
+          "rule_identifier": "mit_976.RULE",
+          "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_976.RULE"
+        },
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "from_file": "Lua-experimentation/doc/readme.html",
+          "start_line": 375,
+          "end_line": 375,
+          "matcher": "2-aho",
+          "score": 100.0,
+          "matched_length": 6,
+          "match_coverage": 100.0,
+          "rule_relevance": 100,
+          "rule_identifier": "mit_979.RULE",
+          "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_979.RULE"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "Lua-experimentation",
+      "type": "directory",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/Makefile",
+      "type": "file",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/README",
+      "type": "file",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/doc",
+      "type": "directory",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/doc/contents.html",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/doc/contents.html",
+              "start_line": 37,
+              "end_line": 38,
+              "matcher": "2-aho",
+              "score": 100.0,
+              "matched_length": 15,
+              "match_coverage": 100.0,
+              "rule_relevance": 100,
+              "rule_identifier": "mit_977.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_977.RULE"
+            }
+          ],
+          "identifier": "mit-a71c6190-9bb5-8c3b-99f6-ffcfd0b28550"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.53,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/doc/logo.gif",
+      "type": "file",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/doc/lua.1",
+      "type": "file",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/doc/lua.css",
+      "type": "file",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/doc/luac.1",
+      "type": "file",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/doc/manual.css",
+      "type": "file",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/doc/manual.html",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/doc/manual.html",
+              "start_line": 23,
+              "end_line": 24,
+              "matcher": "2-aho",
+              "score": 100.0,
+              "matched_length": 15,
+              "match_coverage": 100.0,
+              "rule_relevance": 100,
+              "rule_identifier": "mit_977.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_977.RULE"
+            }
+          ],
+          "identifier": "mit-a71c6190-9bb5-8c3b-99f6-ffcfd0b28550"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.03,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/doc/osi-certified-72x60.png",
+      "type": "file",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/doc/readme.html",
+      "type": "file",
+      "detected_license_expression": "mit AND (unknown-license-reference AND mit)",
+      "detected_license_expression_spdx": "MIT AND (LicenseRef-scancode-unknown-license-reference AND MIT)",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/doc/readme.html",
+              "start_line": 57,
+              "end_line": 58,
+              "matcher": "2-aho",
+              "score": 100.0,
+              "matched_length": 5,
+              "match_coverage": 100.0,
+              "rule_relevance": 100,
+              "rule_identifier": "mit_982.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_982.RULE"
+            }
+          ],
+          "identifier": "mit-d8d9574a-5f75-349e-ecbe-b76e9c4bbe8b"
+        },
+        {
+          "license_expression": "unknown-license-reference AND mit",
+          "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference AND MIT",
+          "matches": [
+            {
+              "license_expression": "unknown-license-reference",
+              "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference",
+              "from_file": "Lua-experimentation/doc/readme.html",
+              "start_line": 360,
+              "end_line": 360,
+              "matcher": "2-aho",
+              "score": 100.0,
+              "matched_length": 7,
+              "match_coverage": 100.0,
+              "rule_relevance": 100,
+              "rule_identifier": "unknown-license-reference_299.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/unknown-license-reference_299.RULE"
+            },
+            {
+              "license_expression": "unknown-license-reference",
+              "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference",
+              "from_file": "Lua-experimentation/doc/readme.html",
+              "start_line": 361,
+              "end_line": 361,
+              "matcher": "2-aho",
+              "score": 100.0,
+              "matched_length": 2,
+              "match_coverage": 100.0,
+              "rule_relevance": 100,
+              "rule_identifier": "unknown-license-reference_301.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/unknown-license-reference_301.RULE"
+            },
+            {
+              "license_expression": "unknown-license-reference",
+              "license_expression_spdx": "LicenseRef-scancode-unknown-license-reference",
+              "from_file": "Lua-experimentation/doc/readme.html",
+              "start_line": 361,
+              "end_line": 361,
+              "matcher": "2-aho",
+              "score": 100.0,
+              "matched_length": 2,
+              "match_coverage": 100.0,
+              "rule_relevance": 100,
+              "rule_identifier": "unknown-license-reference_301.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/unknown-license-reference_301.RULE"
+            },
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/doc/readme.html",
+              "start_line": 365,
+              "end_line": 372,
+              "matcher": "2-aho",
+              "score": 100.0,
+              "matched_length": 70,
+              "match_coverage": 100.0,
+              "rule_relevance": 100,
+              "rule_identifier": "mit_976.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_976.RULE"
+            },
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/doc/readme.html",
+              "start_line": 375,
+              "end_line": 375,
+              "matcher": "2-aho",
+              "score": 100.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 100,
+              "rule_identifier": "mit_979.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_979.RULE"
+            }
+          ],
+          "identifier": "unknown_license_reference_and_mit-cc1af82a-9de0-2834-358e-6acef1398ead"
+        },
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/doc/readme.html",
+              "start_line": 381,
+              "end_line": 399,
+              "matcher": "2-aho",
+              "score": 100.0,
+              "matched_length": 161,
+              "match_coverage": 100.0,
+              "rule_relevance": 100,
+              "rule_identifier": "mit.LICENSE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE"
+            }
+          ],
+          "identifier": "mit-5a4823e3-a592-d3a9-8112-8ad84beb0d71"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 13.43,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src",
+      "type": "directory",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lapi.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lapi.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.13,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lapi.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lapi.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 6.32,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lauxlib.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lauxlib.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.16,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lauxlib.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lauxlib.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.58,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lbaselib.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lbaselib.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.34,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lbitlib.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lbitlib.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.83,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lcode.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lcode.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.18,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lcode.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lcode.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 1.17,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lcorolib.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lcorolib.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 1.17,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lctype.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lctype.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 1.84,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lctype.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lctype.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 2.18,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/ldblib.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/ldblib.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.41,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/ldebug.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/ldebug.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.28,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/ldebug.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/ldebug.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 3.87,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/ldo.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/ldo.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.21,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/ldo.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/ldo.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 2.51,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/ldump.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/ldump.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 1.12,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lfunc.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lfunc.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.9,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lfunc.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lfunc.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 3.87,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lgc.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lgc.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.12,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lgc.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lgc.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.76,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/linit.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/linit.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 2.44,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/liolib.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/liolib.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.25,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/llex.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/llex.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.31,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/llex.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/llex.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 1.88,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/llimits.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/llimits.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.53,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lmathlib.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lmathlib.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.58,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lmem.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lmem.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 1.59,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lmem.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lmem.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 2.02,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/loadlib.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/loadlib.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.21,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lobject.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lobject.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.46,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lobject.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lobject.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.29,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lopcodes.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lopcodes.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 1.4,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lopcodes.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lopcodes.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.45,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/loslib.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/loslib.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.53,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lparser.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lparser.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.1,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lparser.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lparser.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 1.38,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lstate.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lstate.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.52,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lstate.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lstate.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.56,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lstring.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lstring.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.83,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lstring.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lstring.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 2.96,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lstrlib.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lstrlib.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.16,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/ltable.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/ltable.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.25,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/ltable.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/ltable.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 2.42,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/ltablib.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/ltablib.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.51,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/ltm.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/ltm.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 2.4,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/ltm.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/ltm.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 3.33,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lua.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lua.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.31,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lua.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lua.h",
+              "start_line": 423,
+              "end_line": 440,
+              "matcher": "2-aho",
+              "score": 100.0,
+              "matched_length": 161,
+              "match_coverage": 100.0,
+              "rule_relevance": 100,
+              "rule_identifier": "mit.LICENSE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE"
+            }
+          ],
+          "identifier": "mit-cacd5c0c-204a-85c2-affc-e4c125b2492a"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 7.63,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lua.hpp",
+      "type": "file",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/luac.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/luac.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        },
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/luac.c",
+              "start_line": 208,
+              "end_line": 208,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.84,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/luaconf.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/luaconf.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.27,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lualib.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lualib.h",
+              "start_line": 3,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 9,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_license-reference_58.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_license-reference_58.RULE"
+            },
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lua.h",
+              "start_line": 423,
+              "end_line": 440,
+              "matcher": "2-aho",
+              "score": 100.0,
+              "matched_length": 161,
+              "match_coverage": 100.0,
+              "rule_relevance": 100,
+              "rule_identifier": "mit.LICENSE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/licenses/mit.LICENSE"
+            }
+          ],
+          "identifier": "mit-6a73d11d-fe07-5088-1fc7-1189d9eda969",
+          "detection_log": [
+            "unknown-reference-to-local-file"
+          ]
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 5.17,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lundump.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lundump.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.63,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lundump.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lundump.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 4.62,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lvm.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lvm.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 0.15,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lvm.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lvm.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 2.51,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lzio.c",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lzio.c",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 2.48,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/lzio.h",
+      "type": "file",
+      "detected_license_expression": "mit",
+      "detected_license_expression_spdx": "MIT",
+      "license_detections": [
+        {
+          "license_expression": "mit",
+          "license_expression_spdx": "MIT",
+          "matches": [
+            {
+              "license_expression": "mit",
+              "license_expression_spdx": "MIT",
+              "from_file": "Lua-experimentation/src/lzio.h",
+              "start_line": 4,
+              "end_line": 4,
+              "matcher": "2-aho",
+              "score": 99.0,
+              "matched_length": 6,
+              "match_coverage": 100.0,
+              "rule_relevance": 99,
+              "rule_identifier": "mit_917.RULE",
+              "rule_url": "https://github.com/nexB/scancode-toolkit/tree/develop/src/licensedcode/data/rules/mit_917.RULE"
+            }
+          ],
+          "identifier": "mit-5036f67e-aee4-0dc3-5efc-975633920fd0"
+        }
+      ],
+      "license_clues": [],
+      "percentage_of_license_text": 2.73,
+      "scan_errors": []
+    },
+    {
+      "path": "Lua-experimentation/src/Makefile",
+      "type": "file",
+      "detected_license_expression": null,
+      "detected_license_expression_spdx": null,
+      "license_detections": [],
+      "license_clues": [],
+      "percentage_of_license_text": 0,
+      "scan_errors": []
+    }
+  ]
+}

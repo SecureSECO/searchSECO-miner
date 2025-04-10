@@ -170,6 +170,6 @@ build
 SECOoutput.txt
 .temp/
 results/*
-python_script/check_license_conflict.py
-python_script/ios-webkit-debug-proxy
+python_script/tmp_license_checks/
 shell_scripts/results
+shell_scripts/run_python_miner.sh

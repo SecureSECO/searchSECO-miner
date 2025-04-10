@@ -7,7 +7,6 @@ LICENSE_LIST = [
     "Zlib", "ISC"
 ]
 
-
 # Mapping different representations to a standard license name
 license_mapping = {
     "MIT": "MIT",
