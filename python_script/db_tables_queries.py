@@ -101,7 +101,7 @@ sudo -u postgres psql
 2. https://github.com/shibingli/webconsole
 
 
-Next:
+Update:
 - update searchrepos with the number of conflicts
 - update searchrepos with the processing start and end time
 - number of match found/not -1/conflict

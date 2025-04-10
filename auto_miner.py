@@ -15,6 +15,7 @@ load_dotenv("./src/config/.env")
 
 def get_function_code_from_github(url, retry_count=3):
     """Extract function code from GitHub URL with retries and better error handling"""
+    
     if not url:
         return None
         
@@ -87,6 +88,7 @@ def get_function_code_from_github(url, retry_count=3):
 
 def parse_matches(output, repo_url, fun_code):
     """Parse the output to extract matched functions and their repositories"""
+    
     print("\nParsing matches from SearchSECO output...")
     matches = []
     current_match = None
@@ -432,7 +434,7 @@ def main():
     search_repo = sys.argv[2] if len(sys.argv) > 2 else '100'
     #print(search_repo)
     
-    repos = get_search_repos(search_repo, "") # provide organization name: Google, Microsoft etc.
+    repos = get_search_repos(search_repo, "Google") # provide organization name: Google, Microsoft etc.
     
     #print("Total number of searchrepos attempting: ", len(repos))
 
@@ -478,13 +480,21 @@ def main():
             df, incompatibility_count = check_license_compatibility(df)
 
             print("Saving results to database...")
-
+            
+            update_process_time("processing_end_time", repo_id, repo_url)
+            
             df = insert_into_rp_data(df)
 
-            update_process_time("processing_end_time", repo_id, repo_url)
-
-            print("Saving results to CSV...")
-            save_to_csv(df, incompatibility_count, repo_url, input_project_id, save_dir="results")
+            
+            #### Visual Inspection ####
+            
+            #print("Saving results to CSV...")
+            #save_to_csv(df, incompatibility_count, repo_url, input_project_id, save_dir="results")
+            #time.sleep(0.01)
+            
+            #### End Visual Inspection ####
+            
+            print("Updating the query table and exiting..")
             update_searchrepos(input_project_id, input_project_version, repo_id, incompatibility_count)
 
 if __name__ == "__main__":

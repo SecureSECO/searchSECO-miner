@@ -1,28 +1,23 @@
 import os
-import glob
+#import glob
 import psycopg2
-import pandas as pd
+#import pandas as pd
 import datetime
+from dotenv import load_dotenv
 from psycopg2.extras import execute_values
 
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+
 def get_db_conn():
-
-    # Database connection details
-    DB_NAME = "github_repos"
-    DB_USER = "postgres"
-    DB_PASSWORD = "Sphings@19"
-    DB_HOST = "localhost"
-    DB_PORT = "5432"
-
-    # Connect to PostgreSQL
     conn = psycopg2.connect(
-        dbname=DB_NAME,
-        user=DB_USER,
-        password=DB_PASSWORD,
-        host=DB_HOST,
-        port=DB_PORT
+        dbname=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        host=os.getenv("DB_HOST"),
+        port=os.getenv("DB_PORT")
     )
-
     return conn
 
 def update_searchrepos(input_project_id, input_project_version, repo_id, incompatibility_count):
@@ -30,6 +25,7 @@ def update_searchrepos(input_project_id, input_project_version, repo_id, incompa
     cur = conn.cursor()
     cur.execute("UPDATE searchrepos SET is_active = %s, project_id = %s,  project_version = %s, license_conflicts = %s WHERE _id = %s;", (False, input_project_id, input_project_version, incompatibility_count, repo_id))
     conn.commit()
+    print("Rows affected:", cur.rowcount)
     cur.close()
     conn.close()
 
@@ -42,6 +38,7 @@ def update_process_time(field: str, repo_id: str, repo_url: str):
     query = f"UPDATE searchrepos SET {field} = NOW() WHERE _id = %s AND repository_url = %s;"
     cur.execute(query, (repo_id, repo_url))
     conn.commit()
+    print("Rows affected:", cur.rowcount)
     cur.close()
     conn.close()
 
