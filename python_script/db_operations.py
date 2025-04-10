@@ -28,7 +28,7 @@ def get_db_conn():
 def update_searchrepos(input_project_id, input_project_version, repo_id, incompatibility_count):
     conn = get_db_conn()
     cur = conn.cursor()
-    cur.execute("UPDATE searchrepos SET is_active = %s, project_id = %s,  project_version = %s, licenseConflicts = %s WHERE _id = %s;", (False, input_project_id, input_project_version, incompatibility_count, repo_id))
+    cur.execute("UPDATE searchrepos SET is_active = %s, project_id = %s,  project_version = %s, license_conflicts = %s WHERE _id = %s;", (False, input_project_id, input_project_version, incompatibility_count, repo_id))
     conn.commit()
     cur.close()
     conn.close()
@@ -52,9 +52,9 @@ def get_search_repos(search_repo, repo_org):
     if search_repo and search_repo.isdigit():
         # run with the N number of repos from database
         if len(repo_org):
-            cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, organization FROM searchrepos WHERE organization= %s AND is_active=True AND has_picked=False LIMIT %s;", (repo_org, int(search_repo)))
+            cur.execute("SELECT _id, repository_url, license, language, license_conflicts, is_active, organization FROM searchrepos WHERE organization= %s AND is_active=True AND has_picked=False LIMIT %s;", (repo_org, int(search_repo)))
         else:
-            cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, organization FROM searchrepos WHERE is_active=True AND has_picked=False LIMIT %s;", (int(search_repo),))
+            cur.execute("SELECT _id, repository_url, license, language, license_conflicts, is_active, organization FROM searchrepos WHERE is_active=True AND has_picked=False LIMIT %s;", (int(search_repo),))
         
     else:
         #print("search_repo: ", search_repo)
@@ -63,10 +63,10 @@ def get_search_repos(search_repo, repo_org):
         cur.execute("UPDATE searchrepos SET is_active = %s WHERE repository_url = %s;", (True, search_repo))
         if cur.rowcount == 0:
             # If no rows were updated, insert a new record
-           cur.execute("""INSERT INTO searchrepos (_id, organization, project_id, repository_url, license, language, licenseConflicts, is_active
+           cur.execute("""INSERT INTO searchrepos (_id, organization, project_id, repository_url, license, language, license_conflicts, is_active
                 ) VALUES (TO_CHAR(NOW(), 'YYYYMMDDHH24MISSUS'), %s, '', %s, NULL, NULL, 0, %s);""", (repo_org,search_repo, True))
         
-        cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, project_id FROM searchrepos WHERE repository_url = %s;", (search_repo,))
+        cur.execute("SELECT _id, repository_url, license, language, license_conflicts, is_active, project_id FROM searchrepos WHERE repository_url = %s;", (search_repo,))
 
     repos = cur.fetchall()
     if repos:
@@ -111,9 +111,7 @@ def insert_into_rp_data(df):
         df.drop_duplicates(subset=['hash', 'project_id', 'version'], inplace=True)
 
         # Generate unique ID by combining hash and project_id
-        # df['hash'].astype(str) + "_" + df['project_id'].astype(str) + "_" +
         df['_id'] = df['hash'].astype(str) + "_" + df['project_id'].astype(str)
-        #df['organization'] = repo_org
 
         # Convert DataFrame to a list of tuples for batch insert
         records_to_insert = [

@@ -434,9 +434,8 @@ def main():
     
     repos = get_search_repos(search_repo, "") # provide organization name: Google, Microsoft etc.
     
-    print("Total number of searchrepos attempting: ", len(repos))
-    #print(repos)
-    count = 0
+    #print("Total number of searchrepos attempting: ", len(repos))
+
     for repo in repos:
         """
         repo_data = {
@@ -453,8 +452,6 @@ def main():
         if repo[5] == True:
             repo_id=repo[0]
             repo_url=repo[1]
-            #repo_org=repo[6]
-            #print("repo_url: ",repo_url)
             
             update_process_time("processing_start_time", repo_id, repo_url)
         
@@ -489,15 +486,6 @@ def main():
             print("Saving results to CSV...")
             save_to_csv(df, incompatibility_count, repo_url, input_project_id, save_dir="results")
             update_searchrepos(input_project_id, input_project_version, repo_id, incompatibility_count)
-
-        
-        count=count+1
-        
-        if count%50==0:
-            print("Sleeping for 5 minutes...")
-            time.sleep(300)  # 300 seconds = 5 minutes
-            print("Resuming execution...")
-
 
 if __name__ == "__main__":
     main()

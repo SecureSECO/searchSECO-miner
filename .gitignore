@@ -167,9 +167,13 @@ build
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-SECOoutput.txt
 .temp/
+
+# Others
+SECOoutput.txt
 results/*
 python_script/tmp_license_checks/
+python_script/frequency_check.py
 shell_scripts/results
 shell_scripts/run_python_miner.sh
+violation_examples

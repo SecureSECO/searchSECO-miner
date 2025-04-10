@@ -31,7 +31,7 @@ CREATE TABLE searchrepos (
     repository_url TEXT,
     license TEXT,
     language TEXT,
-    licenseConflicts INT,
+    license_conflicts INT,
     has_picked BOOLEAN DEFAULT FALSE,
     is_active BOOLEAN DEFAULT TRUE,
     processing_start_time TIMESTAMP,
@@ -56,7 +56,6 @@ CREATE TABLE repository_data (
     UNIQUE (hash, project_id, version)
 );
 
-DROP TABLE repository_data;
 
 
 ######## Support queries #######
@@ -75,23 +74,8 @@ SELECT COUNT(DISTINCT project_id)
 FROM repository_data
 WHERE query_project = 'Yes' AND violation ILIKE '%incompatible%';
 
-INSERT INTO searchrepos (_id, organization, project_id, repository_url, license, language, licenseConflicts, is_active) VALUES (
-    TO_CHAR(NOW(), 'YYYYMMDDHH24MISSUS'),  -- Unique timestamp-based ID
-    'alibaba',  -- Organization
-    '',  -- project_id (Empty)
-    'https://github.com/shibingli/webconsole',
-    NULL,  -- License (Unknown)
-    NULL,  -- Language (Unknown)
-    0,  -- licenseConflicts (Default)
-    TRUE  -- is_active (Default)
-)
-
 DELETE FROM searchrepos 
-WHERE organization = 'alibaba' 
-AND repository_url = 'https://github.com/alibaba/arthas';
-
-DELETE FROM searchrepos 
-WHERE epository_url = 'https://github.com/microsoft/simple-filter-mixer';
+WHERE repository_url = 'https://github.com/microsoft/simple-filter-mixer';
 
 SELECT * 
 FROM repository_data 
@@ -102,6 +86,8 @@ WHERE hash IN (
     AND violation ILIKE '%incompatible%'
 ) 
 ORDER BY hash, version;
+
+DROP TABLE repository_data;
 
 #Commands
 
