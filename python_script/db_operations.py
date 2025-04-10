@@ -25,21 +25,36 @@ def get_db_conn():
 
     return conn
 
-def update_searchrepos(input_project_id, input_project_version, repo_id):
+def update_searchrepos(input_project_id, input_project_version, repo_id, incompatibility_count):
     conn = get_db_conn()
     cur = conn.cursor()
-    cur.execute("UPDATE searchrepos SET is_active = %s, project_id = %s,  project_version = %s WHERE _id = %s;", (False, input_project_id, input_project_version, repo_id))
+    cur.execute("UPDATE searchrepos SET is_active = %s, project_id = %s,  project_version = %s, licenseConflicts = %s WHERE _id = %s;", (False, input_project_id, input_project_version, incompatibility_count, repo_id))
     conn.commit()
     cur.close()
     conn.close()
 
-def get_search_repos(search_repo):
+def update_process_time(field: str, repo_id: str, repo_url: str):
+    if field not in ("processing_start_time", "processing_end_time"):
+        raise ValueError("Invalid field. Must be 'processing_start_time' or 'processing_end_time'.")
+
+    conn = get_db_conn()
+    cur = conn.cursor()
+    query = f"UPDATE searchrepos SET {field} = NOW() WHERE _id = %s AND repository_url = %s;"
+    cur.execute(query, (repo_id, repo_url))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def get_search_repos(search_repo, repo_org):
     conn = get_db_conn()
     cur = conn.cursor()
 
     if search_repo and search_repo.isdigit():
-        cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active FROM searchrepos WHERE organization= 'Google' AND is_active=True AND has_picked=False LIMIT %s;", (int(search_repo),))
-        #picked_records = cur.fetchall()
+        # run with the N number of repos from database
+        if len(repo_org):
+            cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, organization FROM searchrepos WHERE organization= %s AND is_active=True AND has_picked=False LIMIT %s;", (repo_org, int(search_repo)))
+        else:
+            cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, organization FROM searchrepos WHERE is_active=True AND has_picked=False LIMIT %s;", (int(search_repo),))
         
     else:
         #print("search_repo: ", search_repo)
@@ -48,20 +63,9 @@ def get_search_repos(search_repo):
         cur.execute("UPDATE searchrepos SET is_active = %s WHERE repository_url = %s;", (True, search_repo))
         if cur.rowcount == 0:
             # If no rows were updated, insert a new record
-           cur.execute("""
-                INSERT INTO searchrepos (
-                    _id, organization, project_id, repository_url, license, language, licenseConflicts, is_active
-                ) VALUES (
-                    TO_CHAR(NOW(), 'YYYYMMDDHH24MISSUS'),  -- Unique timestamp-based ID
-                    'alibaba',  -- Organization
-                    '',  -- project_id (Empty)
-                    %s,  -- repository_url
-                    NULL,  -- License (Unknown)
-                    NULL,  -- Language (Unknown)
-                    0,  -- licenseConflicts (Default)
-                    %s  -- is_active (Default)
-                );
-            """, (search_repo, True))
+           cur.execute("""INSERT INTO searchrepos (_id, organization, project_id, repository_url, license, language, licenseConflicts, is_active
+                ) VALUES (TO_CHAR(NOW(), 'YYYYMMDDHH24MISSUS'), %s, '', %s, NULL, NULL, 0, %s);""", (repo_org,search_repo, True))
+        
         cur.execute("SELECT _id, repository_url, license, language, licenseconflicts, is_active, project_id FROM searchrepos WHERE repository_url = %s;", (search_repo,))
 
     repos = cur.fetchall()
@@ -102,12 +106,14 @@ def insert_into_rp_data(df):
 
         df = df[df['query_project'].str.len() <= 5]
         df = df[df['violation'].str.len() <= 100]
+        
         # Remove duplicates based on (hash, project_id)
         df.drop_duplicates(subset=['hash', 'project_id', 'version'], inplace=True)
 
         # Generate unique ID by combining hash and project_id
         # df['hash'].astype(str) + "_" + df['project_id'].astype(str) + "_" +
         df['_id'] = df['hash'].astype(str) + "_" + df['project_id'].astype(str)
+        #df['organization'] = repo_org
 
         # Convert DataFrame to a list of tuples for batch insert
         records_to_insert = [

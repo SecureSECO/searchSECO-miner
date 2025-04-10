@@ -7,7 +7,7 @@ import time
 import sys
 import pandas as pd
 from python_script.licenses import compatibility_matrix, license_mapping, LICENSE_LIST
-from python_script.db_operations import update_searchrepos, get_search_repos, insert_into_rp_data
+from python_script.db_operations import update_searchrepos, get_search_repos, insert_into_rp_data, update_process_time
 from dotenv import load_dotenv
 
 load_dotenv("./src/config/.env")
@@ -420,10 +420,11 @@ def check_license_compatibility(df):
 def main():
     """
         Four ways of checking your repository(ies)
-        - A single repo: python auto_miner.py N https://github.com/microsoft/simple-filter-mixer
-        - X (=20) number of repo from database: python auto_miner.py N 20
-        - With a default value of X (=100): python auto_miner.py N      # default is 100
-        - With the shell script: run_python_miner.sh
+            - A single repo: python auto_miner.py N https://github.com/microsoft/simple-filter-mixer
+            - X (=20) number of repo from database: python auto_miner.py N 20
+            - With a default value of X (=100): python auto_miner.py N      # default is 100
+            - With the shell script: run_python_miner_updated.sh
+        - Parameter N/Y determine the a function code will be downloaded or not 
         # https://github.com/google/ios-webkit-debug-proxy
     """
     
@@ -431,7 +432,7 @@ def main():
     search_repo = sys.argv[2] if len(sys.argv) > 2 else '100'
     #print(search_repo)
     
-    repos = get_search_repos(search_repo)
+    repos = get_search_repos(search_repo, "") # provide organization name: Google, Microsoft etc.
     
     print("Total number of searchrepos attempting: ", len(repos))
     #print(repos)
@@ -445,13 +446,17 @@ def main():
             "language": repo[3],
             "licenseconflicts": repo[4],
             "is_active": repo[5]
+            "organization": repo[6]
         }
         """
     
         if repo[5] == True:
             repo_id=repo[0]
-
             repo_url=repo[1]
+            #repo_org=repo[6]
+            #print("repo_url: ",repo_url)
+            
+            update_process_time("processing_start_time", repo_id, repo_url)
         
             print("Running SearchSECO analysis...")
             output = run_searchseco_check(repo_url)
@@ -465,7 +470,7 @@ def main():
             
             if not matches:
                 print("No matches found")
-                update_searchrepos("", "", repo_id)
+                update_searchrepos("", "", repo_id, -1)
                 continue
             
             print("Fetching function code and creating a dataframe...")
@@ -479,9 +484,12 @@ def main():
 
             df = insert_into_rp_data(df)
 
+            update_process_time("processing_end_time", repo_id, repo_url)
+
             print("Saving results to CSV...")
             save_to_csv(df, incompatibility_count, repo_url, input_project_id, save_dir="results")
-            update_searchrepos(input_project_id, input_project_version, repo_id)
+            update_searchrepos(input_project_id, input_project_version, repo_id, incompatibility_count)
+
         
         count=count+1
         
