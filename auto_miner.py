@@ -434,7 +434,7 @@ def main():
     search_repo = sys.argv[2] if len(sys.argv) > 2 else '100'
     #print(search_repo)
     
-    repos = get_search_repos(search_repo, "Google") # provide organization name: Google, Microsoft etc.
+    repos = get_search_repos(search_repo, "") # provide organization name: Google, Microsoft etc.
     
     #print("Total number of searchrepos attempting: ", len(repos))
 
