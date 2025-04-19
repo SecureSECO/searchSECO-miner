@@ -2,6 +2,7 @@
 
 # Activate the Conda environment
 source ~/anaconda3/etc/profile.d/conda.sh
+#source /root/miniconda3/etc/profile.d/conda.sh
 conda activate rnd
 
 TEMP_DIR="../.tmp"

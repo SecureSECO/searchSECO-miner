@@ -425,19 +425,24 @@ def main():
             - A single repo: python auto_miner.py N https://github.com/microsoft/simple-filter-mixer
             - X (=20) number of repo from database: python auto_miner.py N 20
             - With a default value of X (=100): python auto_miner.py N      # default is 100
-            - With the shell script: run_python_miner_updated.sh
-        - Parameter N/Y determine the a function code will be downloaded or not 
+            - With the shell script: nohup ./run_python_miner.sh | tail -n 2000 > logfile.log 2>&1 &
+        - Parameter N/Y determine the a function code will be downloaded or not
         # https://github.com/google/ios-webkit-debug-proxy
     """
     
     fun_code = False if sys.argv[1] == "N" else True
     search_repo = sys.argv[2] if len(sys.argv) > 2 else '100'
     #print(search_repo)
-    
-    repos = get_search_repos(search_repo, "") # provide organization name: Google, Microsoft etc.
-    
-    #print("Total number of searchrepos attempting: ", len(repos))
 
+    company_name = "Samsung"
+    
+    repos = get_search_repos(search_repo, company_name) # provide organization name: Google, Microsoft etc.
+
+    if len(repos)<1:
+        repos = get_search_repos(search_repo, "")
+
+    #print("Total number of searchrepos attempting: ", len(repos))
+    
     for repo in repos:
         """
         repo_data = {

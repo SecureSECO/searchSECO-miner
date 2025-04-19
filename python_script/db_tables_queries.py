@@ -56,7 +56,41 @@ CREATE TABLE repository_data (
     UNIQUE (hash, project_id, version)
 );
 
+##### Stats on Undefined license #####
 
+## Count Number of Projects Undefined license
+
+WITH first_per_hash AS (
+    SELECT *
+    FROM (
+        SELECT *,
+               ROW_NUMBER() OVER (PARTITION BY hash ORDER BY _id) AS rn
+        FROM repository_data
+    ) sub
+    WHERE rn = 1
+)
+SELECT COUNT(*) AS unique_count
+FROM (
+    SELECT DISTINCT project_id, version
+    FROM first_per_hash
+    WHERE license IN ('Other', '-', 'other', '')
+) AS filtered_unique;
+
+
+## Count Number of Hit for the Projects with Undefined license
+
+ WITH first_per_hash AS (
+    SELECT *
+    FROM (
+        SELECT *,
+               ROW_NUMBER() OVER (PARTITION BY hash ORDER BY _id) AS rn
+        FROM repository_data
+    ) sub
+    WHERE rn = 1
+)
+SELECT COUNT(*) AS total_first_per_hash
+FROM first_per_hash;
+ total_first_per_hash 
 
 ######## Support queries #######
 
