@@ -8,13 +8,16 @@ conda activate rnd
 TEMP_DIR="../.tmp"
 elapsed_time=0  # Tracks total runtime in seconds
 
+timeout_sec=900
+timeout_min=$((timeout_sec / 60))
+
 while true; do
-    echo "Starting auto_miner.py with 10-minute timeout..."
+    echo "Starting auto_miner.py with $timeout_min-minute timeout..."
 
     start_time=$(date +%s)
 
-    # Run the script with a 10-minute timeout (600 seconds)
-    timeout 600 python ../auto_miner.py N 1
+    # Run the script with a timeout
+    timeout "${timeout_sec}" python ../auto_miner.py Y 1
     exit_code=$?
 
     end_time=$(date +%s)
@@ -30,7 +33,7 @@ while true; do
     fi
 
     if [ $exit_code -eq 124 ]; then
-        echo "Process timed out after 10 minutes and was terminated."
+        echo "Process timed out after $timeout_min minutes and was terminated."
     else
         echo "Process completed within time limit."
     fi

@@ -6,18 +6,20 @@ import requests
 import time
 import sys
 import pandas as pd
+import logging
+from logging.handlers import RotatingFileHandler
+import traceback
 from python_script.licenses import compatibility_matrix, license_mapping, LICENSE_LIST
 from python_script.db_operations import update_searchrepos, get_search_repos, insert_into_rp_data, update_process_time
 from dotenv import load_dotenv
 
 load_dotenv("./src/config/.env")
 
-
-def get_function_code_from_github(url, retry_count=3):
+def get_function_code_from_github(url, retry_count=2):
     """Extract function code from GitHub URL with retries and better error handling"""
     
     if not url:
-        return None
+        return "Not a valid url"
         
     for attempt in range(retry_count):
         try:
@@ -33,7 +35,7 @@ def get_function_code_from_github(url, retry_count=3):
                     line_parts = url.split('#L')
                     if len(line_parts) < 2:
                         print(f"Warning: No line number found in URL {url}")
-                        return None
+                        return "No line number found in URL"
                     
                     # Handle line range if present (e.g., #L20-L30)
                     line_range = line_parts[-1].split('-')
@@ -72,7 +74,7 @@ def get_function_code_from_github(url, retry_count=3):
                     
                 except IndexError:
                     print(f"Warning: Line number {start_line} out of range for {url}")
-                    return None
+                    return "Line number {start_line} out of range "
             else:
                 print(f"HTTP {response.status_code} error for {url}")
                 
@@ -84,9 +86,9 @@ def get_function_code_from_github(url, retry_count=3):
             if attempt < retry_count - 1:
                 time.sleep(2) 
                 
-    return None
+    return "Error fetching code"
 
-def parse_matches(output, repo_url, fun_code):
+def parse_matches(output, repo_url):
     """Parse the output to extract matched functions and their repositories"""
     
     print("\nParsing matches from SearchSECO output...")
@@ -117,8 +119,7 @@ def parse_matches(output, repo_url, fun_code):
             if current_match and current_hash:
                 match = re.search(r'\* Method (.*?) in file (.*?), line (\d+)', line)
                 if match:
-                    #print("match.group", match.group(1))
-            
+                    
                     variant = {
                         'method_name': match.group(1),
                         'method_file': match.group(2),
@@ -143,10 +144,8 @@ def parse_matches(output, repo_url, fun_code):
                 
                 match = re.search(r'\* Method (.*?) in file (.*?), line (\d+)', line)
                 if match:
-                    #print("method_file: ", match.group(1))
                     file_path=match.group(2).split('./')[1]
                     line_number= match.group(3)
-                    #print("method_file : ")
                     url=f"{repo_url}/blob/main/{file_path}#L{line_number}"
 
                     current_match['method_name'] = match.group(1)
@@ -173,19 +172,6 @@ def parse_matches(output, repo_url, fun_code):
     if not matches:
         return []
 
-    # Get function code for each match and its variants if parameter is not 'N'
-    if fun_code:
-        for i, match in enumerate(matches, 1):
-            #print(f"\nProcessing match {i}/{len(matches)}")
-            if match['found_in']:
-                #print(f"Fetching original function from {match['method_file']}")
-                match['function_code'] = get_function_code_from_github(match['found_in'][0])
-            
-            for j, variant in enumerate(match['variants'], 1):
-                if variant['url']:
-                    #print(f"Fetching variant {j}/{len(match['variants'])} from {variant['method_file']}")
-                    variant['function_code'] = get_function_code_from_github(variant['url'])
-    
     return matches
 
 
@@ -257,48 +243,35 @@ def get_github_repo_info(repo_url):
     return license_info, release_info, timestamp
 
 
-
-def save_to_csv(df, incompatibility_count, repo_url, input_project_id, save_dir):
+def save_to_csv(df, incompatibility_count, actual_violation, repo_url, input_project_id, save_dir):
     """Save matches to CSV file with function code and all repositories."""
     
-    #print("\nSaving results to CSV...")
-    #timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"{repo_url.split('.com/')[1].replace('/','_')}_matches_{input_project_id}_{incompatibility_count}.csv"
+    filename = f"{repo_url.split('.com/')[1].replace('/','_')}_matches_{input_project_id}_{incompatibility_count}_{actual_violation}.csv"
     
     # Ensure the save directory exists
     os.makedirs(save_dir, exist_ok=True)
     
-    # Full path for the CSV file
     filepath = os.path.join(save_dir, filename)
     
-    #df.to_csv(filepath, index=False)
     df.drop(columns=['_id'], errors='ignore').to_csv(filepath, index=False)
 
     print(f"Results saved to {filepath}")
+
 
 def create_dataFrame(matches, repo_url):
 
     try:
 
-        # Initialize an empty list to store data
         data = []
         input_project_id = None
         # Iterate over matches and process data
         for i, match in enumerate(matches, 1):
             try:
-                #print("match method_name: ",  match['method_name'])
+
                 method_name = match['method_name'].split(',')[0]
                 project_id = match['method_name'].split(',')[1].split(':')[1].strip()
                 project_version = match['method_name'].split(',')[2].split(':')[1].strip()
                 project_license = match['method_name'].split(',')[3].split(':')[1].strip()
-                
-                """
-                project_id = match['method_name'].split(',')[1].split(' ')[3]
-                project_version = None
-                project_license = None
-                project_license, release_info, project_version = get_github_repo_info(repo_url)
-                """
-                #method_name = match['method_name'].split(',')[0]
 
                 input_project_id = project_id
                 input_project_version = project_version
@@ -311,7 +284,7 @@ def create_dataFrame(matches, repo_url):
                     project_license,
                     method_name,
                     f"{match['method_file']}:{match['method_line']}",
-                    match['function_code'] or "Code not available",
+                    match['function_code'] or "Didn't pull code",
                     '; '.join(match['found_in']),
                     "Yes"
                 ])
@@ -337,7 +310,7 @@ def create_dataFrame(matches, repo_url):
                         project_license,
                         method_name,
                         f"{variant['method_file']}:{variant['method_line']}",
-                        variant['function_code'] or "Code not available",
+                        variant['function_code'] or "Didn't pull code",
                         variant['url'],
                         "No"
                     ])
@@ -347,7 +320,6 @@ def create_dataFrame(matches, repo_url):
             except Exception as e:
                 print(f"Error processing match {i}: {e}")
 
-        # Create a DataFrame
         columns = ['Hash', 'Project ID', 'Version', 'License', 'Method Name', 'File Location', 
                 'Function Code', 'Repository URL', 'Query Project']
         df = pd.DataFrame(data, columns=columns)
@@ -380,14 +352,14 @@ def run_searchseco_check(repo_url):
         return None
 
 def normalize_license(license_name: str) -> str:
-    return license_mapping.get(license_name, license_name)  # Default to original if not found
+    return license_mapping.get(license_name, license_name)
 
 def can_reuse_code(source_license: str, target_license: str) -> bool:
     
     return compatibility_matrix[target_license][source_license]
 
 def check_license_compatibility(df):
-    #df = pd.read_csv(file)
+    
     df["Violation"] = ""
     df["Source_project"] = ""
     df["Source_project_version"] = ""
@@ -400,41 +372,56 @@ def check_license_compatibility(df):
         base_license = normalize_license(group.iloc[0]["License"])  # Normalize first row's license
         source_project_id = group.iloc[0]["Project ID"]
         source_project_version = group.iloc[0]["Version"]
-        
-        for idx, row in group.iloc[1:].iterrows(): # Compare the first row's license with rest of the others
-            license_type = normalize_license(row["License"])
-            if license_type not in LICENSE_LIST or base_license not in LICENSE_LIST:
-                df.at[idx, "Violation"] = "Undetermined"
-                df.at[idx, "Source_project"] = source_project_id
-                df.at[idx, "Source_project_version"] = source_project_version
-            elif not can_reuse_code(base_license, license_type):
-                df.at[idx, "Violation"] = f"{license_type} incompatible with {base_license}"
-                df.at[idx, "Source_project"] = source_project_id
-                df.at[idx, "Source_project_version"] = source_project_version
-                if df.at[idx, "Query Project"] == "Yes":
+        group_idx = group.index[0]
+        df.at[group_idx, "Query Project"] = "0"
+
+        for idx, row in group.iloc[1:].iterrows():
+            if df.at[idx, "Query Project"] == "Yes":
+                license_type = normalize_license(row["License"])
+                if license_type not in LICENSE_LIST or base_license not in LICENSE_LIST:
+                    df.at[idx, "Violation"] = "Undetermined"
+                    df.at[idx, "Source_project"] = source_project_id
+                    df.at[idx, "Source_project_version"] = source_project_version
+                elif not can_reuse_code(base_license, license_type):
+                    df.at[idx, "Violation"] = f"{license_type} incompatible with {base_license}"
+                    df.at[idx, "Source_project"] = source_project_id
+                    df.at[idx, "Source_project_version"] = source_project_version
+                    df.at[group_idx, "Query Project"] = "1"
+                    
                     incompatibility_count += 1
-                #print(f"Incompatible licenses detected for function {function_hash}: {base_license} vs {license_type}")
-                
+                    #print(f"Incompatible licenses detected for function {function_hash}: {base_license} vs {license_type}")
+            
+    df = df[df['Query Project'].isin(['0', '1','Yes'])]
+
     print("Total number of incompatibility: ", incompatibility_count)
+
     return df, incompatibility_count
- 
+
+def get_function_code(row):
+   
+    if row['Query Project'] == "1" or "incompatible" in str(row['Violation']).lower():
+        return get_function_code_from_github(row['Repository URL'])
+    else:
+        return None
 
 def main():
     """
         Four ways of checking your repository(ies)
-            - A single repo: python auto_miner.py N https://github.com/microsoft/simple-filter-mixer
+            - A single repo: python auto_miner.py N https://github.com/Samsung/mTower
             - X (=20) number of repo from database: python auto_miner.py N 20
             - With a default value of X (=100): python auto_miner.py N      # default is 100
             - With the shell script: nohup ./run_python_miner.sh | tail -n 2000 > logfile.log 2>&1 &
-        - Parameter N/Y determine the a function code will be downloaded or not
+        - Parameter N/Y determine whether a method code will be downloaded or not
         # https://github.com/google/ios-webkit-debug-proxy
+        # https://github.com/Samsung/ColorPatternTracker
+        # https://github.com/microsoft/Windows-universal-samples
     """
     
     fun_code = False if sys.argv[1] == "N" else True
     search_repo = sys.argv[2] if len(sys.argv) > 2 else '100'
     #print(search_repo)
 
-    company_name = "Samsung"
+    company_name = "Microsoft"
     
     repos = get_search_repos(search_repo, company_name) # provide organization name: Google, Microsoft etc.
 
@@ -442,7 +429,7 @@ def main():
         repos = get_search_repos(search_repo, "")
 
     #print("Total number of searchrepos attempting: ", len(repos))
-    
+
     for repo in repos:
         """
         repo_data = {
@@ -457,8 +444,8 @@ def main():
         """
     
         if repo[5] == True:
-            repo_id=repo[0]
-            repo_url=repo[1]
+            repo_id = repo[0]
+            repo_url = repo[1]
             
             update_process_time("processing_start_time", repo_id, repo_url)
         
@@ -470,37 +457,80 @@ def main():
                 continue
             
             print("Parsing matches...")
-            matches = parse_matches(output, repo_url, fun_code)
+            matches = parse_matches(output, repo_url)
             
             if not matches:
                 print("No matches found")
-                update_searchrepos("", "", repo_id, -1)
+                # input_project_id, input_project_version, repo_id, incompatibility_count, actual_violation
+                update_searchrepos("", "", repo_id, -1, 0)
                 continue
             
             print("Fetching function code and creating a dataframe...")
             df, input_project_id, input_project_version = create_dataFrame(matches, repo_url)
-            #parse_csv(filename)
+          
             print("Checking license compatibility...")
             
             df, incompatibility_count = check_license_compatibility(df)
+            
+            actual_violation = 0
+            
+            if fun_code:
+                df["Function Code"] = df.apply(get_function_code, axis=1)
+                
+                count_query_proj = df[~df["Function Code"].str.contains("Error fetching code", na=False) &  
+                (df["Query Project"] == "Yes") & 
+                df["Violation"].str.contains("incompatible", case=False, na=False)
+                ].shape[0]
+
+                count_source_proj = df[~df["Function Code"].str.contains("Error fetching code", na=False) &  
+                                (df["Query Project"] == "1") 
+                                ].shape[0]
+                
+                actual_violation = min(count_query_proj, count_source_proj)
+
+                print("Actual violations:", actual_violation)
 
             print("Saving results to database...")
             
             update_process_time("processing_end_time", repo_id, repo_url)
             
-            df = insert_into_rp_data(df)
+            df = insert_into_rp_data(df, repo_id)
 
-            
             #### Visual Inspection ####
             
             #print("Saving results to CSV...")
-            #save_to_csv(df, incompatibility_count, repo_url, input_project_id, save_dir="results")
+            save_to_csv(df, incompatibility_count, actual_violation, repo_url, input_project_id, save_dir="results")
             #time.sleep(0.01)
             
             #### End Visual Inspection ####
             
             print("Updating the query table and exiting..")
-            update_searchrepos(input_project_id, input_project_version, repo_id, incompatibility_count)
+            update_searchrepos(input_project_id, input_project_version, repo_id, incompatibility_count, actual_violation)
+
 
 if __name__ == "__main__":
-    main()
+    # Setup error logging
+    log_dir = './logging'
+    os.makedirs(log_dir, exist_ok=True)
+    
+    handler = RotatingFileHandler(
+        os.path.join(log_dir, 'error_log.txt'),
+        maxBytes=1_000_000,  # 1 MB
+        backupCount=10       # Keep last 10 logs
+    )
+
+    logging.basicConfig(
+        filename=os.path.join(log_dir, 'error_log.txt'),
+        level=logging.ERROR,
+        format='%(asctime)s [%(levelname)s] %(message)s',
+    )
+    try:
+        main()
+    except Exception as e:
+        # Log to error_log.txt
+        logging.error("Unhandled exception in main:\n%s", traceback.format_exc())
+
+        # Also print to stdout so your shell sees something
+        print(f"Error occurred. See error_log.txt for details: {e}")
+        sys.exit(1)
+

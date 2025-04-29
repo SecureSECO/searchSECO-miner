@@ -1,0 +1,18 @@
+2025-04-23 04:35:18,386 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../auto_miner.py", line 343, in run_searchseco_check
+    print(result.stdout)
+OSError: [Errno 5] Input/output error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../auto_miner.py", line 528, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../auto_miner.py", line 453, in main
+    output = run_searchseco_check(repo_url)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../auto_miner.py", line 351, in run_searchseco_check
+    print(f"Error running SearchSECO check: {e}")
+OSError: [Errno 5] Input/output error
+

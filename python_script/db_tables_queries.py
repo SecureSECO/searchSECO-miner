@@ -32,6 +32,7 @@ CREATE TABLE searchrepos (
     license TEXT,
     language TEXT,
     license_conflicts INT,
+    real_violation INT,
     has_picked BOOLEAN DEFAULT FALSE,
     is_active BOOLEAN DEFAULT TRUE,
     processing_start_time TIMESTAMP,
@@ -53,7 +54,13 @@ CREATE TABLE repository_data (
     violation TEXT, 
     source_project TEXT, 
     source_project_version TEXT,
-    UNIQUE (hash, project_id, version)
+    relational_id VARCHAR(50),
+    
+    -- Correct UNIQUE constraint to match ON CONFLICT
+    UNIQUE (hash, project_id, version),
+    
+    -- Keep the foreign key constraint
+    FOREIGN KEY (relational_id) REFERENCES searchrepos(_id) ON DELETE CASCADE
 );
 
 ##### Stats on Undefined license #####
@@ -136,6 +143,8 @@ sudo -u postgres psql
 
 
 Update:
+- add a column in searchrepos for real violation
+- add a column in repository_data 
 - update searchrepos with the number of conflicts
 - update searchrepos with the processing start and end time
 - number of match found/not -1/conflict
