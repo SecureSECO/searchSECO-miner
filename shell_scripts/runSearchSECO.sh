@@ -1,7 +1,7 @@
 #!/bin/bash
 
 trap "echo '$(date '+%Y-%m-%d %H:%M:%S') - Script interrupted. Exiting...'; exit 1" SIGINT SIGTERM
-TIMEOUT=1800           # 20 minutes
+TIMEOUT=1800           # Timeout for a process
 SLEEP_DIVISOR=10
 MAX_ELAPSED=10800      # 3 hours
 COOLDOWN=300           # 5 minutes
@@ -25,7 +25,7 @@ while true; do
     {
     echo "--------------------------------------------------"
 
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - Starting SearchSECOminer with 20-minute timeout..."
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Starting SearchSECOminer with $TIMEOUT-minute timeout..."
 
     start_time=$(date +%s)
 
