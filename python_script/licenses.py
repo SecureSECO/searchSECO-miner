@@ -4,7 +4,7 @@ LICENSE_LIST = [
     "MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "BSL-1.0", "MPL-2.0", "GPL-2.0-only",
     "GPL-2.0-or-later", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only", "AGPL-3.0-only", "EPL-1.0",
     "EPL-2.0", "CDDL-1.0", "AFL-3.0", "OSL-3.0", "CC0-1.0", "WTFPL", "Artistic-2.0", "Unlicense",
-    "Zlib", "ISC"
+    "Zlib", "ISC", "Proprietary"
 ]
 
 # Mapping different representations to a standard license name
@@ -45,10 +45,17 @@ license_mapping = {
     "Unlicense (Public Domain Dedication)": "Unlicense",
     "ISC": "ISC",
     "Internet Systems Consortium License": "ISC",
-    "-": "Undefined",
-    "Other": "Undefined",
-    "other": "Undefined",
-    "": "Undefined",
+    "-": "Proprietary",
+    "Other": "Proprietary",
+    "other": "Proprietary",
+    "": "Proprietary",
+    None: "Proprietary",  # If license info is missing
+    "No license": "Proprietary",
+    "Not licensed": "Proprietary",
+    "undefined": "Proprietary",
+    "Undefined": "Proprietary",
+    "Closed": "Proprietary",
+    "Closed Source": "Proprietary"
 }
 
 
@@ -60,6 +67,10 @@ COMPATIBILITY_RULES = {
 
 def check_compatibility(license_a: str, license_b: str) -> bool:
     """Determine if license_a is compatible with license_b."""
+
+    if "Proprietary" in {license_a, license_b}:
+        return False  # Proprietary is incompatible with everything
+
     if license_a == license_b:
         return True
 

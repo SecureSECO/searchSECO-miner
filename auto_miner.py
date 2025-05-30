@@ -15,6 +15,8 @@ from dotenv import load_dotenv
 
 load_dotenv("./src/config/.env")
 
+
+'''
 def get_function_code_from_github(url, retry_count=2):
     """Extract function code from GitHub URL with retries and better error handling"""
     
@@ -86,6 +88,116 @@ def get_function_code_from_github(url, retry_count=2):
             if attempt < retry_count - 1:
                 time.sleep(2) 
                 
+    return "Error fetching code"
+'''
+
+def get_default_branch(owner, repo):
+    """Fetch the default branch of a GitHub repository using GitHub API with authentication"""
+    token = os.getenv("GITHUB_TOKEN")
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json"
+    }
+    api_url = f"https://api.github.com/repos/{owner}/{repo}"
+    response = requests.get(api_url, headers=headers, timeout=10)
+    if response.status_code == 200:
+        return response.json().get('default_branch')
+    else:
+        raise Exception(f"Failed to fetch repo info: {response.status_code} - {response.text}")
+
+
+def get_function_code_from_github(url, retry_count=2):
+    """Extract function code from GitHub URL with retries and better error handling"""
+    token = os.getenv("GITHUB_TOKEN")
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json"
+    }
+
+    if not url:
+        return "Not a valid url"
+
+    for attempt in range(retry_count):
+        try:
+            # Extract owner, repo, and file path
+            parts = url.strip().split('/')
+            if len(parts) < 7 or 'blob' not in parts:
+                return "Invalid GitHub blob URL"
+
+            owner = parts[3]
+            repo = parts[4]
+            commit_or_branch = parts[6]
+            file_path = '/'.join(parts[7:]).split('#')[0]
+
+            # GitHub API URL to get file contents
+            api_contents_url = f"https://api.github.com/repos/{owner}/{repo}/contents/{file_path}?ref={commit_or_branch}"
+
+            response = requests.get(api_contents_url, headers=headers, timeout=10)
+
+            print("response: ", response)
+
+            #requests.get(license_url, headers=headers)
+
+            if response.status_code == 200:
+                import base64
+                file_content = response.json().get('content', '')
+                if response.json().get('encoding') == 'base64':
+                    decoded = base64.b64decode(file_content).decode('utf-8')
+                    lines = decoded.split('\n')
+                else:
+                    return "Unsupported file encoding"
+            else:
+                print(f"GitHub API returned {response.status_code} for {url}")
+                if attempt < retry_count - 1:
+                    time.sleep(2)
+                continue
+
+            # Extract line number
+            line_parts = url.split('#L')
+            if len(line_parts) < 2:
+                print(f"Warning: No line number found in URL {url}")
+                return "No line number found in URL"
+
+            line_range = line_parts[-1].split('-')
+            start_line = int(line_range[0])
+
+            # Extract function starting from the specified line
+            function_code = []
+            brace_count = 0
+            in_function = False
+
+            for i, line in enumerate(lines[start_line - 1:], start_line):
+                if not in_function:
+                    function_code.append(line)
+                    if '{' in line:
+                        in_function = True
+                        brace_count = line.count('{') - line.count('}')
+                        if brace_count == 0 and line.strip().endswith(';'):
+                            break
+                else:
+                    function_code.append(line)
+                    brace_count += line.count('{') - line.count('}')
+                    if brace_count == 0:
+                        next_lines = [l for l in lines[i:i + 3] if l.strip()]
+                        if not next_lines or not any(l.strip().startswith(('else', 'catch', 'finally')) for l in next_lines):
+                            break
+
+                if len(function_code) > 1000:
+                    print(f"Warning: Function too long, truncating at 1000 lines for {url}")
+                    break
+
+            return '\n'.join(function_code)
+
+        except IndexError:
+            print(f"Warning: Line number out of range for {url}")
+            return f"Line number out of range"
+        except Exception as e:
+            print(f"Error fetching code from {url}: {e}")
+            if attempt < retry_count - 1:
+                time.sleep(2)
+
     return "Error fetching code"
 
 def parse_matches(output, repo_url):
@@ -407,7 +519,7 @@ def get_function_code(row):
 def main():
     """
         Four ways of checking your repository(ies)
-            - A single repo: python auto_miner.py N https://github.com/Samsung/mTower
+            - A single repo: python auto_miner.py Y https://github.com/Samsung/mTower
             - X (=20) number of repo from database: python auto_miner.py N 20
             - With a default value of X (=100): python auto_miner.py N      # default is 100
             - With the shell script: nohup ./run_python_miner.sh | tail -n 2000 > logfile.log 2>&1 &
