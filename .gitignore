@@ -177,8 +177,5 @@ python_script/frequency_check.py
 python_script/.env
 shell_scripts/results
 shell_scripts/logging
-shell_scripts/monitor_apps.sh
-shell_scripts/new_monitor_apps.sh
-shell_scripts/searchSECOrunner.sh
 shell_scripts/searchsecominer.log
 violation_examples

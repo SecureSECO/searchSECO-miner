@@ -1,7 +1,7 @@
 #!/bin/bash
 
 trap "echo '$(date '+%Y-%m-%d %H:%M:%S') - Script interrupted. Exiting...'; exit 1" SIGINT SIGTERM
-TIMEOUT=1800           # Timeout for a process
+TIMEOUT=9000           # Timeout for a process
 SLEEP_DIVISOR=10
 MAX_ELAPSED=10800      # 3 hours
 COOLDOWN=300           # 5 minutes
