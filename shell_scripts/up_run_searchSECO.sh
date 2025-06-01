@@ -1,7 +1,8 @@
 #!/bin/bash
 
 trap "echo '$(date '+%Y-%m-%d %H:%M:%S') - Script interrupted. Exiting...'; exit 1" SIGINT SIGTERM
-TIMEOUT=9000
+
+TIMEOUT=600
 SLEEP_DIVISOR=10
 MAX_ELAPSED=10800
 COOLDOWN=900
@@ -24,6 +25,7 @@ while true; do
     echo "$(date '+%Y-%m-%d %H:%M:%S') - Starting SearchSECOminer..." | tee -a "$LOGFILE"
 
     start_time=$(date +%s)
+    exit_code=""
 
     # Start the process in background
     (
@@ -31,9 +33,16 @@ while true; do
     ) >> "$LOGFILE" 2>&1 &
     pid=$!
 
+    # Check that logfile exists and is readable
+    if ! last_mod=$(stat -c %Y "$LOGFILE" 2>/dev/null); then
+        echo "Logfile $LOGFILE not found. Exiting..."
+        kill $pid 2>/dev/null
+        wait $pid || true
+        exit 1
+    fi
+
     # Monitor the log file for changes
     log_timeout=1200  # 20 minutes
-    last_mod=$(stat -c %Y "$LOGFILE")
 
     while kill -0 $pid 2>/dev/null; do
         sleep 100
@@ -47,14 +56,14 @@ while true; do
         if (( current_time - last_mod > log_timeout )); then
             echo "$(date '+%Y-%m-%d %H:%M:%S') - No log update in 20 minutes. Terminating process..." | tee -a "$LOGFILE"
             kill $pid 2>/dev/null
-            wait $pid
+            wait $pid || true
             exit_code=124
             break
         fi
     done
 
     if [[ -z "$exit_code" ]]; then
-        wait $pid
+        wait $pid || true
         exit_code=$?
     fi
 
@@ -64,8 +73,8 @@ while true; do
 
     echo "Process took around $duration seconds to complete." | tee -a "$LOGFILE"
 
-    sleep_time=$((duration / SLEEP_DIVISOR))
-    (( sleep_time < 1 )) && sleep_time=1
+    # sleep_time grows exponentially with duration (bounded between 30–300s)
+    sleep_time=$(awk -v d="$duration" 'BEGIN { s = int(10 * (1.05 ^ (d / 60))); if (s < 30) s=30; if (s > 300) s=300; print s }')
 
     if [ $exit_code -eq 124 ]; then
         echo "Process timed out or was killed due to inactivity." | tee -a "$LOGFILE"
@@ -77,7 +86,7 @@ while true; do
     sleep $sleep_time
 
     if (( elapsed_time >= MAX_ELAPSED )); then
-        echo "3 hours reached. Sleeping 5 minutes and cleaning temp directory..." | tee -a "$LOGFILE"
+        echo "3 hours reached. Sleeping $COOLDOWN seconds and cleaning temp directory..." | tee -a "$LOGFILE"
         sleep $COOLDOWN
         if [[ -d "$TEMP_DIR" && "$TEMP_DIR" != "/" && -n "$TEMP_DIR" ]]; then
             find "$TEMP_DIR" -mindepth 1 -delete || echo "Some files couldn't be deleted." | tee -a "$LOGFILE"
