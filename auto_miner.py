@@ -523,7 +523,7 @@ def main():
             - X (=20) number of repo from database: python auto_miner.py N 20
             - With a default value of X (=100): python auto_miner.py N      # default is 100
             - With the shell script: nohup ./run_python_miner.sh | tail -n 2000 > logfile.log 2>&1 &
-        - Parameter N/Y determine whether a method code will be downloaded or not
+            - Parameter N/Y determine whether a method code will be downloaded or not
         # https://github.com/google/ios-webkit-debug-proxy
         # https://github.com/Samsung/ColorPatternTracker
         # https://github.com/microsoft/Windows-universal-samples
