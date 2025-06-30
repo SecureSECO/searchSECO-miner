@@ -458,10 +458,10 @@ def main():
     search_repo = sys.argv[2] if len(sys.argv) > 2 else '100'
     #print(search_repo)
 
-    company_name = "Microsoft"
+    company_name = "Microsoft"  # provide organization name: Google, Microsoft etc.
     
-    repos = get_search_repos(search_repo, company_name) # provide organization name: Google, Microsoft etc.
-
+    repos = get_search_repos(search_repo, company_name)
+    
     if len(repos)<1:
         repos = get_search_repos(search_repo, "")
 
