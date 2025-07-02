@@ -359,8 +359,19 @@ def create_dataFrame(matches, repo_url):
 
         columns = ['Hash', 'Project ID', 'Version', 'License', 'Method Name', 'File Location', 
                 'Function Code', 'Repository URL', 'Query Project']
-        df = pd.DataFrame(data, columns=columns)
         
+        df = pd.DataFrame(data, columns=columns)
+        df = df.sort_values(by=["Hash", "Version"])
+        df = (
+            df.groupby("Hash", group_keys=False)
+            .apply(lambda g: pd.concat([
+                g.head(1), 
+                g[g["Query Project"] == "Yes"]
+            ]).drop_duplicates())
+            .reset_index(drop=True)
+        )
+
+        df.to_csv("./results/data/"+str(project_version)+".csv")
     except Exception as e:
         print(f"Error: {e}")
 
@@ -419,16 +430,27 @@ def check_license_compatibility(df):
                     df.at[idx, "Violation"] = "Undetermined"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
+                    df.at[group_idx, "Query Project"] = "3"  
+                elif base_license==license_type:
+                    df.at[idx, "Violation"] = f"{license_type} same license {base_license}"
+                    df.at[idx, "Source_project"] = source_project_id
+                    df.at[idx, "Source_project_version"] = source_project_version
+                    df.at[group_idx, "Query Project"] = "0"
+                elif can_reuse_code(base_license, license_type):
+                    df.at[idx, "Violation"] = f"{license_type} compatible with {base_license}"
+                    df.at[idx, "Source_project"] = source_project_id
+                    df.at[idx, "Source_project_version"] = source_project_version
+                    df.at[group_idx, "Query Project"] = "1"
                 elif not can_reuse_code(base_license, license_type):
                     df.at[idx, "Violation"] = f"{license_type} incompatible with {base_license}"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
-                    df.at[group_idx, "Query Project"] = "1"
+                    df.at[group_idx, "Query Project"] = "2"
                     
                     incompatibility_count += 1
                     #print(f"Incompatible licenses detected for function {function_hash}: {base_license} vs {license_type}")
             
-    df = df[df['Query Project'].isin(['0', '1','Yes'])]
+    #df = df[df['Query Project'].isin(['0', '1','Yes'])]
 
     print("Total number of incompatibility: ", incompatibility_count)
 
@@ -502,10 +524,16 @@ def main():
                 update_searchrepos("", "", repo_id, -1, 0)
                 continue
             
-            print("Fetching function code and creating a dataframe...")
+            print("Creating a dataframe...")
             df, input_project_id, input_project_version = create_dataFrame(matches, repo_url)
-          
+
+            
             print("Checking license compatibility...")
+
+            # 0, Yes no violation & same license
+            # 1, Yes no violation & different license
+            # 2, Yes conflicting or violated license
+            # 3, Undetermined
             
             df, incompatibility_count = check_license_compatibility(df)
             
@@ -543,6 +571,9 @@ def main():
             
             print("Updating the query table and exiting..")
             update_searchrepos(input_project_id, input_project_version, repo_id, incompatibility_count, actual_violation)
+            
+            
+            
 
 
 if __name__ == "__main__":

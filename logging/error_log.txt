@@ -1,0 +1,17 @@
+2025-06-30 07:27:25,856 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 576, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 518, in main
+    df, incompatibility_count = check_license_compatibility(df)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 412, in check_license_compatibility
+    df = df.sort_values(by=["Hash", "Version"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 7172, in sort_values
+    keys = [self._get_label_or_level_values(x, axis=axis) for x in by]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 1911, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'Hash'
+
