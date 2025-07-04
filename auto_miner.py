@@ -411,7 +411,7 @@ def check_license_compatibility(df):
     df["Violation"] = ""
     df["Source_project"] = ""
     df["Source_project_version"] = ""
-    incompatibility_count = 0 
+    stat_count = [0,0,0,0,0]
     # Sorting by Version (timestamp) within each hash group
     df = df.sort_values(by=["Hash", "Version"])
     grouped = df.groupby("Hash")
@@ -430,31 +430,41 @@ def check_license_compatibility(df):
                     df.at[idx, "Violation"] = "Undetermined"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
-                    df.at[group_idx, "Query Project"] = "3"  
+                    df.at[group_idx, "Query Project"] = "4"
+                    stat_count[4] = stat_count[4]+1
+                elif license_type=="Proprietary" or base_license=="Proprietary":
+                    df.at[idx, "Violation"] = f"{license_type} has high risk of conflicting with {base_license}"
+                    df.at[idx, "Source_project"] = source_project_id
+                    df.at[idx, "Source_project_version"] = source_project_version
+                    df.at[group_idx, "Query Project"] = "3"
+                    stat_count[3] = stat_count[3]+1
                 elif base_license==license_type:
                     df.at[idx, "Violation"] = f"{license_type} same license {base_license}"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "0"
+                    stat_count[0] = stat_count[0]+1
                 elif can_reuse_code(base_license, license_type):
                     df.at[idx, "Violation"] = f"{license_type} compatible with {base_license}"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "1"
+                    stat_count[1] = stat_count[1]+1
                 elif not can_reuse_code(base_license, license_type):
                     df.at[idx, "Violation"] = f"{license_type} incompatible with {base_license}"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "2"
+                    stat_count[2] = stat_count[2]+1
                     
-                    incompatibility_count += 1
+                    #incompatibility_count += 1
                     #print(f"Incompatible licenses detected for function {function_hash}: {base_license} vs {license_type}")
             
     #df = df[df['Query Project'].isin(['0', '1','Yes'])]
 
-    print("Total number of incompatibility: ", incompatibility_count)
+    print("Total number of incompatibility: ", stat_count)
 
-    return df, incompatibility_count
+    return df, stat_count
 
 def get_function_code(row):
    
@@ -530,15 +540,15 @@ def main():
             
             print("Checking license compatibility...")
 
-            # 0, Yes no violation & same license
-            # 1, Yes no violation & different license
-            # 2, Yes conflicting or violated license
-            # 3, Undetermined
+            # 0, no violation & same license
+            # 1, no violation & different license
+            # 2, conflicting or violated license
+            # 3, has high risk of conflicting
+            # 4, undetermined
             
-            df, incompatibility_count = check_license_compatibility(df)
+            df, stat_count = check_license_compatibility(df)
             
-            actual_violation = 0
-            
+            """
             if fun_code:
                 df["Function Code"] = df.apply(get_function_code, axis=1)
                 
@@ -554,7 +564,8 @@ def main():
                 actual_violation = min(count_query_proj, count_source_proj)
 
                 print("Actual violations:", actual_violation)
-
+            """
+            
             print("Saving results to database...")
             
             update_process_time("processing_end_time", repo_id, repo_url)
@@ -564,13 +575,13 @@ def main():
             #### Visual Inspection ####
             
             #print("Saving results to CSV...")
-            save_to_csv(df, incompatibility_count, actual_violation, repo_url, input_project_id, save_dir="results")
+            save_to_csv(df, stat_count[2], stat_count[2], repo_url, input_project_id, save_dir="results")
             #time.sleep(0.01)
             
             #### End Visual Inspection ####
             
-            print("Updating the query table and exiting..")
-            update_searchrepos(input_project_id, input_project_version, repo_id, incompatibility_count, actual_violation)
+            print("Updating the query table and exiting..")  #same_license, dif_license_comply, actual_violation, undetermined
+            update_searchrepos(input_project_id, input_project_version, repo_id, stat_count[0], stat_count[1], stat_count[2], stat_count[3])
             
             
             

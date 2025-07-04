@@ -15,3 +15,31 @@ Traceback (most recent call last):
     raise KeyError(key)
 KeyError: 'Hash'
 
+2025-07-02 23:48:55,079 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 600, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 489, in main
+    repos = get_search_repos(search_repo, company_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/db_operations.py", line 82, in get_search_repos
+    cur.execute("""INSERT INTO searchrepos (_id, organization, project_id, repository_url, license, language, license_conflicts, is_active
+psycopg2.errors.UndefinedColumn: column "license_conflicts" of relation "searchrepos" does not exist
+LINE 1: ...n, project_id, repository_url, license, language, license_co...
+                                                             ^
+
+
+2025-07-02 23:58:13,528 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 600, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 489, in main
+    repos = get_search_repos(search_repo, company_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/db_operations.py", line 82, in get_search_repos
+    cur.execute("""INSERT INTO searchrepos (_id, organization, project_id, repository_url, license, language, license_conflicts, is_active
+psycopg2.errors.UndefinedColumn: column "license_conflicts" of relation "searchrepos" does not exist
+LINE 1: ...n, project_id, repository_url, license, language, license_co...
+                                                             ^
+
+
