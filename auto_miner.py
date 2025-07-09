@@ -15,116 +15,6 @@ from dotenv import load_dotenv
 
 load_dotenv("./src/config/.env")
 
-
-def get_default_branch(owner, repo):
-    """Fetch the default branch of a GitHub repository using GitHub API with authentication"""
-    token = os.getenv("GITHUB_TOKEN")
-
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/vnd.github+json"
-    }
-    api_url = f"https://api.github.com/repos/{owner}/{repo}"
-    response = requests.get(api_url, headers=headers, timeout=10)
-    if response.status_code == 200:
-        return response.json().get('default_branch')
-    else:
-        raise Exception(f"Failed to fetch repo info: {response.status_code} - {response.text}")
-
-
-def get_function_code_from_github(url, retry_count=2):
-    """Extract function code from GitHub URL with retries and better error handling"""
-    token = os.getenv("GITHUB_TOKEN")
-
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/vnd.github+json"
-    }
-
-    if not url:
-        return "Not a valid url"
-
-    for attempt in range(retry_count):
-        try:
-            # Extract owner, repo, and file path
-            parts = url.strip().split('/')
-            if len(parts) < 7 or 'blob' not in parts:
-                return "Invalid GitHub blob URL"
-
-            owner = parts[3]
-            repo = parts[4]
-            commit_or_branch = parts[6]
-            file_path = '/'.join(parts[7:]).split('#')[0]
-
-            # GitHub API URL to get file contents
-            api_contents_url = f"https://api.github.com/repos/{owner}/{repo}/contents/{file_path}?ref={commit_or_branch}"
-
-            response = requests.get(api_contents_url, headers=headers, timeout=10)
-
-            print("response: ", response)
-
-            #requests.get(license_url, headers=headers)
-
-            if response.status_code == 200:
-                import base64
-                file_content = response.json().get('content', '')
-                if response.json().get('encoding') == 'base64':
-                    decoded = base64.b64decode(file_content).decode('utf-8')
-                    lines = decoded.split('\n')
-                else:
-                    return "Unsupported file encoding"
-            else:
-                print(f"GitHub API returned {response.status_code} for {url}")
-                if attempt < retry_count - 1:
-                    time.sleep(2)
-                continue
-
-            # Extract line number
-            line_parts = url.split('#L')
-            if len(line_parts) < 2:
-                print(f"Warning: No line number found in URL {url}")
-                return "No line number found in URL"
-
-            line_range = line_parts[-1].split('-')
-            start_line = int(line_range[0])
-
-            # Extract function starting from the specified line
-            function_code = []
-            brace_count = 0
-            in_function = False
-
-            for i, line in enumerate(lines[start_line - 1:], start_line):
-                if not in_function:
-                    function_code.append(line)
-                    if '{' in line:
-                        in_function = True
-                        brace_count = line.count('{') - line.count('}')
-                        if brace_count == 0 and line.strip().endswith(';'):
-                            break
-                else:
-                    function_code.append(line)
-                    brace_count += line.count('{') - line.count('}')
-                    if brace_count == 0:
-                        next_lines = [l for l in lines[i:i + 3] if l.strip()]
-                        if not next_lines or not any(l.strip().startswith(('else', 'catch', 'finally')) for l in next_lines):
-                            break
-
-                if len(function_code) > 1000:
-                    print(f"Warning: Function too long, truncating at 1000 lines for {url}")
-                    break
-
-            return '\n'.join(function_code)
-
-        except IndexError:
-            print(f"Warning: Line number out of range for {url}")
-            return f"Line number out of range"
-        except Exception as e:
-            print(f"Error fetching code from {url}: {e}")
-            if attempt < retry_count - 1:
-                time.sleep(2)
-
-    return "Error fetching code"
-
 def parse_matches(output, repo_url):
     """Parse the output to extract matched functions and their repositories"""
     
@@ -210,74 +100,6 @@ def parse_matches(output, repo_url):
         return []
 
     return matches
-
-
-def get_github_repo_info(repo_url):
-    match = re.match(r"https://github.com/([^/]+)/([^/]+)", repo_url)
-    if not match:
-        return "Invalid GitHub URL", "Invalid GitHub URL", "Invalid GitHub URL"
-    
-    owner, repo = match.groups()
-    base_url = f"https://api.github.com/repos/{owner}/{repo}"
-    headers = {"Accept": "application/vnd.github.v3+json"}
-    
-    github_token = os.getenv("GITHUB_TOKEN")
-    if github_token:
-        headers["Authorization"] = f"token {github_token}"
-    
-    try:
-        # Get License Information
-        license_url = f"{base_url}/license"
-        license_response = requests.get(license_url, headers=headers)
-        license_info = license_response.json().get("license", {}).get("spdx_id", "Not Found")
-        
-        # Get Latest Release Version and Date
-        releases_url = f"{base_url}/releases/latest"
-        release_response = requests.get(releases_url, headers=headers)
-        if release_response.status_code == 200:
-            release_data = release_response.json()
-            release_info = release_data.get("tag_name", "No Releases Found")
-            release_date = release_data.get("published_at")
-        else:
-            release_info = "No Releases Found"
-            release_date = None
-        
-        # Determine timestamp from release or last commit
-        if release_date:
-            timestamp = int(datetime.strptime(release_date, "%Y-%m-%dT%H:%M:%SZ").timestamp() * 1000)
-        else:
-            # Fetch last commit date
-            last_commit_url = f"{base_url}/commits?per_page=1&page=1"
-            last_commit_response = requests.get(last_commit_url, headers=headers)
-            
-            if last_commit_response.status_code == 403:  # Forbidden error
-                print("⚠️ 403 Forbidden: Trying repository metadata instead...")
-                repo_metadata_response = requests.get(base_url, headers=headers)
-                
-                if repo_metadata_response.status_code == 200:
-                    repo_metadata = repo_metadata_response.json()
-                    if repo_metadata.get("archived", False):
-                        print("⚠️ Repository is archived, commit data not available.")
-                        timestamp = "Repository Archived"
-                    else:
-                        timestamp = int(datetime.strptime(repo_metadata.get("pushed_at", "1970-01-01T00:00:00Z"), "%Y-%m-%dT%H:%M:%SZ").timestamp() * 1000)
-                else:
-                    timestamp = "Metadata Fetch Failed"
-            
-            elif last_commit_response.status_code == 200:
-                last_commit_data = last_commit_response.json()
-                if last_commit_data:
-                    last_commit_date = last_commit_data[0].get("commit", {}).get("author", {}).get("date", "No Commits Found")
-                    timestamp = int(datetime.strptime(last_commit_date, "%Y-%m-%dT%H:%M:%SZ").timestamp() * 1000) if last_commit_date != "No Commits Found" else "No Commits Found"
-                else:
-                    timestamp = "No Commits Found"
-            else:
-                timestamp = f"Commit Fetch Failed ({last_commit_response.status_code})"
-    
-    except requests.exceptions.RequestException as e:
-        return "Error fetching data", "Error fetching data", f"Error: {str(e)}"
-    
-    return license_info, release_info, timestamp
 
 
 def save_to_csv(df, incompatibility_count, actual_violation, repo_url, input_project_id, save_dir):
@@ -371,7 +193,7 @@ def create_dataFrame(matches, repo_url):
             .reset_index(drop=True)
         )
 
-        df.to_csv("./results/data/"+str(project_version)+".csv")
+        #df.to_csv("./results/data/"+str(project_version)+".csv")
     except Exception as e:
         print(f"Error: {e}")
 
@@ -411,7 +233,7 @@ def check_license_compatibility(df):
     df["Violation"] = ""
     df["Source_project"] = ""
     df["Source_project_version"] = ""
-    stat_count = [0,0,0,0,0]
+    stat_count = [0,0,0,0,0,0]
     # Sorting by Version (timestamp) within each hash group
     df = df.sort_values(by=["Hash", "Version"])
     grouped = df.groupby("Hash")
@@ -421,7 +243,12 @@ def check_license_compatibility(df):
         source_project_id = group.iloc[0]["Project ID"]
         source_project_version = group.iloc[0]["Version"]
         group_idx = group.index[0]
-        df.at[group_idx, "Query Project"] = "0"
+
+        if df.at[group_idx, "Query Project"] == "Yes":
+            df.at[group_idx, "Violation"] = f"No match foucnd with the database"
+            df.at[group_idx, "Query Project"] = "5"
+            stat_count[5] = stat_count[5]+1
+        
 
         for idx, row in group.iloc[1:].iterrows():
             if df.at[idx, "Query Project"] == "Yes":
@@ -432,7 +259,7 @@ def check_license_compatibility(df):
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "4"
                     stat_count[4] = stat_count[4]+1
-                elif license_type=="Proprietary" or base_license=="Proprietary":
+                elif license_type=="Proprietary_Unknown" or base_license=="Proprietary_Unknown":
                     df.at[idx, "Violation"] = f"{license_type} has high risk of conflicting with {base_license}"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
@@ -456,22 +283,10 @@ def check_license_compatibility(df):
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "2"
                     stat_count[2] = stat_count[2]+1
-                    
-                    #incompatibility_count += 1
-                    #print(f"Incompatible licenses detected for function {function_hash}: {base_license} vs {license_type}")
-            
-    #df = df[df['Query Project'].isin(['0', '1','Yes'])]
 
-    print("Total number of incompatibility: ", stat_count)
+    print("Incompatibility statistics: ", stat_count)
 
     return df, stat_count
-
-def get_function_code(row):
-   
-    if row['Query Project'] == "1" or "incompatible" in str(row['Violation']).lower():
-        return get_function_code_from_github(row['Repository URL'])
-    else:
-        return None
 
 def main():
     """
@@ -545,26 +360,9 @@ def main():
             # 2, conflicting or violated license
             # 3, has high risk of conflicting
             # 4, undetermined
+            # 5, no violation query project is the source project
             
             df, stat_count = check_license_compatibility(df)
-            
-            """
-            if fun_code:
-                df["Function Code"] = df.apply(get_function_code, axis=1)
-                
-                count_query_proj = df[~df["Function Code"].str.contains("Error fetching code", na=False) &  
-                (df["Query Project"] == "Yes") & 
-                df["Violation"].str.contains("incompatible", case=False, na=False)
-                ].shape[0]
-
-                count_source_proj = df[~df["Function Code"].str.contains("Error fetching code", na=False) &  
-                                (df["Query Project"] == "1") 
-                                ].shape[0]
-                
-                actual_violation = min(count_query_proj, count_source_proj)
-
-                print("Actual violations:", actual_violation)
-            """
             
             print("Saving results to database...")
             
@@ -576,7 +374,6 @@ def main():
             
             #print("Saving results to CSV...")
             save_to_csv(df, stat_count[2], stat_count[2], repo_url, input_project_id, save_dir="results")
-            #time.sleep(0.01)
             
             #### End Visual Inspection ####
             
@@ -585,7 +382,6 @@ def main():
             
             
             
-
 
 if __name__ == "__main__":
     # Setup error logging

@@ -43,3 +43,27 @@ LINE 1: ...n, project_id, repository_url, license, language, license_co...
                                                              ^
 
 
+2025-07-08 14:47:29,381 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 607, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 534, in main
+    update_searchrepos("", "", repo_id, -1, 0)
+TypeError: update_searchrepos() missing 2 required positional arguments: 'license_conflicts' and 'undetermined'
+
+2025-07-08 15:12:14,955 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 607, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 534, in main
+    update_searchrepos("", "", repo_id, -1, 0)
+TypeError: update_searchrepos() missing 2 required positional arguments: 'license_conflicts' and 'undetermined'
+
+2025-07-08 17:46:00,708 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 403, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 349, in main
+    update_searchrepos("", "", repo_id, -1, 0)
+TypeError: update_searchrepos() missing 2 required positional arguments: 'license_conflicts' and 'undetermined'
+

@@ -7,7 +7,8 @@ LICENSE_LIST = [
     "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only",
     "LGPL-2.1-only", "LGPL-3.0-only", "AGPL-3.0-only",
     "EPL-1.0", "EPL-2.0", "CDDL-1.0", "AFL-3.0", "OSL-3.0",
-    "CC0-1.0", "Artistic-2.0", "Unlicense", "Zlib", "ISC", "Proprietary"
+    "CC0-1.0", "Artistic-2.0", "Unlicense", "Zlib", "ISC", 
+    "Proprietary_Closed", "Proprietary_Unknown",
 ]
 
 # Mapping various license names and aliases to SPDX standard identifiers
@@ -86,19 +87,23 @@ license_mapping = {
     "ISC License": "ISC",
     "Internet Systems Consortium License": "ISC",
 
-    # Proprietary / Unknown
-    "-": "Proprietary",
-    "Other": "Proprietary",
-    "other": "Proprietary",
-    "": "Proprietary",
-    "NOASSERTION": "Proprietary",
-    None: "Proprietary",
-    "No license": "Proprietary",
-    "Not licensed": "Proprietary",
-    "undefined": "Proprietary",
-    "Undefined": "Proprietary",
-    "Closed": "Proprietary",
-    "Closed Source": "Proprietary"
+    # Proprietary Closed
+    "-": "Proprietary_Closed",
+    "": "Proprietary_Closed",
+    " ": "Proprietary_Closed",
+    None: "Proprietary_Closed",
+    "No license": "Proprietary_Closed",
+    "Not licensed": "Proprietary_Closed",
+    "Closed": "Proprietary_Closed",
+    "Closed Source": "Proprietary_Closed",
+
+    # Proprietary Unknown
+    "Other": "Proprietary_Unknown",
+    "other": "Proprietary_Unknown",
+    "NOASSERTION": "Proprietary_Unknown",
+    "undefined": "Proprietary_Unknown",
+    "Undefined": "Proprietary_Unknown",
+    
 }
 
 COMPATIBILITY_RULES = {
@@ -115,9 +120,14 @@ COMPATIBILITY_RULES = {
 
 def check_compatibility(license_a: str, license_b: str) -> bool:
     """Determine if license_a is compatible with license_b."""
-
+    
+    license_a = license_a.strip()
+    license_b = license_b.strip()
     # Treat None and Proprietary as incompatible with all except themselves
-    if "Proprietary" in {license_a, license_b}:
+    if "Proprietary_Closed" in {license_a, license_b}:
+        return False
+    
+    if "Proprietary_Unknown" in {license_a, license_b}:
         return False
 
     if license_a == license_b:
