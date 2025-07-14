@@ -11,7 +11,7 @@ import { transformHashList } from './JsonRequest';
 import { ObjectMap, ObjectSet } from './Utility';
 import Logger from './modules/searchSECO-logger/src/Logger';
 import { AuthorInfoResponseItem, CheckResponse, ProjectInfoResponseItem } from './JsonRequest';
-import { version } from '@types/yargs';
+
 
 
 enum OutputStream {

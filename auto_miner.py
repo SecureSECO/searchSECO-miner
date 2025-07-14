@@ -2,8 +2,6 @@ import subprocess
 import os
 import re
 from datetime import datetime
-import requests
-import time
 import sys
 import pandas as pd
 import logging
@@ -32,7 +30,6 @@ def parse_matches(output, repo_url):
         # Look for start of new match group (hash line)
         if line.startswith('Hash '):
             current_match_num += 1
-            #print(f"\nProcessing match group {current_match_num}/{total_matches}")
             if current_match:
                 matches.append(current_match)
             current_match = None
@@ -45,6 +42,7 @@ def parse_matches(output, repo_url):
             # If we find a new method in the same hash group, add it as a variant
             if current_match and current_hash:
                 match = re.search(r'\* Method (.*?) in file (.*?), line (\d+)', line)
+                
                 if match:
                     
                     variant = {
@@ -174,8 +172,6 @@ def create_dataFrame(matches, repo_url):
                         "No"
                     ])
                 
-                #if(i==400):
-                #        break
             except Exception as e:
                 print(f"Error processing match {i}: {e}")
 
@@ -221,12 +217,15 @@ def run_searchseco_check(repo_url):
         print(f"Error running SearchSECO check: {e}")
         return None
 
+
 def normalize_license(license_name: str) -> str:
     return license_mapping.get(license_name, license_name)
+
 
 def can_reuse_code(source_license: str, target_license: str) -> bool:
     
     return compatibility_matrix[target_license][source_license]
+
 
 def check_license_compatibility(df):
     
@@ -245,7 +244,7 @@ def check_license_compatibility(df):
         group_idx = group.index[0]
 
         if df.at[group_idx, "Query Project"] == "Yes":
-            df.at[group_idx, "Violation"] = f"No match foucnd with the database"
+            df.at[group_idx, "Violation"] = f"No match foucnd with SearchSECO database"
             df.at[group_idx, "Query Project"] = "5"
             stat_count[5] = stat_count[5]+1
         
@@ -287,6 +286,7 @@ def check_license_compatibility(df):
     print("Incompatibility statistics: ", stat_count)
 
     return df, stat_count
+
 
 def main():
     """
@@ -358,9 +358,9 @@ def main():
             # 0, no violation & same license
             # 1, no violation & different license
             # 2, conflicting or violated license
-            # 3, has high risk of conflicting
+            # 3, has a high risk of conflicting
             # 4, undetermined
-            # 5, no violation query project is the source project
+            # 5, no match found with SearchSECO database
             
             df, stat_count = check_license_compatibility(df)
             
@@ -379,7 +379,6 @@ def main():
             
             print("Updating the query table and exiting..")  #same_license, dif_license_comply, actual_violation, undetermined
             update_searchrepos(input_project_id, input_project_version, repo_id, stat_count[0], stat_count[1], stat_count[2], stat_count[3])
-            
             
             
 
