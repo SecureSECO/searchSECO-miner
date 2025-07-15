@@ -83,3 +83,11 @@ Traceback (most recent call last):
     update_searchrepos("", "", repo_id, -1, 0)
 TypeError: update_searchrepos() missing 2 required positional arguments: 'license_conflicts' and 'undetermined'
 
+2025-07-14 16:10:30,715 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 402, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/auto_miner.py", line 349, in main
+    update_searchrepos("", "", repo_id, -1, 0)
+TypeError: update_searchrepos() takes 4 positional arguments but 5 were given
+

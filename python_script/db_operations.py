@@ -22,15 +22,15 @@ def get_db_conn():
     )
     return conn
 
-def update_searchrepos(input_project_id, input_project_version, repo_id, same_license, dif_license_comply, license_conflicts, undetermined):
+def update_searchrepos(input_project_id, input_project_version, repo_id, stat_count):
     conn = None
     try:
         conn = get_db_conn()
         cur = conn.cursor()
 
-        update_query = """UPDATE searchrepos SET is_active = %s, project_id = %s, project_version = %s, same_license = %s, dif_license_comply = %s, license_conflicts = %s,  undetermined = %s WHERE _id = %s;"""
+        update_query = """UPDATE searchrepos SET is_active = %s, project_id = %s, project_version = %s, same_license = %s, dif_license_comply = %s, license_conflicts = %s,  high_risks = %s, undetermined = %s, no_match = %s WHERE _id = %s;"""
 
-        cur.execute(update_query, (False, input_project_id, input_project_version, same_license, dif_license_comply, license_conflicts, undetermined, repo_id))
+        cur.execute(update_query, (False, input_project_id, input_project_version, stat_count[0], stat_count[1], stat_count[2], stat_count[3], stat_count[4], stat_count[5], repo_id))
 
         conn.commit()
         print("Rows affected:", cur.rowcount)

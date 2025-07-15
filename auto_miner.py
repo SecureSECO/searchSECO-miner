@@ -203,6 +203,9 @@ def run_searchseco_check(repo_url):
         # Run the check command ###check
         cmd = f"npm run execute -- checkupload {repo_url} -V 5"
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+
+        stdout = result.stdout.strip()
+        stderr = result.stderr.strip()
         
         # Debug output
         print("\nSearchSECO Output:")
@@ -244,7 +247,7 @@ def check_license_compatibility(df):
         group_idx = group.index[0]
 
         if df.at[group_idx, "Query Project"] == "Yes":
-            df.at[group_idx, "Violation"] = f"No match foucnd with SearchSECO database"
+            df.at[group_idx, "Violation"] = f"No match found with SearchSECO database"
             df.at[group_idx, "Query Project"] = "5"
             stat_count[5] = stat_count[5]+1
         
@@ -331,7 +334,7 @@ def main():
             repo_id = repo[0]
             repo_url = repo[1]
             
-            update_process_time("processing_start_time", repo_id, repo_url)
+            # update_process_time("processing_start_time", repo_id, repo_url)
         
             print("Running SearchSECO analysis...")
             output = run_searchseco_check(repo_url)
@@ -344,9 +347,10 @@ def main():
             matches = parse_matches(output, repo_url)
             
             if not matches:
+                
                 print("No matches found")
                 # input_project_id, input_project_version, repo_id, incompatibility_count, actual_violation
-                update_searchrepos("", "", repo_id, -1, 0)
+                update_searchrepos("", "", repo_id, [0,0,0,0,0,0])
                 continue
             
             print("Creating a dataframe...")
@@ -366,7 +370,7 @@ def main():
             
             print("Saving results to database...")
             
-            update_process_time("processing_end_time", repo_id, repo_url)
+            #update_process_time("processing_end_time", repo_id, repo_url)
             
             df = insert_into_rp_data(df, repo_id)
 
@@ -378,7 +382,7 @@ def main():
             #### End Visual Inspection ####
             
             print("Updating the query table and exiting..")  #same_license, dif_license_comply, actual_violation, undetermined
-            update_searchrepos(input_project_id, input_project_version, repo_id, stat_count[0], stat_count[1], stat_count[2], stat_count[3])
+            update_searchrepos(input_project_id, input_project_version, repo_id, stat_count)
             
             
 
@@ -407,4 +411,3 @@ if __name__ == "__main__":
         # Also print to stdout so your shell sees something
         print(f"Error occurred. See error_log.txt for details: {e}")
         sys.exit(1)
-

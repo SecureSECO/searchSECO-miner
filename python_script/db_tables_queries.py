@@ -34,13 +34,14 @@ CREATE TABLE searchrepos (
     same_license INT,
     dif_license_comply INT,
     license_conflicts INT,
+    high_risks INT,
     undetermined INT,
+    no_match INT,
     has_picked BOOLEAN DEFAULT FALSE,
     is_active BOOLEAN DEFAULT TRUE,
     processing_start_time TIMESTAMP,
     processing_end_time TIMESTAMP
 );
-
 
 CREATE TABLE repository_data (
     _id VARCHAR(100) PRIMARY KEY,
