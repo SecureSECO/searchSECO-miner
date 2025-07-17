@@ -1,4 +1,5 @@
 import subprocess
+import time
 import os
 import re
 from datetime import datetime
@@ -100,10 +101,10 @@ def parse_matches(output, repo_url):
     return matches
 
 
-def save_to_csv(df, incompatibility_count, actual_violation, repo_url, input_project_id, save_dir):
+def save_to_csv(df, stat_count, repo_url, input_project_id, save_dir):
     """Save matches to CSV file with function code and all repositories."""
     
-    filename = f"{repo_url.split('.com/')[1].replace('/','_')}_matches_{input_project_id}_{incompatibility_count}_{actual_violation}.csv"
+    filename = f"{repo_url.split('.com/')[1].replace('/','_')}_matches_{input_project_id}_{stat_count[0]}_{stat_count[1]}_{stat_count[2]}_{stat_count[3]}_{stat_count[4]}.csv"
     
     # Ensure the save directory exists
     os.makedirs(save_dir, exist_ok=True)
@@ -231,6 +232,8 @@ def can_reuse_code(source_license: str, target_license: str) -> bool:
 
 
 def check_license_compatibility(df):
+
+    df = df[df["Query Project"].apply(lambda x: len(str(x)) <= 3)]
     
     df["Violation"] = ""
     df["Source_project"] = ""
@@ -241,7 +244,7 @@ def check_license_compatibility(df):
     grouped = df.groupby("Hash")
 
     for function_hash, group in grouped:
-        base_license = normalize_license(group.iloc[0]["License"])  # Normalize first row's license
+        base_license = normalize_license(group.iloc[0]["License"].strip())  # Normalize first row's license
         source_project_id = group.iloc[0]["Project ID"]
         source_project_version = group.iloc[0]["Version"]
         group_idx = group.index[0]
@@ -254,9 +257,9 @@ def check_license_compatibility(df):
 
         for idx, row in group.iloc[1:].iterrows():
             if df.at[idx, "Query Project"] == "Yes":
-                license_type = normalize_license(row["License"])
+                license_type = normalize_license(row["License"].strip())
                 if license_type not in LICENSE_LIST or base_license not in LICENSE_LIST:
-                    df.at[idx, "Violation"] = "Undetermined"
+                    df.at[idx, "Violation"] = f"Undetermined: {license_type} : {base_license}"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "4"
@@ -294,7 +297,7 @@ def check_license_compatibility(df):
 def main():
     """
         Four ways of checking your repository(ies)
-            - A single repo: python auto_miner.py Y https://github.com/Samsung/mTower
+            - A single repo: python auto_miner.py N https://github.com/Samsung/mTower
             - X (=20) number of repo from database: python auto_miner.py N 20
             - With a default value of X (=100): python auto_miner.py N      # default is 100
             - With the shell script: nohup ./run_python_miner.sh | tail -n 2000 > logfile.log 2>&1 &
@@ -302,13 +305,14 @@ def main():
         # https://github.com/google/ios-webkit-debug-proxy
         # https://github.com/Samsung/ColorPatternTracker
         # https://github.com/microsoft/Windows-universal-samples
+        python auto_miner.py N https://github.com/IBM/forbiditerative
     """
     
     fun_code = False if sys.argv[1] == "N" else True
     search_repo = sys.argv[2] if len(sys.argv) > 2 else '100'
     #print(search_repo)
 
-    company_name = "Microsoft"  # provide organization name: Google, Microsoft etc.
+    company_name = "IBM"  # provide organization name: Google, Microsoft, IBM etc.
     
     repos = get_search_repos(search_repo, company_name)
     
@@ -377,12 +381,14 @@ def main():
             #### Visual Inspection ####
             
             #print("Saving results to CSV...")
-            save_to_csv(df, stat_count[2], stat_count[2], repo_url, input_project_id, save_dir="results")
+            save_to_csv(df, stat_count, repo_url, input_project_id, save_dir="results")
             
             #### End Visual Inspection ####
             
             print("Updating the query table and exiting..")  #same_license, dif_license_comply, actual_violation, undetermined
             update_searchrepos(input_project_id, input_project_version, repo_id, stat_count)
+        
+        time.sleep(20)
             
             
 
