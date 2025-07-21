@@ -209,12 +209,14 @@ def run_searchseco_check(repo_url):
         stderr = result.stderr.strip()
         
         # Debug output
-        print("\nSearchSECO Output:")
-        print(result.stdout)
+        #print("\nSearchSECO Output:")
+        #print(result.stdout)
          
         if result.stderr:
             print("\nSearchSECO Errors:")
             print(result.stderr)
+        else:
+            print("\nSearchSECO executed without errors")
             
         return result.stdout
     except Exception as e:
@@ -312,7 +314,7 @@ def main():
     search_repo = sys.argv[2] if len(sys.argv) > 2 else '100'
     #print(search_repo)
 
-    company_name = "IBM"  # provide organization name: Google, Microsoft, IBM etc.
+    company_name = "Intel"  # provide organization name: Google, Microsoft, IBM, Intel etc.
     
     repos = get_search_repos(search_repo, company_name)
     

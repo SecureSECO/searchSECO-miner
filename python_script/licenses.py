@@ -5,7 +5,7 @@ from typing import Dict
 #SPDX
 LICENSE_LIST = [
     "MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "BSL-1.0", "MPL-2.0",
-    "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only", 
+    "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only", "0BSD",
     "LGPL-2.1-only", "LGPL-3.0-only", "AGPL-3.0-only", "GPL-3.0-or-later",
     "EPL-1.0", "EPL-2.0", "CDDL-1.0", "AFL-3.0", "OSL-3.0", "CC-BY-4.0",
     "CC0-1.0", "Artistic-2.0", "Unlicense", "Zlib", "ISC", "MS-PL", 
@@ -34,6 +34,7 @@ license_mapping = {
     "MIT License (MIT)": "MIT",
     "MIT License (MIT License)": "MIT",
     "MIT OR Apache-2.0": "MIT",
+    "MIT No Attribution": "MIT",
 
     # Apache 2.0 variants
     "Apache 2.0": "Apache-2.0",
@@ -79,6 +80,14 @@ license_mapping = {
     "BSD 3-Clause \"New\" or \"Revised\"": "BSD-3-Clause",
     'BSD 3-Clause "New" or "Revised" License': "BSD-3-Clause",
     "BSD License": "BSD-3-Clause",
+
+    # BSD Zero Clause License variants
+    "0BSD": "0BSD",
+    "BSD Zero Clause License": "0BSD",
+    "BSD-0-Clause": "0BSD",
+    "BSD Zero": "0BSD",
+    "BSD 0-Clause": "0BSD",
+    "BSD-0": "0BSD",
 
     # GPL v2 variants
     "GPL-2.0": "GPL-2.0-only",
@@ -296,7 +305,7 @@ license_mapping = {
 
 COMPATIBILITY_RULES = {
     "Permissive": {
-        "MIT", "BSD-2-Clause", "BSD-3-Clause", "Apache-2.0",
+        "MIT", "BSD-2-Clause", "BSD-3-Clause", "0BSD", "Apache-2.0",
         "ISC", "Zlib", "CC0-1.0", "Unlicense",
         "BSL-1.0", "Artistic-2.0", "MS-PL", "CC-BY-4.0",
     },
