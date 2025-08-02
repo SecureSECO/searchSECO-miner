@@ -11,6 +11,7 @@ import { transformHashList } from './JsonRequest';
 import { ObjectMap, ObjectSet } from './Utility';
 import Logger from './modules/searchSECO-logger/src/Logger';
 import { AuthorInfoResponseItem, CheckResponse, ProjectInfoResponseItem } from './JsonRequest';
+import { CrawlData, ProjectMetadata } from './modules/searchSECO-crawler/src/Crawler';
 
 
 
@@ -143,7 +144,8 @@ export default class MatchPrinter {
 		projectBlaming: AuthorData,
 		dbMethods: CheckResponse[],
 		dbProjectInfo: Map<number, ProjectInfoResponseItem[]>,
-		dbAuthorInfo: AuthorInfoResponseItem[]
+		dbAuthorInfo: AuthorInfoResponseItem[],
+		projetcBranch: string,
 
 	) {
 		const dbMethodsPerHash = new Map<string, CheckResponse[]>();
@@ -200,7 +202,8 @@ export default class MatchPrinter {
 					vulnerabilities,
 					dbProjectInfo,
 					dbAuthorPerId,
-					matchesReport
+					matchesReport,
+					projetcBranch
 				);
 			}
 		});
@@ -233,7 +236,8 @@ export default class MatchPrinter {
 		vulnerabilities: [HashData, CheckResponse][],
 		dbProjects: Map<number, ProjectInfoResponseItem[]>,
 		authorIdToName: Map<string, AuthorInfoResponseItem>,
-		report: string
+		report: string,
+		projetcBranch: string,
 	): string {
 		let currentReport = report;
 
@@ -273,15 +277,14 @@ export default class MatchPrinter {
 		} else {
 			Logger.Debug(`No project found for pid: ${projectID}`, Logger.GetCallerLocation());
 		}
-
 		
-		//////
 		
+		////// 		
 		
 
 		hashes.forEach((hash, idx) => {
 			
-			currentReport += `  * Method ${hash.MethodName}, Project ID: ${projectID+', Version: '+ valuesArray[1]+', License: '+  valuesArray[3]} in file ${hash.FileName}, line ${hash.LineNumber}\n`;
+			currentReport += `  * Method ${hash.MethodName}, Project ID: ${projectID+', Version: '+ valuesArray[1]+', License: '+  valuesArray[3]+', URL: '+  valuesArray[5]+'/blob/'+ projetcBranch} in file ${hash.FileName}, line ${hash.LineNumber}\n`;
 			currentReport += `    Authors of local method: \n`;
 
 			this._JSONbuilder.Add(`hashes[0].methods[${idx}]`, {

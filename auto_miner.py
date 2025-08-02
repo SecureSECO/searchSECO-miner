@@ -72,8 +72,9 @@ def parse_matches(output, repo_url):
                 if match:
                     file_path=match.group(2).split('./')[1]
                     line_number= match.group(3)
-                    url=f"{repo_url}/blob/main/{file_path}#L{line_number}"
-
+                    #url=f"{repo_url}/blob/main/{file_path}#L{line_number}"
+                    url_base = match.group(1).split(',')[-1].split(' ')[-1].strip()
+                    url = f"{url_base}/{file_path}#L{line_number}"
                     current_match['method_name'] = match.group(1)
                     current_match['method_file'] = match.group(2)
                     current_match['method_line'] = match.group(3)
@@ -85,7 +86,7 @@ def parse_matches(output, repo_url):
                 url = line.strip().split('URL:')[1].strip()
                 # Add URL to the last variant if it exists, otherwise to main match
                 if current_match['variants'] and current_match['variants'][-1]['url'] is None:
-                    #print("found in url variants: ", url)
+                    #print("found url in variants: ", url)
                     current_match['variants'][-1]['url'] = url
                 else:
                     #print("found in url: ", url)
@@ -210,7 +211,7 @@ def run_searchseco_check(repo_url):
         
         # Debug output
         #print("\nSearchSECO Output:")
-        #print(result.stdout)
+        print(result.stdout)
          
         if result.stderr:
             print("\nSearchSECO Errors:")

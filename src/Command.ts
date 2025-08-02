@@ -191,7 +191,7 @@ export default abstract class Command {
 
 
 		const printer = new MatchPrinter();
-		await printer.PrintHashMatches(url, metadata.id, projectMethods, projectBlaming, checkResponse, dbProjectInfo, dbAuthorInfo);
+		await printer.PrintHashMatches(url, metadata.id, projectMethods, projectBlaming, checkResponse, dbProjectInfo, dbAuthorInfo, this._flags.Branch);
 		printer.Close();
 		await this._moduleFacade.ClearRepository();
 
