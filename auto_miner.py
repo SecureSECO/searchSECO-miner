@@ -291,6 +291,94 @@ def check_license_compatibility(df):
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "2"
                     stat_count[2] = stat_count[2]+1
+    
+    ############### Maximum match or commonalities count ####################
+    # Step 1: Filter
+    filtered_df = df[~((df["Query Project"] == "Yes") | (df["Query Project"] == "5"))]
+
+    # Step 2: Count rows per (Project ID, Version)
+    grouped = (
+        filtered_df.groupby(['Project ID', 'Version'])
+        .size()
+        .reset_index(name='count_match')
+    )
+
+    # Step 3: Pick any 'Repository URL' per (Project ID, Version)
+    # We can use groupby().first() or drop_duplicates()
+    repo_urls = (
+        filtered_df
+        .drop_duplicates(subset=['Project ID', 'Version'])
+        .loc[:, ['Project ID', 'Version', 'Repository URL']]
+    )
+
+    # Step 4: Merge counts with a URL (any one per group)
+    result = pd.merge(grouped, repo_urls, on=['Project ID', 'Version'], how='left')
+
+    # Step 5: Extract base repo URL (before '/blob')
+    result['Repository URL'] = result['Repository URL'].str.split('/blob').str[0]
+
+    # Step 6: Sort only by count_match
+    most_frequent = result.sort_values('count_match', ascending=False).head(10)
+
+    # Step 7: Print
+    print("Top match count:\n", most_frequent.to_string(index=False))
+
+
+    ############### Top three violated licenses ####################
+    # Step 1: Filter rows where Query Project == "2"
+    violations_df = df[df["Query Project"] == "2"]
+
+    # Step 2: Drop empty or missing licenses
+    violations_df = violations_df[violations_df["License"].notna() & (violations_df["License"].str.strip() != "")]
+
+    # Step 3: Count license frequencies
+    license_counts = (
+    violations_df["License"]
+    .value_counts()
+    .reset_index()
+    .rename(columns={"License": "License_name", "count": "Conflict_count"})
+    )
+
+    # Step 4: Apply normalize_license() to License_name column
+    license_counts["Normalized_license_name"] = license_counts["License_name"].apply(normalize_license)
+
+    license_counts = license_counts[["License_name", "Normalized_license_name", "Conflict_count"]]
+
+    # Step 5: Take top 3
+    top_violated_licenses = license_counts.head(3)
+
+    # Step 6: Print cleanly without index
+    print("Top 3 violated licenses:\n", top_violated_licenses.to_string(index=False))
+
+    ############### Top three complied licenses ####################
+    # Step 1: Filter rows where Query Project == "0"
+    compliance_df = df[df["Query Project"] == "0"]
+
+    # Step 2: Drop empty or missing licenses
+    compliance_df = compliance_df[
+        compliance_df["License"].notna() & (compliance_df["License"].str.strip() != "")
+    ]
+
+    # Step 3: Count license frequencies
+    license_counts = (
+        compliance_df["License"]
+        .value_counts()
+        .reset_index()
+        .rename(columns={"License": "License_name", "count": "Compliance_count"})
+    )
+
+    # Step 4: Apply normalize_license() to License_name column
+    license_counts["Normalized_license_name"] = license_counts["License_name"].apply(normalize_license)
+
+    # Reorder columns
+    license_counts = license_counts[["License_name", "Normalized_license_name", "Compliance_count"]]
+
+    # Step 5: Take top 3
+    top_complied_licenses = license_counts.head(3)
+
+    # Step 6: Print cleanly without index
+    print("Top 3 licenses complied:\n", top_complied_licenses.to_string(index=False))
+
 
     print("Incompatibility statistics: ", stat_count)
 
@@ -300,9 +388,9 @@ def check_license_compatibility(df):
 def main():
     """
         Four ways of checking your repository(ies)
-            - A single repo: python auto_miner.py N https://github.com/Samsung/mTower
-            - X (=20) number of repo from database: python auto_miner.py N 20
-            - With a default value of X (=100): python auto_miner.py N      # default is 100
+            - A single repo: python auto_miner.py https://github.com/Samsung/mTower
+            - X (=20) number of repo from database: python auto_miner.py 20
+            - With a default value of X (=100): python auto_miner.py      # default is 100
             - With the shell script: nohup ./run_python_miner.sh | tail -n 2000 > logfile.log 2>&1 &
             - Parameter N/Y determine whether a method code will be downloaded or not
         # https://github.com/google/ios-webkit-debug-proxy
@@ -311,8 +399,8 @@ def main():
         python auto_miner.py N https://github.com/IBM/forbiditerative
     """
     
-    fun_code = False if sys.argv[1] == "N" else True
-    search_repo = sys.argv[2] if len(sys.argv) > 2 else '100'
+    #fun_code = False if sys.argv[1] == "N" else True
+    search_repo = sys.argv[1] if len(sys.argv) > 1 else '100'
     #print(search_repo)
 
     company_name = "Intel"  # provide organization name: Google, Microsoft, IBM, Intel etc.
