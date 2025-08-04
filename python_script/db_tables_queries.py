@@ -40,7 +40,8 @@ CREATE TABLE searchrepos (
     has_picked BOOLEAN DEFAULT FALSE,
     is_active BOOLEAN DEFAULT TRUE,
     processing_start_time TIMESTAMP,
-    processing_end_time TIMESTAMP
+    processing_end_time TIMESTAMP,
+    data_type INT
 );
 
 CREATE TABLE repository_data (

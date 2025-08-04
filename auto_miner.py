@@ -105,7 +105,7 @@ def parse_matches(output, repo_url):
 def save_to_csv(df, stat_count, repo_url, input_project_id, save_dir):
     """Save matches to CSV file with function code and all repositories."""
     
-    filename = f"{repo_url.split('.com/')[1].replace('/','_')}_matches_{input_project_id}_{stat_count[0]}_{stat_count[1]}_{stat_count[2]}_{stat_count[3]}_{stat_count[4]}.csv"
+    filename = f"{repo_url.split('.com/')[1].replace('/','_')}_matches_{input_project_id}_{stat_count[0]}_{stat_count[1]}_{stat_count[2]}_{stat_count[3]}_{stat_count[4]}_{stat_count[5]}.csv"
     
     # Ensure the save directory exists
     os.makedirs(save_dir, exist_ok=True)
@@ -253,11 +253,11 @@ def check_license_compatibility(df):
         group_idx = group.index[0]
 
         if df.at[group_idx, "Query Project"] == "Yes":
-            df.at[group_idx, "Violation"] = f"No match found with SearchSECO database"
+            df.at[group_idx, "Violation"] = f"No match found with SearchSECO database (or source project)"
             df.at[group_idx, "Query Project"] = "5"
             stat_count[5] = stat_count[5]+1
         
-
+        
         for idx, row in group.iloc[1:].iterrows():
             if df.at[idx, "Query Project"] == "Yes":
                 license_type = normalize_license(row["License"].strip())
@@ -321,7 +321,7 @@ def check_license_compatibility(df):
     most_frequent = result.sort_values('count_match', ascending=False).head(10)
 
     # Step 7: Print
-    print("Top match count:\n", most_frequent.to_string(index=False))
+    print("Top match count and source:\n", most_frequent.to_string(index=False))
 
 
     ############### Top three violated licenses ####################
@@ -342,13 +342,13 @@ def check_license_compatibility(df):
     # Step 4: Apply normalize_license() to License_name column
     license_counts["Normalized_license_name"] = license_counts["License_name"].apply(normalize_license)
 
-    license_counts = license_counts[["License_name", "Normalized_license_name", "Conflict_count"]]
+    license_counts = license_counts[["Normalized_license_name", "License_name", "Conflict_count"]]
 
     # Step 5: Take top 3
     top_violated_licenses = license_counts.head(3)
 
     # Step 6: Print cleanly without index
-    print("Top 3 violated licenses:\n", top_violated_licenses.to_string(index=False))
+    print("Top violated licenses:\n", top_violated_licenses.to_string(index=False))
 
     ############### Top three complied licenses ####################
     # Step 1: Filter rows where Query Project == "0"
@@ -371,16 +371,16 @@ def check_license_compatibility(df):
     license_counts["Normalized_license_name"] = license_counts["License_name"].apply(normalize_license)
 
     # Reorder columns
-    license_counts = license_counts[["License_name", "Normalized_license_name", "Compliance_count"]]
+    license_counts = license_counts[["Normalized_license_name", "License_name", "Compliance_count"]]
 
     # Step 5: Take top 3
     top_complied_licenses = license_counts.head(3)
 
     # Step 6: Print cleanly without index
-    print("Top 3 licenses complied:\n", top_complied_licenses.to_string(index=False))
+    print("Top licenses complied:\n", top_complied_licenses.to_string(index=False))
 
 
-    print("Incompatibility statistics: ", stat_count)
+    print("Clone and incompatibility statistics: ", stat_count)
 
     return df, stat_count
 
@@ -476,7 +476,7 @@ def main():
             
             #### End Visual Inspection ####
             
-            print("Updating the query table and exiting..")  #same_license, dif_license_comply, actual_violation, undetermined
+            print("Updating the query table and exiting..") 
             update_searchrepos(input_project_id, input_project_version, repo_id, stat_count)
         
         time.sleep(20)
