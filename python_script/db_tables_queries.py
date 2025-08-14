@@ -41,7 +41,7 @@ CREATE TABLE searchrepos (
     is_active BOOLEAN DEFAULT TRUE,
     processing_start_time TIMESTAMP,
     processing_end_time TIMESTAMP,
-    data_type INT
+    project_type INT DEFAULT 0
 );
 
 CREATE TABLE repository_data (

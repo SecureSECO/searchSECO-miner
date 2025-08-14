@@ -403,7 +403,7 @@ def main():
     search_repo = sys.argv[1] if len(sys.argv) > 1 else '100'
     #print(search_repo)
 
-    company_name = "Intel"  # provide organization name: Google, Microsoft, IBM, Intel etc.
+    company_name = "Samsung"  # provide organization name: Google, Microsoft, IBM, Intel etc.
     
     repos = get_search_repos(search_repo, company_name)
     
