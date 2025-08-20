@@ -388,9 +388,9 @@ def check_license_compatibility(df):
 def main():
     """
         Four ways of checking your repository(ies)
-            - A single repo: python auto_miner.py https://github.com/Samsung/mTower
-            - X (=20) number of repo from database: python auto_miner.py 20
-            - With a default value of X (=100): python auto_miner.py      # default is 100
+            - A single repo: python searchseco_batch_miner.py https://github.com/Samsung/mTower
+            - X (=20) number of repo from database: python searchseco_batch_miner.py 20
+            - With a default value of X (=100): python searchseco_batch_miner.py      # default is 100
             - With the shell script: nohup ./run_python_miner.sh | tail -n 2000 > logfile.log 2>&1 &
             - Parameter N/Y determine whether a method code will be downloaded or not
         # https://github.com/google/ios-webkit-debug-proxy
@@ -403,7 +403,10 @@ def main():
     search_repo = sys.argv[1] if len(sys.argv) > 1 else '100'
     #print(search_repo)
 
-    company_name = "Samsung"  # provide organization name: Google, Microsoft, IBM, Intel etc.
+    # provide enterprise organization name: Google, Microsoft, IBM, Intel etc.
+    # NGO/Foundation Wikimedia, KDE, Apache, Mozilla
+
+    company_name = "KDE"  
     
     repos = get_search_repos(search_repo, company_name)
     

@@ -7,8 +7,9 @@ LICENSE_LIST = [
     "MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "BSL-1.0", "MPL-2.0",
     "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only", "0BSD",
     "LGPL-2.1-only", "LGPL-3.0-only", "AGPL-3.0-only", "GPL-3.0-or-later",
-    "EPL-1.0", "EPL-2.0", "CDDL-1.0", "AFL-3.0", "OSL-3.0", "CC-BY-4.0",
-    "CC0-1.0", "Artistic-2.0", "Unlicense", "Zlib", "ISC", "MS-PL", 
+    "EPL-1.0", "EPL-2.0", "CDDL-1.0", "AFL-3.0", "OSL-3.0", "CC-BY-4.0", "CC-BY-NC-4.0",
+    "EUPL-1.1", "EUPL-1.2", "Python-2.0", "PostgreSQL", "MIT-0", "SQLite",
+    "CC0-1.0", "CC-BY-SA-4.0", "Artistic-2.0", "Unlicense", "Zlib", "ISC", "MS-PL", 
     "Proprietary_Closed", "Proprietary_Unknown",
 ]
 
@@ -88,6 +89,19 @@ license_mapping = {
     "BSD Zero": "0BSD",
     "BSD 0-Clause": "0BSD",
     "BSD-0": "0BSD",
+
+    # CC-BY-SA-4.0
+    "CC-BY-SA-4.0":"CC-BY-SA-4.0",
+    "cc-by-sa": "CC-BY-SA-4.0",
+    
+    "cc-by-nc": "CC-BY-NC-4.0",
+    "CC-BY-NC-4.0": "CC-BY-NC-4.0",
+
+    "EUPL-1.1":"EUPL-1.1",
+    "eupl-1.1": "EUPL-1.1",
+
+    "EUPL-1.2": "EUPL-1.2",
+    "eupl-1.2": "EUPL-1.2",
 
     # GPL v2 variants
     "GPL-2.0": "GPL-2.0-only",
@@ -189,6 +203,9 @@ license_mapping = {
     "epl2.0": "EPL-2.0",
     "EPL2": "EPL-2.0",
 
+    "Python-2.0": "Python-2.0",
+    "python": "Python-2.0",
+
     # Unlicense and public domain
     "Unlicense": "Unlicense",
     "The Unlicense": "Unlicense",
@@ -210,6 +227,18 @@ license_mapping = {
     "Common Development and Distribution License v1.0": "CDDL-1.0",
     "Common Development and Distribution License Version 1.0": "CDDL-1.0",
     "Sun CDDL": "CDDL-1.0",
+
+    # PostgreSQL
+    "PostgreSQL": "PostgreSQL",
+    "postgresql": "PostgreSQL",
+
+    # MIT-0
+    "MIT-0":  "MIT-0",
+    "mit-0": "MIT-0",
+
+    # SQLite
+    "SQLite": "SQLite",
+    "sqlite": "SQLite",
 
     # CC-BY-4.0
     "Creative Commons Attribution 4.0 International": "CC-BY-4.0",
@@ -272,10 +301,15 @@ license_mapping = {
     "No License": "Proprietary_Closed",  # Capitalization variant
     "Not Licensed": "Proprietary_Closed",  # Capitalization variant
     "No licensing": "Proprietary_Closed",
-    "Custom": "Proprietary_Closed",  # Often used for private/internal licenses
     "Internal": "Proprietary_Closed",
     "Commercial": "Proprietary_Closed",  # Sometimes used in commercial-only packages
     "Private": "Proprietary_Closed",
+    "N/A": "Proprietary_Closed",
+    "n/a": "Proprietary_Closed",
+    "NA": "Proprietary_Closed",
+    "na": "Proprietary_Closed",
+    "n/a (unknown)": "Proprietary_Closed",
+    "Unlicensed": "Proprietary_Closed",
 
     # Proprietary Unknown
     "Other": "Proprietary_Unknown",
@@ -292,14 +326,10 @@ license_mapping = {
     "not provided": "Proprietary_Unknown",
     "unspecified": "Proprietary_Unknown",
     "Unspecified": "Proprietary_Unknown",
-    "n/a (unknown)": "Proprietary_Unknown",
     "No assertion": "Proprietary_Unknown",
-    "noassertion": "Proprietary_Unknown",
-    "N/A": "Proprietary_Unknown",
-    "n/a": "Proprietary_Unknown",
-    "NA": "Proprietary_Unknown",
-    "na": "Proprietary_Unknown",
-    
+    "no assertion": "Proprietary_Unknown",
+    "Custom": "Proprietary_Unknown",  # Often used for private/internal licenses
+    "custom": "Proprietary_Unknown",
 }
 
 
@@ -307,18 +337,23 @@ COMPATIBILITY_RULES = {
     "Permissive": {
         "MIT", "BSD-2-Clause", "BSD-3-Clause", "0BSD", "Apache-2.0",
         "ISC", "Zlib", "CC0-1.0", "Unlicense",
-        "BSL-1.0", "Artistic-2.0", "MS-PL", "CC-BY-4.0",
+        "BSL-1.0", "Artistic-2.0", "MS-PL", "CC-BY-4.0", "AFL-3.0",
+        "MIT-0", "PostgreSQL", "Python-2.0", "SQLite",
     },
+    
     "Weak Copyleft": {
         "LGPL-2.1-only", "LGPL-3.0-only", "MPL-2.0",
-        "EPL-1.0", "EPL-2.0", "CDDL-1.0", "AFL-3.0",
+        "EPL-1.0", "EPL-2.0", "CDDL-1.0",
+        "CC-BY-SA-4.0",
     },
+
     "Strong Copyleft": {
         "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only",
         "AGPL-3.0-only", "OSL-3.0", "GPL-3.0-or-later",
     },
+
     "Proprietary": {
-        "Proprietary_Closed", "Proprietary_Unknown"
+        "Proprietary_Closed", "Proprietary_Unknown", "CC-BY-NC-4.0",
     }
 
 }
@@ -330,12 +365,7 @@ def check_compatibility(license_a: str, license_b: str) -> bool:
     license_a = license_a.strip()
     license_b = license_b.strip()
     
-    # Treat None and Proprietary as incompatible with all except themselves
-    
-    if "Proprietary_Closed" in {license_a, license_b}:
-        return False
-
-    if "Proprietary_Unknown" in {license_a, license_b}:
+    if {"Proprietary_Closed", "Proprietary_Unknown"} & {license_a, license_b}:
         return False
 
     if license_a == license_b:

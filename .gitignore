@@ -179,3 +179,4 @@ shell_scripts/results
 shell_scripts/logging
 shell_scripts/searchsecominer.log
 violation_examples
+input_files/backup_data
