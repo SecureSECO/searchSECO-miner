@@ -8,16 +8,17 @@ conda activate rnd
 TEMP_DIR="../.tmp"
 elapsed_time=0  # Tracks total runtime in seconds
 
-timeout_sec=900
+timeout_sec=1200
 timeout_min=$((timeout_sec / 60))
 
 while true; do
-    echo "Starting auto_miner.py with $timeout_min-minute timeout..."
+    echo "Starting searchseco_batch_miner.py with $timeout_min-minute timeout..."
 
     start_time=$(date +%s)
 
     # Run the script with a timeout
-    timeout "${timeout_sec}" python ../auto_miner.py Y 1
+    timeout "${timeout_sec}" python ../searchseco_batch_miner.py 1
+    
     exit_code=$?
 
     end_time=$(date +%s)
