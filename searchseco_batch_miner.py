@@ -257,12 +257,11 @@ def check_license_compatibility(df):
             df.at[group_idx, "Query Project"] = "5"
             stat_count[5] = stat_count[5]+1
         
-        
         for idx, row in group.iloc[1:].iterrows():
             if df.at[idx, "Query Project"] == "Yes":
                 license_type = normalize_license(row["License"].strip())
                 if license_type not in LICENSE_LIST or base_license not in LICENSE_LIST:
-                    df.at[idx, "Violation"] = f"Undetermined: {license_type} : {base_license}"
+                    df.at[idx, "Violation"] = f"Undetermined: {license_type} with the {base_license}"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "4"
@@ -273,7 +272,7 @@ def check_license_compatibility(df):
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "3"
                     stat_count[3] = stat_count[3]+1
-                elif base_license==license_type:
+                elif base_license==license_type and base_license not in {"Proprietary_Closed", "Proprietary_Unknown"}:
                     df.at[idx, "Violation"] = f"{license_type} same license {base_license}"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
@@ -406,7 +405,7 @@ def main():
     # provide enterprise organization name: Google, Microsoft, IBM, Intel etc.
     # NGO/Foundation Wikimedia, KDE, Apache, Mozilla
 
-    company_name = "KDE"  
+    company_name = "Wikimedia"  
     
     repos = get_search_repos(search_repo, company_name)
     

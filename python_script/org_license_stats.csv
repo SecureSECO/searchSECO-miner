@@ -1,0 +1,4 @@
+organization,total_projects,total_methods,same_license,diff_license_comply,license_conflicts,high_risks,undetermined,no_match,conflict_and_risks
+samsung,26,253,54 (21.3%),6 (2.4%),9 (3.6%),104 (41.1%),0 (0.0%),80 (31.6%),113 (44.7%)
+google,19,188,25 (13.3%),1 (0.5%),42 (22.3%),110 (58.5%),0 (0.0%),10 (5.3%),152 (80.9%)
+oracle,1,0,0 (0.0%),0 (0.0%),0 (0.0%),0 (0.0%),0 (0.0%),0 (0.0%),0 (0.0%)

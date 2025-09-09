@@ -5,18 +5,18 @@ from typing import Dict
 #SPDX
 LICENSE_LIST = [
     "MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause", "BSL-1.0", "MPL-2.0",
-    "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only", "0BSD",
+    "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only", "0BSD", "ECL-2.0",
     "LGPL-2.1-only", "LGPL-3.0-only", "AGPL-3.0-only", "GPL-3.0-or-later",
     "EPL-1.0", "EPL-2.0", "CDDL-1.0", "AFL-3.0", "OSL-3.0", "CC-BY-4.0", "CC-BY-NC-4.0",
-    "EUPL-1.1", "EUPL-1.2", "Python-2.0", "PostgreSQL", "MIT-0", "SQLite",
-    "CC0-1.0", "CC-BY-SA-4.0", "Artistic-2.0", "Unlicense", "Zlib", "ISC", "MS-PL", 
+    "EUPL-1.1", "EUPL-1.2", "Python-2.0", "PostgreSQL", "MIT-0", "SQLite", "WTFPL"
+    "CC0-1.0", "CC-BY-SA-4.0", "Artistic-2.0", "Unlicense", "UPL-1.0", "Zlib", "ISC", "MS-PL", 
     "Proprietary_Closed", "Proprietary_Unknown",
 ]
 
 # Mapping various license names and aliases to SPDX standard identifiers
 license_mapping = {
 
-    # MIT variants
+    # MIT variants,
     "MIT": "MIT",
     "MIT License": "MIT",
     "The MIT License": "MIT",
@@ -203,6 +203,15 @@ license_mapping = {
     "epl2.0": "EPL-2.0",
     "EPL2": "EPL-2.0",
 
+    # ECL-2.0
+    "Educational Community License v2.0": "ECL-2.0",
+    "Educational Community License Version 2.0": "ECL-2.0",
+    "Educational Community License 2.0": "ECL-2.0",
+    "ECL-2.0": "ECL-2.0",
+    "ECL v2.0": "ECL-2.0",
+    "ECL Version 2.0": "ECL-2.0",
+    "ECL2": "ECL-2.0",
+
     "Python-2.0": "Python-2.0",
     "python": "Python-2.0",
 
@@ -270,10 +279,20 @@ license_mapping = {
     "Artistic License 2.0": "Artistic-2.0",
     "Artistic 2.0": "Artistic-2.0",
 
-    #Microsoft Public License
+    # Microsoft Public License
     "MS-PL": "MS-PL",
     "Microsoft Public License": "MS-PL",
     "MSPL": "MS-PL",
+
+    # WTFPL
+    "WTFPL": "WTFPL",
+    "Do What The F*ck You Want To Public License": "WTFPL",
+    "Do What The Fuck You Want To Public License": "WTFPL",
+    "wtfpl": "WTFPL",
+    "WTF Public License": "WTFPL",
+    "WTF License": "WTFPL",
+    "Do WTF You Want License": "WTFPL",
+    "DWTFYWTPL": "WTFPL",
 
     #Zlib variants
     "Zlib": "Zlib",
@@ -311,6 +330,15 @@ license_mapping = {
     "n/a (unknown)": "Proprietary_Closed",
     "Unlicensed": "Proprietary_Closed",
 
+    # Universal Permissive License v1.0
+    "UPL": "UPL-1.0",
+    "UPL-1.0": "UPL-1.0",
+    "UPL 1.0": "UPL-1.0",
+    "UPL v1.0": "UPL-1.0",
+    "Universal Permissive License v1.0": "UPL-1.0",
+    "Universal Permissive License 1.0": "UPL-1.0",
+    "Universal Permissive License Version 1.0": "UPL-1.0",
+
     # Proprietary Unknown
     "Other": "Proprietary_Unknown",
     "other": "Proprietary_Unknown",
@@ -336,9 +364,9 @@ license_mapping = {
 COMPATIBILITY_RULES = {
     "Permissive": {
         "MIT", "BSD-2-Clause", "BSD-3-Clause", "0BSD", "Apache-2.0",
-        "ISC", "Zlib", "CC0-1.0", "Unlicense",
+        "ISC", "Zlib", "CC0-1.0", "Unlicense", "UPL-1.0", "ECL-2.0",
         "BSL-1.0", "Artistic-2.0", "MS-PL", "CC-BY-4.0", "AFL-3.0",
-        "MIT-0", "PostgreSQL", "Python-2.0", "SQLite",
+        "MIT-0", "PostgreSQL", "Python-2.0", "SQLite", "WTFPL",
     },
     
     "Weak Copyleft": {
@@ -358,6 +386,26 @@ COMPATIBILITY_RULES = {
 
 }
 
+# explicit incompatibility rules (pairs that should return False)
+INCOMPATIBILITIES = {
+("GPL-2.0-only", "GPL-3.0-only"),
+("GPL-2.0-only", "GPL-3.0-or-later"),
+("GPL-3.0-only", "GPL-2.0-only"),
+("GPL-3.0-or-later", "GPL-2.0-only"),
+("GPL-2.0-only", "LGPL-2.1-only"),
+("LGPL-2.1-only", "GPL-2.0-only"),
+("Apache-2.0", "GPL-2.0-only"),
+("GPL-2.0-only", "Apache-2.0"),
+}
+
+# explicit compatibility rules (pairs that should return True)
+EXPLICIT_COMPATIBILITIES = {
+("Apache-2.0", "GPL-3.0-only"),
+("GPL-3.0-only", "Apache-2.0"),
+("Apache-2.0", "GPL-3.0-or-later"),
+("GPL-3.0-or-later", "Apache-2.0"),
+}
+
 
 def check_compatibility(license_a: str, license_b: str) -> bool:
     """Determine if license_a is compatible with license_b."""
@@ -365,29 +413,28 @@ def check_compatibility(license_a: str, license_b: str) -> bool:
     license_a = license_a.strip()
     license_b = license_b.strip()
     
-    if {"Proprietary_Closed", "Proprietary_Unknown"} & {license_a, license_b}:
+    # Proprietary licenses are never compatible, even with themselves
+    if license_a in {"Proprietary_Closed", "Proprietary_Unknown"} or \
+       license_b in {"Proprietary_Closed", "Proprietary_Unknown"}:
         return False
 
     if license_a == license_b:
+        return True
+    
+    # Check explicit incompatibilities
+    if (license_a, license_b) in INCOMPATIBILITIES:
+        return False
+
+
+    # Check explicit compatibilities
+    if (license_a, license_b) in EXPLICIT_COMPATIBILITIES:
         return True
 
     # If both licenses belong to the same compatibility group, compatible
     for group in COMPATIBILITY_RULES.values():
         if license_a in group and license_b in group:
             return True
-
-    # Apache-2.0 compatibility is complex:
-    # Apache-2.0 is NOT compatible with GPL-2.0-only, but IS with GPL-3.0-only and later.
-    if license_a == "Apache-2.0" and license_b == "GPL-2.0-only":
-        return False
-    if license_b == "Apache-2.0" and license_a == "GPL-2.0-only":
-        return False
-
-    # Apache-2.0 and GPL-3.0-only are compatible (with conditions), so return True for them
-    if (license_a == "Apache-2.0" and license_b == "GPL-3.0-only") or \
-       (license_b == "Apache-2.0" and license_a == "GPL-3.0-only"):
-        return True
-
+    
     # Default fallback: incompatible
     return False
 
