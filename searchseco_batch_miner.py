@@ -10,6 +10,8 @@ from logging.handlers import RotatingFileHandler
 import traceback
 from python_script.licenses import compatibility_matrix, license_mapping, LICENSE_LIST
 from python_script.db_operations import update_searchrepos, get_search_repos, insert_into_rp_data
+from python_script.global_trivial_methods import filter_with_global_trivial_names, filter_dataframe, filter_trivial_functions_by_name
+
 from dotenv import load_dotenv
 
 load_dotenv("./src/config/.env")
@@ -412,75 +414,6 @@ def violation_stat_count(df):
     return df, stat_count
 
 
-def filter_dataFrame(df):
-
-    valid_qp = {"0", "1", "2", "3", "4", "5", "Yes"}
-    df["Query Project"] = df["Query Project"].astype(str).str.strip()
-    df = df[df["Query Project"].isin(valid_qp)]
-
-    return df.copy()
-
-
-def filter_trivial_functions_by_name(df, file_col="file_location"):
-    
-    if df.empty:
-        return df.copy()
-
-    if file_col not in df.columns:
-        raise KeyError(f"Column '{file_col}' not found in DataFrame")
-
-    df = df.copy()
-
-    # --- Filter by Method Name ---
-    df = df[df['Method Name'].str.match(r'^[A-Za-z_][A-Za-z0-9_]{2,}$', na=False)]
-
-    # --- Filter by File Location ---
-    df = df[df[file_col].str.contains(r'\w+/\w+.*\.\w+', na=False)]
-
-    if df.empty:
-        return df  # no rows left after filtering
-
-    # --- Detect language from file extension ---
-    def detect_language(path):
-        ext = os.path.splitext(str(path))[1].lower()
-        mapping = {
-            ".c": "c", ".h": "c",
-            ".cpp": "cpp", ".cc": "cpp", ".hpp": "cpp",
-            ".cs": "cs", ".java": "java",
-            ".js": "js", ".ts": "js",
-            ".py": "py",
-        }
-        return mapping.get(ext, "other")
-
-    df["Language"] = df[file_col].apply(detect_language)
-
-    # --- Trivial patterns ---
-    trivial_patterns = {
-        "c": [r'^(get|set|init|reset|free|alloc|load|save|open|close|input|output|error|message|complete)$', r'^(main)$'],
-        "cpp": [r'^(get|set|init|reset|copy|assign|release|load|save|open|close|input|output|error|message|complete)$', r'^(main|operator.*)$'],
-        "cs": [r'^(get|set|reset|dispose|clone|load|save|open|close|input|output|error|message|complete|is[A-Z][A-Za-z0-9_]*)$', r'^(Main)$'],
-        "java": [r'^(get|set|load|save|open|close|input|output|error|message|complete|is[A-Z][A-Za-z0-9_]*|clone|toString|hashCode|equals)$', r'^(main)$'],
-        "js": [r'^(get|set|reset|constructor|load|save|open|close|input|output|error|message|complete)$', r'^(main)$'],
-        "py": [r'^__.*__$', r'^(init|get|set|reset|load|save|open|close|input|output|error|message|complete|is_[a-z0-9_]+)$', r'^(main)$'],
-        "other": [r'^__.*__$', r'^(init|get|set|reset|load|save|open|close|input|output|error|message|complete|is_[a-z0-9_]+)$', r'^(main)$'],
-    }
-
-    compiled_patterns = {lang: re.compile("|".join(pats), re.IGNORECASE) for lang, pats in trivial_patterns.items()}
-
-    # --- Filtering ---
-    def is_trivial(name, lang):
-        regex = compiled_patterns.get(lang)
-        return bool(regex and regex.match(str(name)))
-
-    mask = ~df.apply(lambda row: is_trivial(row["Method Name"], row["Language"]), axis=1)
-
-    # Drop "Language" safely
-    if "Language" in df.columns:
-        return df[mask].drop(columns=["Language"]).reset_index(drop=True)
-    else:
-        return df[mask].reset_index(drop=True)
-
-
 
 def main():
     """
@@ -551,7 +484,13 @@ def main():
             print("Creating a dataframe...")
             df, input_project_id, input_project_version = create_dataFrame(matches, repo_url)
 
+            print("Filtering the dataframe...")
             df = filter_trivial_functions_by_name(df, file_col="File Location")
+
+            if df.empty:
+                continue
+
+            df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
 
             if df.empty:
                 continue
@@ -568,7 +507,7 @@ def main():
             df = check_license_compatibility(df)
 
     
-            df = filter_dataFrame(df)
+            df = filter_dataframe(df)
 
             if df.empty:
                 continue

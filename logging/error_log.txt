@@ -1,0 +1,87 @@
+2025-09-13 16:17:54,277 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/searchseco_batch_miner.py", line 554, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/searchseco_batch_miner.py", line 487, in main
+    df = filter_trivial_functions_by_name(df, file_col="File Location")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 46, in filter_trivial_functions_by_name
+    df["Language"] = df[file_col].apply(detect_language)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/series.py", line 4924, in apply
+    ).apply()
+      ^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/apply.py", line 1427, in apply
+    return self.apply_standard()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/apply.py", line 1507, in apply_standard
+    mapped = obj._map_values(
+             ^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/base.py", line 921, in _map_values
+    return algorithms.map_array(arr, mapper, na_action=na_action, convert=convert)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/algorithms.py", line 1743, in map_array
+    return lib.map_infer(values, mapper, convert=convert)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "lib.pyx", line 2972, in pandas._libs.lib.map_infer
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 36, in detect_language
+    ext = os.path.splitext(str(path))[1].lower()
+          ^^
+NameError: name 'os' is not defined. Did you forget to import 'os'
+
+2025-09-13 16:25:48,265 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/searchseco_batch_miner.py", line 488, in main
+    df = filter_trivial_functions_by_name(df, file_col="File Location")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 60, in filter_trivial_functions_by_name
+    compiled_patterns = {lang: re.compile("|".join(pats), re.IGNORECASE) for lang, pats in trivial_patterns.items()}
+                               ^^
+NameError: name 're' is not defined. Did you forget to import 're'
+
+2025-09-13 16:27:23,680 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="../input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '../input_files/global_trivial_names.json'
+
+2025-09-13 16:30:01,565 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 3805, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7081, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7089, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'method_name'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 166, in filter_with_global_trivial_names
+    return df[~df["method_name"].isin(trivial_names)].reset_index(drop=True)
+               ~~^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 4102, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    raise KeyError(key) from err
+KeyError: 'method_name'
+

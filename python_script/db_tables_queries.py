@@ -68,16 +68,6 @@ CREATE TABLE repository_data (
 );
 
 
-CREATE TABLE IF NOT EXISTS global_trivial_names (
-    name TEXT PRIMARY KEY,
-    project_count INTEGER NOT NULL,
-    example_projects TEXT,   -- comma-separated sample project_ids (for inspection)
-    notes TEXT,
-    last_updated TIMESTAMP NOT NULL DEFAULT NOW()
-);
-
-
-
 ##### Stats on Undefined license #####
 
 ## Count Number of Projects Undefined license
@@ -154,7 +144,7 @@ sudo -u postgres psql
 
 ### Replication  Package Data pulling ###
 
-\copy (SELECT * FROM repository_data LIMIT 10) TO '/tmp/valication_mined_data.csv' WITH CSV HEADER;
+\copy (SELECT * FROM repository_data LIMIT 10) TO '/tmp/validation_mined_data.csv' WITH CSV HEADER;
 
 sudo mv /tmp/valication_mined_data.csv /datadisk/SearchSECOminer/searchSECO-miner/data_files/
 
