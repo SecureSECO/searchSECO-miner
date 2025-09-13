@@ -404,6 +404,8 @@ EXPLICIT_COMPATIBILITIES = {
 ("GPL-3.0-only", "Apache-2.0"),
 ("Apache-2.0", "GPL-3.0-or-later"),
 ("GPL-3.0-or-later", "Apache-2.0"),
+("Apache-2.0", "GPL-2.0-or-later"),
+("GPL-2.0-or-later", "Apache-2.0"),
 }
 
 

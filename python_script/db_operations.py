@@ -22,6 +22,7 @@ def get_db_conn():
     )
     return conn
 
+
 def update_searchrepos(input_project_id, input_project_version, repo_id, stat_count):
     conn = None
     try:
@@ -48,6 +49,7 @@ def update_searchrepos(input_project_id, input_project_version, repo_id, stat_co
             except Exception:
                 pass
 
+
 def update_process_time(field: str, repo_id: str, repo_url: str):
     if field not in ("processing_start_time", "processing_end_time"):
         raise ValueError("Invalid field. Must be 'processing_start_time' or 'processing_end_time'.")
@@ -60,6 +62,7 @@ def update_process_time(field: str, repo_id: str, repo_url: str):
     print("Rows affected:", cur.rowcount)
     cur.close()
     conn.close()
+
 
 def get_search_repos(search_repo, repo_org):
     conn = get_db_conn()
@@ -98,14 +101,14 @@ def get_search_repos(search_repo, repo_org):
     return repos
 
 
-def insert_into_rp_data(df, repo_id):
+def insert_into_rp_data(df1, repo_id):
     try:
         # Connect to PostgreSQL
         conn = get_db_conn()
         cur = conn.cursor()
 
         # Rename CSV columns to match the database
-        df.rename(columns={
+        df= df1.rename(columns={
             'Hash': 'hash',
             'Project ID': 'project_id',
             'Version': 'version',
@@ -118,11 +121,7 @@ def insert_into_rp_data(df, repo_id):
             'Violation': 'violation',
             'Source_project': 'source_project',
             'Source_project_version': 'source_project_version'
-        }, inplace=True)
-
-        # Filter data constraints
-        df = df[df['query_project'].str.len() <= 5]
-        df = df[df['violation'].str.len() <= 100]
+        })
 
         # Remove duplicates based on (hash, project_id, version)
         df.drop_duplicates(subset=['hash', 'project_id', 'version'], inplace=True)
@@ -140,6 +139,7 @@ def insert_into_rp_data(df, repo_id):
         df = df.where(pd.notnull(df), None)
 
         # Convert DataFrame to list of tuples for batch insert
+                
         records_to_insert = [
             (
                 row['_id'], row['hash'], row['project_id'], row['version'], row['license'],

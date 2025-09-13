@@ -1,4 +1,3 @@
-ps aux | grep run_python_miner.sh
 ps aux | grep 'tail -n 2000'
 source /root/miniconda3/etc/profile.d/conda.sh
 
@@ -7,3 +6,5 @@ ps aux | grep up_run_searchSECO.sh
 nohup ./up_run_searchSECO.sh &
 
 nohup bash -c './run_python_miner.sh 2>&1 | tail -n 2000' > logfile.log &
+
+ps aux | grep run_python_miner.sh

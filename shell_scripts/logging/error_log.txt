@@ -16,3 +16,454 @@ Traceback (most recent call last):
     print(f"Error running SearchSECO check: {e}")
 OSError: [Errno 5] Input/output error
 
+2025-09-12 22:07:24,995 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 553, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 511, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 253, in check_license_compatibility
+    df = df.sort_values(by=["Hash", "Version"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 7172, in sort_values
+    keys = [self._get_label_or_level_values(x, axis=axis) for x in by]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 1911, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'Hash'
+
+2025-09-12 22:26:30,057 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 553, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 511, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 253, in check_license_compatibility
+    df = df.sort_values(by=["Hash", "Version"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 7172, in sort_values
+    keys = [self._get_label_or_level_values(x, axis=axis) for x in by]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 1911, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'Hash'
+
+2025-09-12 23:10:30,244 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 553, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 511, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 253, in check_license_compatibility
+    df = df.sort_values(by=["Hash", "Version"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 7172, in sort_values
+    keys = [self._get_label_or_level_values(x, axis=axis) for x in by]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 1911, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'Hash'
+
+2025-09-13 03:06:10,503 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 623, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 567, in main
+    df = filter_trivial_functions_by_name(df, file_col="File Location")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 494, in filter_trivial_functions_by_name
+    return df[mask].drop(columns=["Language"]).reset_index(drop=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 5581, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4788, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4830, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7070, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['Language'] not found in axis"
+
+2025-09-13 04:56:46,744 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 623, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 567, in main
+    df = filter_trivial_functions_by_name(df, file_col="File Location")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 494, in filter_trivial_functions_by_name
+    return df[mask].drop(columns=["Language"]).reset_index(drop=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 5581, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4788, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4830, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7070, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['Language'] not found in axis"
+
+2025-09-13 04:58:29,002 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 623, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 578, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 254, in check_license_compatibility
+    df = df.sort_values(by=["Hash", "Version"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 7172, in sort_values
+    keys = [self._get_label_or_level_values(x, axis=axis) for x in by]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 1911, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'Hash'
+
+2025-09-13 05:12:52,456 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 623, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 567, in main
+    df = filter_trivial_functions_by_name(df, file_col="File Location")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 494, in filter_trivial_functions_by_name
+    return df[mask].drop(columns=["Language"]).reset_index(drop=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 5581, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4788, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4830, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7070, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['Language'] not found in axis"
+
+2025-09-13 05:44:05,787 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 623, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 578, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 254, in check_license_compatibility
+    df = df.sort_values(by=["Hash", "Version"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 7172, in sort_values
+    keys = [self._get_label_or_level_values(x, axis=axis) for x in by]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 1911, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'Hash'
+
+2025-09-13 05:54:37,023 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 623, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 567, in main
+    df = filter_trivial_functions_by_name(df, file_col="File Location")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 494, in filter_trivial_functions_by_name
+    return df[mask].drop(columns=["Language"]).reset_index(drop=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 5581, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4788, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4830, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7070, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['Language'] not found in axis"
+
+2025-09-13 05:55:38,620 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 623, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 578, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 254, in check_license_compatibility
+    df = df.sort_values(by=["Hash", "Version"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 7172, in sort_values
+    keys = [self._get_label_or_level_values(x, axis=axis) for x in by]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 1911, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'Hash'
+
+2025-09-13 06:40:43,835 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 623, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 578, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 254, in check_license_compatibility
+    df = df.sort_values(by=["Hash", "Version"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 7172, in sort_values
+    keys = [self._get_label_or_level_values(x, axis=axis) for x in by]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 1911, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'Hash'
+
+2025-09-13 06:48:04,897 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 623, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 567, in main
+    df = filter_trivial_functions_by_name(df, file_col="File Location")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 494, in filter_trivial_functions_by_name
+    return df[mask].drop(columns=["Language"]).reset_index(drop=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 5581, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4788, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4830, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7070, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['Language'] not found in axis"
+
+2025-09-13 07:38:16,671 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 623, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 578, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 254, in check_license_compatibility
+    df = df.sort_values(by=["Hash", "Version"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 7172, in sort_values
+    keys = [self._get_label_or_level_values(x, axis=axis) for x in by]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 1911, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'Hash'
+
+2025-09-13 07:39:05,799 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 623, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 567, in main
+    df = filter_trivial_functions_by_name(df, file_col="File Location")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 494, in filter_trivial_functions_by_name
+    return df[mask].drop(columns=["Language"]).reset_index(drop=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 5581, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4788, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4830, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7070, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['Language'] not found in axis"
+
+2025-09-13 07:47:45,655 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 623, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 567, in main
+    df = filter_trivial_functions_by_name(df, file_col="File Location")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 494, in filter_trivial_functions_by_name
+    return df[mask].drop(columns=["Language"]).reset_index(drop=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 5581, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4788, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4830, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7070, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['Language'] not found in axis"
+
+2025-09-13 09:44:28,758 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 626, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 578, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 254, in check_license_compatibility
+    df = df.sort_values(by=["Hash", "Version"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 7172, in sort_values
+    keys = [self._get_label_or_level_values(x, axis=axis) for x in by]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 1911, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'Hash'
+
+2025-09-13 09:44:37,192 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 626, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 578, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 254, in check_license_compatibility
+    df = df.sort_values(by=["Hash", "Version"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 7172, in sort_values
+    keys = [self._get_label_or_level_values(x, axis=axis) for x in by]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 1911, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'Hash'
+
+2025-09-13 10:06:42,714 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 626, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 581, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 257, in check_license_compatibility
+    df = df.sort_values(by=["Hash", "Version"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 7172, in sort_values
+    keys = [self._get_label_or_level_values(x, axis=axis) for x in by]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 1911, in _get_label_or_level_values
+    raise KeyError(key)
+KeyError: 'Hash'
+
+2025-09-13 10:50:46,399 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 626, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 570, in main
+    df = filter_trivial_functions_by_name(df, file_col="File Location")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 497, in filter_trivial_functions_by_name
+    return df[mask].drop(columns=["Language"]).reset_index(drop=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 5581, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4788, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/generic.py", line 4830, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7070, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['Language'] not found in axis"
+
+2025-09-13 11:08:51,924 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 610, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 565, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 258, in check_license_compatibility
+    grouped = df.groupby("Hash")
+              ^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 9183, in groupby
+    return DataFrameGroupBy(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/groupby/groupby.py", line 1329, in __init__
+    grouper, exclusions, obj = get_grouper(
+                               ^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/groupby/grouper.py", line 1043, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'Hash'
+
+2025-09-13 11:09:31,656 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 610, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 565, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 258, in check_license_compatibility
+    grouped = df.groupby("Hash")
+              ^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 9183, in groupby
+    return DataFrameGroupBy(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/groupby/groupby.py", line 1329, in __init__
+    grouper, exclusions, obj = get_grouper(
+                               ^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/groupby/grouper.py", line 1043, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'Hash'
+
+2025-09-13 11:29:19,738 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 610, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 565, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 258, in check_license_compatibility
+    grouped = df.groupby("Hash")
+              ^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 9183, in groupby
+    return DataFrameGroupBy(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/groupby/groupby.py", line 1329, in __init__
+    grouper, exclusions, obj = get_grouper(
+                               ^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/groupby/grouper.py", line 1043, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'Hash'
+
+2025-09-13 11:38:09,988 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 610, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 565, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 258, in check_license_compatibility
+    grouped = df.groupby("Hash")
+              ^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/frame.py", line 9183, in groupby
+    return DataFrameGroupBy(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/groupby/groupby.py", line 1329, in __init__
+    grouper, exclusions, obj = get_grouper(
+                               ^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.12/site-packages/pandas/core/groupby/grouper.py", line 1043, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'Hash'
+

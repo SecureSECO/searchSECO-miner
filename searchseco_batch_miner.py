@@ -9,7 +9,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import traceback
 from python_script.licenses import compatibility_matrix, license_mapping, LICENSE_LIST
-from python_script.db_operations import update_searchrepos, get_search_repos, insert_into_rp_data, update_process_time
+from python_script.db_operations import update_searchrepos, get_search_repos, insert_into_rp_data
 from dotenv import load_dotenv
 
 load_dotenv("./src/config/.env")
@@ -25,7 +25,7 @@ def parse_matches(output, repo_url):
     lines = output.split('\n')
     #total_matches = sum(1 for line in lines if line.startswith('Hash '))
     current_match_num = 0
-    #database=1
+    
     
     for line in lines:
         # Look for start of new match group (hash line)
@@ -34,7 +34,7 @@ def parse_matches(output, repo_url):
             if current_match:
                 matches.append(current_match)
             current_match = None
-            current_hash = line.split()[1]  # Extract the hash value
+            current_hash = line.split()[1] 
             #print(f"Hash: {current_hash}")
             database=1
             
@@ -105,6 +105,9 @@ def parse_matches(output, repo_url):
 def save_to_csv(df, stat_count, repo_url, input_project_id, save_dir):
     """Save matches to CSV file with function code and all repositories."""
     
+    if df.empty:
+        return
+    
     filename = f"{repo_url.split('.com/')[1].replace('/','_')}_matches_{input_project_id}_{stat_count[0]}_{stat_count[1]}_{stat_count[2]}_{stat_count[3]}_{stat_count[4]}_{stat_count[5]}.csv"
     
     # Ensure the save directory exists
@@ -127,6 +130,11 @@ def create_dataFrame(matches, repo_url):
         for i, match in enumerate(matches, 1):
             try:
 
+                hash_value = match.get('hash')
+                if hash_value is None:
+                    print(f"Warning: 'hash' missing in match {i}, skipping")
+                    continue
+
                 method_name = match['method_name'].split(',')[0]
                 project_id = match['method_name'].split(',')[1].split(':')[1].strip()
                 project_version = match['method_name'].split(',')[2].split(':')[1].strip()
@@ -144,7 +152,7 @@ def create_dataFrame(matches, repo_url):
                     method_name,
                     f"{match['method_file']}:{match['method_line']}",
                     match['function_code'] or "Didn't pull code",
-                    '; '.join(match['found_in']),
+                    '|'.join(match['found_in']),
                     "Yes"
                 ])
 
@@ -191,6 +199,8 @@ def create_dataFrame(matches, repo_url):
             .reset_index(drop=True)
         )
 
+        df.drop_duplicates(subset=['Hash', 'Project ID', 'Version'], inplace=True)
+
         #df.to_csv("./results/data/"+str(project_version)+".csv")
     except Exception as e:
         print(f"Error: {e}")
@@ -209,7 +219,6 @@ def run_searchseco_check(repo_url):
         stdout = result.stdout.strip()
         stderr = result.stderr.strip()
         
-        # Debug output
         #print("\nSearchSECO Output:")
         print(result.stdout)
          
@@ -234,14 +243,16 @@ def can_reuse_code(source_license: str, target_license: str) -> bool:
     return compatibility_matrix[target_license][source_license]
 
 
-def check_license_compatibility(df):
+def check_license_compatibility(df1):
+
+    df = df1.copy()
 
     df = df[df["Query Project"].apply(lambda x: len(str(x)) <= 3)]
     
     df["Violation"] = ""
     df["Source_project"] = ""
     df["Source_project_version"] = ""
-    stat_count = [0,0,0,0,0,0]
+    #stat_count = [0,0,0,0,0,0]
     # Sorting by Version (timestamp) within each hash group
     df = df.sort_values(by=["Hash", "Version"])
     grouped = df.groupby("Hash")
@@ -255,7 +266,7 @@ def check_license_compatibility(df):
         if df.at[group_idx, "Query Project"] == "Yes":
             df.at[group_idx, "Violation"] = f"No match found with SearchSECO database (or source project)"
             df.at[group_idx, "Query Project"] = "5"
-            stat_count[5] = stat_count[5]+1
+            #stat_count[5] = stat_count[5]+1
         
         for idx, row in group.iloc[1:].iterrows():
             if df.at[idx, "Query Project"] == "Yes":
@@ -265,32 +276,49 @@ def check_license_compatibility(df):
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "4"
-                    stat_count[4] = stat_count[4]+1
+                    #stat_count[4] = stat_count[4]+1
                 elif license_type=="Proprietary_Unknown" or base_license=="Proprietary_Unknown":
                     df.at[idx, "Violation"] = f"{license_type} has high risk of conflicting with {base_license}"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "3"
-                    stat_count[3] = stat_count[3]+1
+                    #stat_count[3] = stat_count[3]+1
                 elif base_license==license_type and base_license not in {"Proprietary_Closed", "Proprietary_Unknown"}:
                     df.at[idx, "Violation"] = f"{license_type} same license {base_license}"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "0"
-                    stat_count[0] = stat_count[0]+1
+                    #stat_count[0] = stat_count[0]+1
                 elif can_reuse_code(base_license, license_type):
                     df.at[idx, "Violation"] = f"{license_type} compatible with {base_license}"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "1"
-                    stat_count[1] = stat_count[1]+1
+                    #stat_count[1] = stat_count[1]+1
                 elif not can_reuse_code(base_license, license_type):
                     df.at[idx, "Violation"] = f"{license_type} incompatible with {base_license}"
                     df.at[idx, "Source_project"] = source_project_id
                     df.at[idx, "Source_project_version"] = source_project_version
                     df.at[group_idx, "Query Project"] = "2"
-                    stat_count[2] = stat_count[2]+1
-    
+                    #stat_count[2] = stat_count[2]+1
+
+    return df
+
+
+
+def violation_stat_count(df):
+
+    stat_count = [0,0,0,0,0,0]
+
+    # Count occurrences using value_counts
+    counts = df["Query Project"].value_counts()
+
+    #print("Counts: ", counts)
+
+    # Update stat_count for "0" to "5"
+    for i in range(6):
+        stat_count[i] = int(counts.get(str(i), 0))
+
     ############### Maximum match or commonalities count ####################
     # Step 1: Filter
     filtered_df = df[~((df["Query Project"] == "Yes") | (df["Query Project"] == "5"))]
@@ -380,8 +408,78 @@ def check_license_compatibility(df):
 
 
     print("Clone and incompatibility statistics: ", stat_count)
-
+    
     return df, stat_count
+
+
+def filter_dataFrame(df):
+
+    valid_qp = {"0", "1", "2", "3", "4", "5", "Yes"}
+    df["Query Project"] = df["Query Project"].astype(str).str.strip()
+    df = df[df["Query Project"].isin(valid_qp)]
+
+    return df.copy()
+
+
+def filter_trivial_functions_by_name(df, file_col="file_location"):
+    
+    if df.empty:
+        return df.copy()
+
+    if file_col not in df.columns:
+        raise KeyError(f"Column '{file_col}' not found in DataFrame")
+
+    df = df.copy()
+
+    # --- Filter by Method Name ---
+    df = df[df['Method Name'].str.match(r'^[A-Za-z_][A-Za-z0-9_]{2,}$', na=False)]
+
+    # --- Filter by File Location ---
+    df = df[df[file_col].str.contains(r'\w+/\w+.*\.\w+', na=False)]
+
+    if df.empty:
+        return df  # no rows left after filtering
+
+    # --- Detect language from file extension ---
+    def detect_language(path):
+        ext = os.path.splitext(str(path))[1].lower()
+        mapping = {
+            ".c": "c", ".h": "c",
+            ".cpp": "cpp", ".cc": "cpp", ".hpp": "cpp",
+            ".cs": "cs", ".java": "java",
+            ".js": "js", ".ts": "js",
+            ".py": "py",
+        }
+        return mapping.get(ext, "other")
+
+    df["Language"] = df[file_col].apply(detect_language)
+
+    # --- Trivial patterns ---
+    trivial_patterns = {
+        "c": [r'^(get|set|init|reset|free|alloc|load|save|open|close|input|output|error|message|complete)$', r'^(main)$'],
+        "cpp": [r'^(get|set|init|reset|copy|assign|release|load|save|open|close|input|output|error|message|complete)$', r'^(main|operator.*)$'],
+        "cs": [r'^(get|set|reset|dispose|clone|load|save|open|close|input|output|error|message|complete|is[A-Z][A-Za-z0-9_]*)$', r'^(Main)$'],
+        "java": [r'^(get|set|load|save|open|close|input|output|error|message|complete|is[A-Z][A-Za-z0-9_]*|clone|toString|hashCode|equals)$', r'^(main)$'],
+        "js": [r'^(get|set|reset|constructor|load|save|open|close|input|output|error|message|complete)$', r'^(main)$'],
+        "py": [r'^__.*__$', r'^(init|get|set|reset|load|save|open|close|input|output|error|message|complete|is_[a-z0-9_]+)$', r'^(main)$'],
+        "other": [r'^__.*__$', r'^(init|get|set|reset|load|save|open|close|input|output|error|message|complete|is_[a-z0-9_]+)$', r'^(main)$'],
+    }
+
+    compiled_patterns = {lang: re.compile("|".join(pats), re.IGNORECASE) for lang, pats in trivial_patterns.items()}
+
+    # --- Filtering ---
+    def is_trivial(name, lang):
+        regex = compiled_patterns.get(lang)
+        return bool(regex and regex.match(str(name)))
+
+    mask = ~df.apply(lambda row: is_trivial(row["Method Name"], row["Language"]), axis=1)
+
+    # Drop "Language" safely
+    if "Language" in df.columns:
+        return df[mask].drop(columns=["Language"]).reset_index(drop=True)
+    else:
+        return df[mask].reset_index(drop=True)
+
 
 
 def main():
@@ -402,10 +500,10 @@ def main():
     search_repo = sys.argv[1] if len(sys.argv) > 1 else '100'
     #print(search_repo)
 
-    # provide enterprise organization name: Google, Microsoft, IBM, Intel etc.
+    # provide enterprise organization name: Google, Microsoft, IBM, Intel, Apple etc.
     # NGO/Foundation Wikimedia, KDE, Apache, Mozilla
 
-    company_name = "Wikimedia"  
+    company_name = "IBM"
     
     repos = get_search_repos(search_repo, company_name)
     
@@ -453,7 +551,11 @@ def main():
             print("Creating a dataframe...")
             df, input_project_id, input_project_version = create_dataFrame(matches, repo_url)
 
-            
+            df = filter_trivial_functions_by_name(df, file_col="File Location")
+
+            if df.empty:
+                continue
+
             print("Checking license compatibility...")
 
             # 0, no violation & same license
@@ -463,8 +565,18 @@ def main():
             # 4, undetermined
             # 5, no match found with SearchSECO database
             
-            df, stat_count = check_license_compatibility(df)
-            
+            df = check_license_compatibility(df)
+
+    
+            df = filter_dataFrame(df)
+
+            if df.empty:
+                continue
+
+
+            df, stat_count = violation_stat_count(df)
+
+            #print("stat_count: ", stat_count)
             print("Saving results to database...")
             
             #update_process_time("processing_end_time", repo_id, repo_url)
@@ -482,7 +594,6 @@ def main():
             update_searchrepos(input_project_id, input_project_version, repo_id, stat_count)
         
         time.sleep(20)
-            
             
 
 if __name__ == "__main__":

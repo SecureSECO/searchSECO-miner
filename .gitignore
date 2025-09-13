@@ -176,7 +176,7 @@ python_script/tmp_license_checks/
 python_script/frequency_check.py
 python_script/.env
 shell_scripts/results
-shell_scripts/logging
+shell_scripts/logging/*
 shell_scripts/searchsecominer.log
 violation_examples
 input_files/backup_data

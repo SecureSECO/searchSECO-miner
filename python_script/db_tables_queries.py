@@ -67,6 +67,17 @@ CREATE TABLE repository_data (
     FOREIGN KEY (relational_id) REFERENCES searchrepos(_id) ON DELETE CASCADE
 );
 
+
+CREATE TABLE IF NOT EXISTS global_trivial_names (
+    name TEXT PRIMARY KEY,
+    project_count INTEGER NOT NULL,
+    example_projects TEXT,   -- comma-separated sample project_ids (for inspection)
+    notes TEXT,
+    last_updated TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+
+
 ##### Stats on Undefined license #####
 
 ## Count Number of Projects Undefined license
@@ -140,18 +151,11 @@ sudo -u postgres psql
 \c github_repos;
 \l
 
-### Violation examples ###
 
-1. https://github.com/alibaba/arthas
-2. https://github.com/shibingli/webconsole
+### Replication  Package Data pulling ###
 
+\copy (SELECT * FROM repository_data LIMIT 10) TO '/tmp/valication_mined_data.csv' WITH CSV HEADER;
 
-Update:
-- add a column in searchrepos for real violation
-- add a column in repository_data 
-- update searchrepos with the number of conflicts
-- update searchrepos with the processing start and end time
-- number of match found/not -1/conflict
-- keep a note even if not violated license
+sudo mv /tmp/valication_mined_data.csv /datadisk/SearchSECOminer/searchSECO-miner/data_files/
 
 """
