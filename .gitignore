@@ -180,3 +180,5 @@ shell_scripts/logging/*
 shell_scripts/searchsecominer.log
 violation_examples
 input_files/backup_data
+input_files/global_trivial_names.json
+shell_scripts/logging/error_log.txt

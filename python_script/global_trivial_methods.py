@@ -1,9 +1,10 @@
-# global_trivial_names.py
+# global_trivial_methods.py
 
 from collections import defaultdict
 import json
 import os
 import re
+import hashlib
 from python_script.db_operations import get_db_conn
 
 
@@ -74,94 +75,94 @@ def filter_trivial_functions_by_name(df, file_col="file_location"):
         return df[mask].reset_index(drop=True)
 
 
-def build_and_store_global_trivial_names(threshold=20, sample_limit=10, replace=True):
+def build_and_store_global_trivial_names(file_path="global_trivial_names.json", sample_limit=10, seen_limit=100):
     """
-    Build a global set of trivial method names based on how many distinct
-    projects they appear in, and store them in the database.
+    Build a global set of trivial method names, keeping counts of distinct projects.
+    Uses a compact JSON format to avoid large file size.
     """
+
     conn = get_db_conn()
     cur = conn.cursor()
-
-    # 1. Fetch all method_name + project_id pairs
-    cur.execute("""
-        SELECT method_name, project_id
-        FROM repository_data
-        WHERE method_name IS NOT NULL AND method_name <> ''
-    """)
+    cur.execute("SELECT method_name, project_id FROM repository_data WHERE method_name IS NOT NULL AND method_name <> ''")
     rows = cur.fetchall()
-
-    # 2. Build mapping: method_name -> distinct projects
-    project_map = defaultdict(set)
-    for method, proj in rows:
-        project_map[method].add(proj)
-
-    # 3. Count how many distinct projects each method appears in
-    project_counts = {m: len(p) for m, p in project_map.items()}
-
-    # 4. Select trivial names
-    trivial_names = {m for m, cnt in project_counts.items() if cnt >= threshold}
-    print(f"Identified {len(trivial_names)} global trivial names (threshold={threshold})")
-
-    # Print top frequent method names for diagnostics
-    top = sorted(project_counts.items(), key=lambda x: x[1], reverse=True)[:sample_limit]
-    print("Top frequent method names:")
-    for name, count in top:
-        print(f"  {name}: {count} projects")
-
-    # 5. Ensure global_trivial_names table exists
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS global_trivial_names (
-            method_name TEXT PRIMARY KEY,
-            project_count INTEGER NOT NULL
-        )
-    """)
-
-    if replace:
-        cur.execute("DELETE FROM global_trivial_names")
-
-    # 6. Insert trivial names
-    for method in trivial_names:
-        cur.execute(
-            """
-            INSERT INTO global_trivial_names (method_name, project_count)
-            VALUES (%s, %s)
-            ON CONFLICT (method_name)
-            DO UPDATE SET project_count = EXCLUDED.project_count
-            """,
-            (method, project_counts[method]),
-        )
-
-    conn.commit()
     cur.close()
     conn.close()
 
-    return trivial_names
+    # Load existing data if present
+    if os.path.exists(file_path):
+        with open(file_path, "r") as f:
+            data = json.load(f)
+    else:
+        data = {}
 
+    # Convert existing seen_projects to sets for easy updating
+    for k, v in data.items():
+        v["seen_projects"] = set(v.get("seen_projects", []))
 
-def export_global_trivial_names(file_path="global_trivial_names.json"):
-    conn = get_db_conn()
-    cur = conn.cursor()
-    cur.execute("SELECT method_name, project_count FROM global_trivial_names")
-    data = {row[0]: row[1] for row in cur.fetchall()}
-    cur.close()
-    conn.close()
-    
+    for method_name, project_id in rows:
+        # Use a short hash of project_id to save space
+        proj_hash = hashlib.sha1(str(project_id).encode()).hexdigest()[:8]
+
+        if method_name not in data:
+            data[method_name] = {"count": 0, "seen_projects": set()}
+
+        if proj_hash not in data[method_name]["seen_projects"]:
+            data[method_name]["count"] += 1
+            if len(data[method_name]["seen_projects"]) < seen_limit:
+                data[method_name]["seen_projects"].add(proj_hash)
+
+    # Convert seen_projects back to lists for JSON
+    for v in data.values():
+        v["seen_projects"] = list(v["seen_projects"])
+
+    # Save JSON
     with open(file_path, "w") as f:
         json.dump(data, f, indent=2)
 
+    
+    """
+    # Print top frequent method names for diagnostics
+    top = sorted(data.items(), key=lambda x: x[1]["count"], reverse=True)[:sample_limit]
+    
+    print("Top frequent method names:")
+    for name, info in top:
+        print(f"  {name}: {info['count']} projects")
+    """
+    return None
 
-def load_global_trivial_names(file_path="global_trivial_names.json"):
+
+def load_global_trivial_names(file_path="global_trivial_names.json", threshold=None):
     """
-    Load global trivial names from a JSON file.
+    Load global trivial names from JSON.
+    Only return method names meeting the optional threshold (count of distinct projects).
     """
+    import os, json
+
+    if not os.path.exists(file_path):
+        return set()
 
     with open(file_path, "r") as f:
         data = json.load(f)
-    # Only keys (method names) are needed for filtering
+
+    if threshold is not None:
+        # Filter methods by count
+        data = {method: info for method, info in data.items() if info.get("count", 0) >= threshold}
+
     return set(data.keys())
 
 
-def filter_with_global_trivial_names(df, file_path="global_trivial_names.json"):
-    trivial_names = load_global_trivial_names(file_path)
+def filter_with_global_trivial_names(df, file_path="global_trivial_names.json", threshold=20):
+    """
+    Filter dataframe by removing global trivial method names.
+    """
+    trivial_names = load_global_trivial_names(file_path, threshold)
     return df[~df["Method Name"].isin(trivial_names)].reset_index(drop=True)
 
+
+"""
+#Periodically (e.g., daily or after ingesting N new repos) run
+
+from global_trivial_methods import build_and_store_global_trivial_names
+
+build_and_store_global_trivial_names(file_path="../input_files/global_trivial_names.json")
+"""

@@ -436,7 +436,7 @@ def main():
     # provide enterprise organization name: Google, Microsoft, IBM, Intel, Apple etc.
     # NGO/Foundation Wikimedia, KDE, Apache, Mozilla
 
-    company_name = "IBM"
+    company_name = "Intel"
     
     repos = get_search_repos(search_repo, company_name)
     
@@ -490,7 +490,7 @@ def main():
             if df.empty:
                 continue
 
-            df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+            df = filter_with_global_trivial_names(df, file_path="../input_files/global_trivial_names.json", threshold=30)
 
             if df.empty:
                 continue
