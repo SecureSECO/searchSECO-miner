@@ -467,3 +467,183 @@ Traceback (most recent call last):
     raise KeyError(gpr)
 KeyError: 'Hash'
 
+2025-09-13 17:36:46,121 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
+
+2025-09-13 17:37:04,952 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
+
+2025-09-13 17:37:20,197 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
+
+2025-09-13 17:37:34,856 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
+
+2025-09-13 17:37:52,741 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
+
+2025-09-13 17:38:26,119 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
+
+2025-09-13 17:38:43,439 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
+
+2025-09-13 17:38:57,903 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
+
+2025-09-13 17:39:22,125 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
+
+2025-09-13 17:40:16,035 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
+
+2025-09-13 17:41:03,150 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
+
+2025-09-13 17:41:58,724 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/projects/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 493, in main
+    df = filter_with_global_trivial_names(df, file_path="./input_files/global_trivial_names.json")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 165, in filter_with_global_trivial_names
+    trivial_names = load_global_trivial_names(file_path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/projects/searchSECO-miner/python_script/global_trivial_methods.py", line 158, in load_global_trivial_names
+    with open(file_path, "r") as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
+
