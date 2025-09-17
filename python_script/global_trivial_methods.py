@@ -5,7 +5,7 @@ import json
 import os
 import re
 import hashlib
-from python_script.db_operations import get_db_conn
+from db_operations import get_db_conn
 
 
 def filter_dataframe(df):
@@ -35,8 +35,12 @@ def filter_trivial_functions_by_name(df, file_col="file_location"):
         return df  # no rows left after filtering
 
     # --- Detect language from file extension ---
-    def detect_language(path):
-        ext = os.path.splitext(str(path))[1].lower()
+    def detect_language(path: str) -> str:
+        # Remove any trailing line number (e.g. file.py:123 -> file.py)
+        clean_path = re.sub(r":\d+$", "", str(path))
+        
+        ext = os.path.splitext(clean_path)[1].lower()
+        
         mapping = {
             ".c": "c", ".h": "c",
             ".cpp": "cpp", ".cc": "cpp", ".hpp": "cpp",

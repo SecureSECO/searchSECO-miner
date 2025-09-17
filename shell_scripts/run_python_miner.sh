@@ -1,9 +1,16 @@
 #!/bin/bash
 
 # Activate the Conda environment
-source ~/anaconda3/etc/profile.d/conda.sh
-#source /root/miniconda3/etc/profile.d/conda.sh
-conda activate rnd
+# Check which conda.sh exists and source it
+if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
+    source "$HOME/anaconda3/etc/profile.d/conda.sh"
+elif [ -f "/root/miniconda3/etc/profile.d/conda.sh" ]; then
+    source "/root/miniconda3/etc/profile.d/conda.sh"
+else
+    echo "No conda.sh found. Please install Conda."
+    exit 1
+fi
+
 
 TEMP_DIR="../.tmp"
 elapsed_time=0  # Tracks total runtime in seconds
