@@ -74,7 +74,7 @@ while true; do
     echo "Process took around $duration seconds to complete." | tee -a "$LOGFILE"
 
     # sleep_time grows exponentially with duration (bounded between 30–300s)
-    sleep_time=$(awk -v d="$duration" 'BEGIN { s = int(10 * (1.05 ^ (d / 60))); if (s < 30) s=30; if (s > 300) s=300; print s }')
+    sleep_time=600
 
     if [ $exit_code -eq 124 ]; then
         echo "Process timed out or was killed due to inactivity." | tee -a "$LOGFILE"
