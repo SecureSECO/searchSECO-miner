@@ -57,7 +57,7 @@ def filter_trivial_functions_by_name(df, file_col="file_location"):
         "c": [r'^(get|set|init|reset|free|alloc|load|save|open|close|input|output|error|message|complete)$', r'^(main)$'],
         "cpp": [r'^(get|set|init|reset|copy|assign|release|load|save|open|close|input|output|error|message|complete)$', r'^(main|operator.*)$'],
         "cs": [r'^(get|set|reset|dispose|clone|load|save|open|close|input|output|error|message|complete|is[A-Z][A-Za-z0-9_]*)$', r'^(Main)$'],
-        "java": [r'^(get|set|load|save|open|close|input|output|error|message|complete|is[A-Z][A-Za-z0-9_]*|clone|toString|hashCode|equals)$', r'^(main)$'],
+        "java": [r'^(get|set|load|run|save|open|close|input|output|error|message|complete|is[A-Z][A-Za-z0-9_]*|clone|toString|hashCode|equals)$', r'^(main)$'],
         "js": [r'^(get|set|reset|constructor|load|save|open|close|input|output|error|message|complete)$', r'^(main)$'],
         "py": [r'^__.*__$', r'^(init|get|set|reset|load|save|open|close|input|output|error|message|complete|is_[a-z0-9_]+)$', r'^(main)$'],
         "other": [r'^__.*__$', r'^(init|get|set|reset|load|save|open|close|input|output|error|message|complete|is_[a-z0-9_]+)$', r'^(main)$'],

@@ -148,4 +148,5 @@ sudo -u postgres psql
 
 sudo mv /tmp/valication_mined_data.csv /datadisk/SearchSECOminer/searchSECO-miner/data_files/
 
+
 """
