@@ -146,7 +146,7 @@ sudo -u postgres psql
 
 \copy (SELECT * FROM repository_data LIMIT 10) TO '/tmp/validation_mined_data.csv' WITH CSV HEADER;
 
-sudo mv /tmp/valication_mined_data.csv /datadisk/SearchSECOminer/searchSECO-miner/data_files/
-
+sudo mv /tmp/match_verifier_mined_data.csv /datadisk/SearchSECOminer/searchSECO-miner/data_files/
+relational_id
 
 """

@@ -5,7 +5,7 @@ import json
 import os
 import re
 import hashlib
-from db_operations import get_db_conn
+from python_script.db_operations import get_db_conn
 
 
 def filter_dataframe(df):
@@ -140,7 +140,6 @@ def load_global_trivial_names(file_path="global_trivial_names.json", threshold=N
     Load global trivial names from JSON.
     Only return method names meeting the optional threshold (count of distinct projects).
     """
-    import os, json
 
     if not os.path.exists(file_path):
         return set()
