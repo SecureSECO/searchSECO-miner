@@ -85,3 +85,80 @@ Traceback (most recent call last):
     raise KeyError(key) from err
 KeyError: 'method_name'
 
+2026-03-20 14:51:26,340 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/searchSECO-miner/searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/searchSECO-miner/searchseco_batch_miner.py", line 516, in main
+    df, stat_count = violation_stat_count(df)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/searchSECO-miner/searchseco_batch_miner.py", line 384, in violation_stat_count
+    compliance_df = df[df["Query Project"] == "1" or df["Query Project"] == "2"]
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/generic.py", line 1580, in __nonzero__
+    raise ValueError(
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+2026-03-20 14:53:39,578 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/ops/array_ops.py", line 362, in na_logical_op
+    result = op(x, y)
+             ^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/roperator.py", line 58, in ror_
+    return operator.or_(right, left)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unsupported operand type(s) for |: 'str' and 'str'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/ops/array_ops.py", line 376, in na_logical_op
+    result = libops.scalar_binop(x, y, op)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/ops.pyx", line 210, in pandas._libs.ops.scalar_binop
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/roperator.py", line 58, in ror_
+    return operator.or_(right, left)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unsupported operand type(s) for |: 'bool' and 'str'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/didar/phd/searchSECO-miner/searchseco_batch_miner.py", line 555, in <module>
+    main()
+  File "/home/didar/phd/searchSECO-miner/searchseco_batch_miner.py", line 516, in main
+    df, stat_count = violation_stat_count(df)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/searchSECO-miner/searchseco_batch_miner.py", line 384, in violation_stat_count
+    compliance_df = df[df["Query Project"] == "1" | df["Query Project"] == "2"]
+                                              ~~~~^~~~~~~~~~~~~~~~~~~~~
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/ops/common.py", line 76, in new_method
+    return method(self, other)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/arraylike.py", line 82, in __ror__
+    return self._logical_method(other, roperator.ror_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/series.py", line 6149, in _logical_method
+    res_values = ops.logical_op(lvalues, rvalues, op)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/ops/array_ops.py", line 454, in logical_op
+    res_values = na_logical_op(lvalues, rvalues, op)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/ops/array_ops.py", line 385, in na_logical_op
+    raise TypeError(
+TypeError: Cannot perform 'ror_' with a dtyped [object] array and scalar of type [bool]
+
+2026-04-01 17:50:04,495 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/searchSECO-miner/searchseco_batch_miner.py", line 560, in <module>
+    main()
+  File "/home/didar/phd/searchSECO-miner/searchseco_batch_miner.py", line 521, in main
+    df, stat_count = violation_stat_count(df)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/searchSECO-miner/searchseco_batch_miner.py", line 332, in violation_stat_count
+    filtered_df = df[(df["Query Project"] not in ["0","1","2","3","4","5"])]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/generic.py", line 1580, in __nonzero__
+    raise ValueError(
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+

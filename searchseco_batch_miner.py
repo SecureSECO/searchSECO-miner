@@ -8,7 +8,7 @@ import pandas as pd
 import logging
 from logging.handlers import RotatingFileHandler
 import traceback
-from python_script.licenses import compatibility_matrix, license_mapping, LICENSE_LIST
+from python_script.licenses import check_compatibility, get_license_group, classify_violation, license_mapping, LICENSE_LIST
 from python_script.db_operations import update_searchrepos, get_search_repos, insert_into_rp_data
 from python_script.global_trivial_methods import filter_with_global_trivial_names, filter_dataframe, filter_trivial_functions_by_name
 
@@ -153,7 +153,7 @@ def create_dataFrame(matches, repo_url):
                     project_license,
                     method_name,
                     f"{match['method_file']}:{match['method_line']}",
-                    match['function_code'] or "Didn't pull code",
+                    match['function_code'] or "Not fetched",
                     '|'.join(match['found_in']),
                     "Yes"
                 ])
@@ -179,7 +179,7 @@ def create_dataFrame(matches, repo_url):
                         project_license,
                         method_name,
                         f"{variant['method_file']}:{variant['method_line']}",
-                        variant['function_code'] or "Didn't pull code",
+                        variant['function_code'] or "Not fetched",
                         variant['url'],
                         "No"
                     ])
@@ -240,11 +240,6 @@ def normalize_license(license_name: str) -> str:
     return license_mapping.get(license_name, license_name)
 
 
-def can_reuse_code(source_license: str, target_license: str) -> bool:
-    
-    return compatibility_matrix[target_license][source_license]
-
-
 def check_license_compatibility(df1):
 
     df = df1.copy()
@@ -260,49 +255,59 @@ def check_license_compatibility(df1):
     grouped = df.groupby("Hash")
 
     for function_hash, group in grouped:
-        base_license = normalize_license(group.iloc[0]["License"].strip())  # Normalize first row's license
+        l_orig = normalize_license(group.iloc[0]["License"].strip())  # Normalize first row's license
         source_project_id = group.iloc[0]["Project ID"]
         source_project_version = group.iloc[0]["Version"]
         group_idx = group.index[0]
 
         if df.at[group_idx, "Query Project"] == "Yes":
-            df.at[group_idx, "Violation"] = f"No match found with SearchSECO database (or source project)"
-            df.at[group_idx, "Query Project"] = "5"
+            df.at[group_idx, "Violation"] = f"Observed Origin-no match found with SearchSECO database"
+            df.at[group_idx, "Query Project"] = "0"
             #stat_count[5] = stat_count[5]+1
         
         for idx, row in group.iloc[1:].iterrows():
             if df.at[idx, "Query Project"] == "Yes":
-                license_type = normalize_license(row["License"].strip())
-                if license_type not in LICENSE_LIST or base_license not in LICENSE_LIST:
-                    df.at[idx, "Violation"] = f"Undetermined: {license_type} with the {base_license}"
-                    df.at[idx, "Source_project"] = source_project_id
-                    df.at[idx, "Source_project_version"] = source_project_version
-                    df.at[group_idx, "Query Project"] = "4"
+                l_sink = normalize_license(row["License"].strip())
+                df.at[idx, "Source_project"] = source_project_id
+                df.at[idx, "Source_project_version"] = source_project_version
+                cat, msg = classify_violation(l_orig, l_sink, LICENSE_LIST)
+                df.at[idx, "Violation"] = msg
+                df.at[group_idx, "Query Project"] = cat
+
+                """
+                if l_sink not in LICENSE_LIST or l_orig not in LICENSE_LIST:
+                    df.at[idx, "Violation"] = f"Undetermined: {l_sink} with the {l_orig}"
+                    df.at[group_idx, "Query Project"] = "5"
                     #stat_count[4] = stat_count[4]+1
-                elif license_type=="Proprietary_Unknown" or base_license=="Proprietary_Unknown":
-                    df.at[idx, "Violation"] = f"{license_type} has high risk of conflicting with {base_license}"
-                    df.at[idx, "Source_project"] = source_project_id
-                    df.at[idx, "Source_project_version"] = source_project_version
+                elif l_sink=="Proprietary" and l_orig=="Proprietary": # Proprietary (A)	Proprietary (B)	Category 2 (Violation)
+                    df.at[idx, "Violation"] = f"Restricted Proprietary Transfer: {l_sink} incompatible with {l_orig}"
+                    df.at[group_idx, "Query Project"] = "3"
+                elif l_sink != "Proprietary" and l_orig=="Proprietary": # Origin (Proprietary) Sink (OSS-Any) Category 2 (Violation)
+                    df.at[idx, "Violation"] = f"IP Leak-Proprietary code in OSS project: {l_sink} incompatible with {l_orig}"
                     df.at[group_idx, "Query Project"] = "3"
                     #stat_count[3] = stat_count[3]+1
-                elif base_license==license_type and base_license not in {"Proprietary_Closed", "Proprietary_Unknown"}:
-                    df.at[idx, "Violation"] = f"{license_type} same license {base_license}"
-                    df.at[idx, "Source_project"] = source_project_id
-                    df.at[idx, "Source_project_version"] = source_project_version
-                    df.at[group_idx, "Query Project"] = "0"
-                    #stat_count[0] = stat_count[0]+1
-                elif can_reuse_code(base_license, license_type):
-                    df.at[idx, "Violation"] = f"{license_type} compatible with {base_license}"
-                    df.at[idx, "Source_project"] = source_project_id
-                    df.at[idx, "Source_project_version"] = source_project_version
-                    df.at[group_idx, "Query Project"] = "1"
-                    #stat_count[1] = stat_count[1]+1
-                elif not can_reuse_code(base_license, license_type):
-                    df.at[idx, "Violation"] = f"{license_type} incompatible with {base_license}"
-                    df.at[idx, "Source_project"] = source_project_id
-                    df.at[idx, "Source_project_version"] = source_project_version
-                    df.at[group_idx, "Query Project"] = "2"
+                elif l_sink == "Proprietary" and l_orig != "Proprietary": # Origin (OSS-Any) Sink (Proprietary) Category 4 (High Risk)
+                    if get_license_group(l_orig) == "Strong Copyleft":
+                        df.at[idx, "Violation"] = f"High-Risk-Viral Copyleft Ingestion: {l_sink} incompatible with {l_orig}"
+                        df.at[group_idx, "Query Project"] = "4" # Category 4: High Risk
+                    else:
+                        df.at[idx, "Violation"] = "Proprietary Ingestion of OSS"
+                        df.at[group_idx, "Query Project"] = "3" # Category 3
+                    #stat_count[3] = stat_count[3]+1
+                elif check_compatibility(l_orig, l_sink):
+                    if l_orig==l_sink:
+                        df.at[idx, "Violation"] = f"Sink is following same license {l_orig}"
+                        df.at[group_idx, "Query Project"] = "1"
+                        #stat_count[0] = stat_count[0]+1
+                    else:
+                        df.at[idx, "Violation"] = f"{l_sink} compatible with {l_orig}"
+                        df.at[group_idx, "Query Project"] = "2"
+                        #stat_count[1] = stat_count[1]+1
+                elif not check_compatibility(l_orig, l_sink):
+                    df.at[idx, "Violation"] = f"{l_sink} incompatible with {l_orig}"
+                    df.at[group_idx, "Query Project"] = "3"
                     #stat_count[2] = stat_count[2]+1
+                """
 
     return df
 
@@ -323,8 +328,8 @@ def violation_stat_count(df):
 
     ############### Maximum match or commonalities count ####################
     # Step 1: Filter
-    filtered_df = df[~((df["Query Project"] == "Yes") | (df["Query Project"] == "5"))]
-
+    filtered_df = df[~((df["Query Project"] == "Yes") | (df["Query Project"] == "0"))]
+    #filtered_df = df[~df["Query Project"].isin(["0", "1", "2", "3", "4", "5"])]
     # Step 2: Count rows per (Project ID, Version)
     grouped = (
         filtered_df.groupby(['Project ID', 'Version'])
@@ -354,8 +359,8 @@ def violation_stat_count(df):
 
 
     ############### Top three violated licenses ####################
-    # Step 1: Filter rows where Query Project == "2"
-    violations_df = df[df["Query Project"] == "2"]
+    # Step 1: Filter rows where Query Project == "3"
+    violations_df = df[df["Query Project"] == "3"]
 
     # Step 2: Drop empty or missing licenses
     violations_df = violations_df[violations_df["License"].notna() & (violations_df["License"].str.strip() != "")]
@@ -380,8 +385,8 @@ def violation_stat_count(df):
     print("Top violated licenses:\n", top_violated_licenses.to_string(index=False))
 
     ############### Top three complied licenses ####################
-    # Step 1: Filter rows where Query Project == "0"
-    compliance_df = df[df["Query Project"] == "0"]
+    # Step 1: Filter rows where Query Project == "2"
+    compliance_df = df[(df["Query Project"] == "1") | (df["Query Project"] == "2")]
 
     # Step 2: Drop empty or missing licenses
     compliance_df = compliance_df[
@@ -426,7 +431,7 @@ def main():
         # https://github.com/google/ios-webkit-debug-proxy
         # https://github.com/Samsung/ColorPatternTracker
         # https://github.com/microsoft/Windows-universal-samples
-        python auto_miner.py N https://github.com/IBM/forbiditerative
+        python searchseco_batch_miner.py https://github.com/IBM/forbiditerative
     """
     
     #fun_code = False if sys.argv[1] == "N" else True
@@ -436,7 +441,7 @@ def main():
     # provide enterprise organization name: Google, Microsoft, IBM, Intel, Apple etc.
     # NGO/Foundation Wikimedia, KDE, Apache, Mozilla
 
-    company_name = "Intel"
+    company_name = "Microsoft"
     
     repos = get_search_repos(search_repo, company_name)
     
@@ -497,12 +502,12 @@ def main():
 
             print("Checking license compatibility...")
 
-            # 0, no violation & same license
-            # 1, no violation & different license
-            # 2, conflicting or violated license
-            # 3, has a high risk of conflicting
-            # 4, undetermined
-            # 5, no match found with SearchSECO database
+            # 0, no match found with SearchSECO database
+            # 1, no violation & same license
+            # 2, no violation & different license
+            # 3, conflicting or violated license
+            # 4, has a high risk of conflicting
+            # 5, undetermined
             
             df = check_license_compatibility(df)
 

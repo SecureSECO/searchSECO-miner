@@ -8,9 +8,9 @@ LICENSE_LIST = [
     "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only", "0BSD", "ECL-2.0",
     "LGPL-2.1-only", "LGPL-3.0-only", "AGPL-3.0-only", "GPL-3.0-or-later",
     "EPL-1.0", "EPL-2.0", "CDDL-1.0", "AFL-3.0", "OSL-3.0", "CC-BY-4.0", "CC-BY-NC-4.0",
-    "EUPL-1.1", "EUPL-1.2", "Python-2.0", "PostgreSQL", "MIT-0", "SQLite", "WTFPL"
-    "CC0-1.0", "CC-BY-SA-4.0", "Artistic-2.0", "Unlicense", "UPL-1.0", "Zlib", "ISC", "MS-PL", 
-    "Proprietary_Closed", "Proprietary_Unknown",
+    "EUPL-1.1", "EUPL-1.2", "Python-2.0", "PostgreSQL", "MIT-0", "SQLite", "WTFPL",
+    "CC0-1.0", "CC-BY-SA-4.0", "Artistic-2.0", "UPL-1.0", "Zlib", "ISC", "MS-PL", 
+    "Proprietary", "Unknown", "Unlicensed"
 ]
 
 # Mapping various license names and aliases to SPDX standard identifiers
@@ -215,11 +215,6 @@ license_mapping = {
     "Python-2.0": "Python-2.0",
     "python": "Python-2.0",
 
-    # Unlicense and public domain
-    "Unlicense": "Unlicense",
-    "The Unlicense": "Unlicense",
-    "Public Domain": "Unlicense",
-    "Unlicense (Public Domain Dedication)": "Unlicense",
 
     # ISC variants
     "ISC": "ISC",
@@ -287,7 +282,6 @@ license_mapping = {
     # WTFPL
     "WTFPL": "WTFPL",
     "Do What The F*ck You Want To Public License": "WTFPL",
-    "Do What The Fuck You Want To Public License": "WTFPL",
     "wtfpl": "WTFPL",
     "WTF Public License": "WTFPL",
     "WTF License": "WTFPL",
@@ -304,32 +298,7 @@ license_mapping = {
     "ZLIB License": "Zlib",
     "The zlib License": "Zlib",
     "zlib/libpng": "Zlib",
-
-    # Proprietary Closed
-    "-": "Proprietary_Closed",
-    "": "Proprietary_Closed",
-    " ": "Proprietary_Closed",
-    None: "Proprietary_Closed",
-    "No license": "Proprietary_Closed",
-    "Not licensed": "Proprietary_Closed",
-    "Closed": "Proprietary_Closed",
-    "Closed Source": "Proprietary_Closed",
-    "Not Open Source": "Proprietary_Closed",
-    "Proprietary": "Proprietary_Closed",
-    "None": "Proprietary_Closed",
-    "No License": "Proprietary_Closed",  # Capitalization variant
-    "Not Licensed": "Proprietary_Closed",  # Capitalization variant
-    "No licensing": "Proprietary_Closed",
-    "Internal": "Proprietary_Closed",
-    "Commercial": "Proprietary_Closed",  # Sometimes used in commercial-only packages
-    "Private": "Proprietary_Closed",
-    "N/A": "Proprietary_Closed",
-    "n/a": "Proprietary_Closed",
-    "NA": "Proprietary_Closed",
-    "na": "Proprietary_Closed",
-    "n/a (unknown)": "Proprietary_Closed",
-    "Unlicensed": "Proprietary_Closed",
-
+    
     # Universal Permissive License v1.0
     "UPL": "UPL-1.0",
     "UPL-1.0": "UPL-1.0",
@@ -339,32 +308,66 @@ license_mapping = {
     "Universal Permissive License 1.0": "UPL-1.0",
     "Universal Permissive License Version 1.0": "UPL-1.0",
 
+    # Proprietary Closed
+    "-": "Proprietary",
+    "": "Proprietary",
+    " ": "Proprietary",
+    "Closed": "Proprietary",
+    "Closed Source": "Proprietary",
+    "Not Open Source": "Proprietary",
+    "Proprietary": "Proprietary",
+    "Internal": "Proprietary",
+    "Commercial": "Proprietary",  # Sometimes used in commercial-only packages
+    "Private": "Proprietary",
+    "N/A": "Proprietary",
+    "n/a": "Proprietary",
+    "NA": "Proprietary",
+    "na": "Proprietary",
+    "Custom": "Proprietary",  # Often used for private/internal licenses
+    "custom": "Proprietary",
+
+    # Unlicensed
+    "None": "Unlicensed",
+    "none": "Unlicensed",
+    "No license": "Unlicensed",
+    "Not licensed": "Unlicensed",
+    "no license": "Unlicensed",
+    "not licensed": "Unlicensed",
+    "No licensing": "Unlicensed",
+    "no licensing": "Unlicensed",
+    "Unlicensed": "Unlicensed",
+    "unlicensed": "Unlicensed",
+    "Unlicense": "Unlicensed",
+    # Unlicense and public domain
+    "The Unlicense": "Unlicensed",
+    "Public Domain": "Unlicensed",
+    "Unlicense (Public Domain Dedication)": "Unlicensed",
+
     # Proprietary Unknown
-    "Other": "Proprietary_Unknown",
-    "other": "Proprietary_Unknown",
-    "NOASSERTION": "Proprietary_Unknown",
-    "undefined": "Proprietary_Unknown",
-    "Undefined": "Proprietary_Unknown",
-    "<undefined>": "Proprietary_Unknown",
-    "Unknown": "Proprietary_Unknown",
-    "unknown": "Proprietary_Unknown",
-    "Not specified": "Proprietary_Unknown",
-    "not specified": "Proprietary_Unknown",
-    "Not Provided": "Proprietary_Unknown",
-    "not provided": "Proprietary_Unknown",
-    "unspecified": "Proprietary_Unknown",
-    "Unspecified": "Proprietary_Unknown",
-    "No assertion": "Proprietary_Unknown",
-    "no assertion": "Proprietary_Unknown",
-    "Custom": "Proprietary_Unknown",  # Often used for private/internal licenses
-    "custom": "Proprietary_Unknown",
+    "Other": "Unknown",
+    "other": "Unknown",
+    "Unknown": "Unknown",
+    "unknown": "Unknown",
+    "Not specified": "Unknown",
+    "not specified": "Unknown",
+    "Not Provided": "Unknown",
+    "not provided": "Unknown",
+    "unspecified": "Unknown",
+    "Unspecified": "Unknown",
+    "No assertion": "Unknown",
+    "no assertion": "Unknown",
+    "NOASSERTION": "Unknown",
+    "undefined": "Unknown",
+    "Undefined": "Unknown",
+    "<undefined>": "Unknown",
+    "n/a (unknown)": "Unknown",
 }
 
 
-COMPATIBILITY_RULES = {
+COMPATIBILITY_GROUPS = {
     "Permissive": {
         "MIT", "BSD-2-Clause", "BSD-3-Clause", "0BSD", "Apache-2.0",
-        "ISC", "Zlib", "CC0-1.0", "Unlicense", "UPL-1.0", "ECL-2.0",
+        "ISC", "Zlib", "CC0-1.0", "UPL-1.0", "ECL-2.0",
         "BSL-1.0", "Artistic-2.0", "MS-PL", "CC-BY-4.0", "AFL-3.0",
         "MIT-0", "PostgreSQL", "Python-2.0", "SQLite", "WTFPL",
     },
@@ -381,72 +384,166 @@ COMPATIBILITY_RULES = {
     },
 
     "Proprietary": {
-        "Proprietary_Closed", "Proprietary_Unknown", "CC-BY-NC-4.0",
+        "Proprietary", "CC-BY-NC-4.0",
+    },
+    "Unknown": {
+        "Unknown",
+    },
+    "Unlicensed": {
+        "Unlicensed",
     }
+}
 
+# Define the flow hierarchy for directional compatibility
+# A license can flow into a group listed in its 'can_flow_into'
+FLOW_HIERARCHY = {
+    "Permissive": ["Permissive", "Weak Copyleft", "Strong Copyleft"],
+    "Weak Copyleft": ["Weak Copyleft", "Strong Copyleft"],
+    "Strong Copyleft": ["Strong Copyleft"],
+    "Proprietary": ["Proprietary"],
+    "Unlicensed": ["Unlicensed"], 
+    "Unknown": ["Unknown"]        
 }
 
 # explicit incompatibility rules (pairs that should return False)
+# Explicit incompatibility rules (l_orig, l_sink)
+# Even if they are in the same hierarchy group, these are forbidden.
 INCOMPATIBILITIES = {
-("GPL-2.0-only", "GPL-3.0-only"),
-("GPL-2.0-only", "GPL-3.0-or-later"),
-("GPL-3.0-only", "GPL-2.0-only"),
-("GPL-3.0-or-later", "GPL-2.0-only"),
-("GPL-2.0-only", "LGPL-2.1-only"),
-("LGPL-2.1-only", "GPL-2.0-only"),
-("Apache-2.0", "GPL-2.0-only"),
-("GPL-2.0-only", "Apache-2.0"),
+    # GPL Version Clashes (GPL-2.0 is NOT forward compatible with 3.0 unless "or-later" is specified)
+    ("GPL-2.0-only", "GPL-3.0-only"),
+    ("GPL-2.0-only", "GPL-3.0-or-later"),
+    ("GPL-3.0-only", "GPL-2.0-only"),
+    ("GPL-3.0-or-later", "GPL-2.0-only"),
+    
+    # LGPL Version Clashes
+    ("LGPL-2.1-only", "LGPL-3.0-only"),
+    ("LGPL-3.0-only", "LGPL-2.1-only"),
+
+    # Apache 2.0 and GPL 2.0 (The classic "Patent Clause" conflict)
+    # Note: Apache 2.0 code can go INTO GPL 3.0, but NOT into GPL 2.0.
+    ("Apache-2.0", "GPL-2.0-only"),
+    ("Apache-2.0", "GPL-2.0-or-later"), 
+    ("GPL-2.0-only", "Apache-2.0"),
+    
+    # MPL and GPL Conflicts (Unless the "Incompatible with Secondary Licenses" notice is removed)
+    ("MPL-2.0", "GPL-2.0-only"),
+    ("MPL-2.0", "GPL-3.0-only"),
 }
 
-# explicit compatibility rules (pairs that should return True)
+# Explicit compatibility rules (l_orig, l_sink)
+# These allow "flow" that might otherwise be blocked by group logic.
 EXPLICIT_COMPATIBILITIES = {
-("Apache-2.0", "GPL-3.0-only"),
-("GPL-3.0-only", "Apache-2.0"),
-("Apache-2.0", "GPL-3.0-or-later"),
-("GPL-3.0-or-later", "Apache-2.0"),
-("Apache-2.0", "GPL-2.0-or-later"),
-("GPL-2.0-or-later", "Apache-2.0"),
+    # The GPL-3.0 "Peace Treaty"
+    ("Apache-2.0", "GPL-3.0-only"),
+    ("Apache-2.0", "GPL-3.0-or-later"),
+    ("Apache-2.0", "AGPL-3.0-only"),
+    
+    # Library flow (LGPL is designed to be "sunk" into its GPL counterpart)
+    ("LGPL-2.1-only", "GPL-2.0-only"),
+    ("LGPL-2.1-only", "GPL-2.0-or-later"),
+    ("LGPL-3.0-only", "GPL-3.0-only"),
+    ("LGPL-3.0-only", "GPL-3.0-or-later"),
+
+    # MPL 2.0 "Secondary License" compatibility
+    ("MPL-2.0", "Apache-2.0"), # MPL allows this under certain conditions
+    ("MPL-2.0", "LGPL-2.1-only"),
 }
 
 
-def check_compatibility(license_a: str, license_b: str) -> bool:
-    """Determine if license_a is compatible with license_b."""
-    
-    license_a = license_a.strip()
-    license_b = license_b.strip()
-    
-    # Proprietary licenses are never compatible, even with themselves
-    if license_a in {"Proprietary_Closed", "Proprietary_Unknown"} or \
-       license_b in {"Proprietary_Closed", "Proprietary_Unknown"}:
+def get_license_group(license_name: str) -> str:
+    """Helper to find which group a license belongs to."""
+    for group_name, members in COMPATIBILITY_GROUPS.items():
+        if license_name in members:
+            return group_name
+    return "Proprietary" # Default to Proprietary if unknown
+
+
+def check_compatibility(l_orig: str, l_sink: str) -> bool:
+    """
+    Determine if code from l_orig can be 'sunk' into l_sink.
+    This implements the Directional Sink Rule.
+    """
+    l_orig = l_orig.strip()
+    l_sink = l_sink.strip()
+
+    group_orig = get_license_group(l_orig)
+    group_sink = get_license_group(l_sink)
+
+    if group_orig in {"Unknown", "Unlicensed"}:
         return False
 
-    if license_a == license_b:
-        return True
-    
-    # Check explicit incompatibilities
-    if (license_a, license_b) in INCOMPATIBILITIES:
+    if group_sink in {"Unknown", "Unlicensed"}:
         return False
 
-
-    # Check explicit compatibilities
-    if (license_a, license_b) in EXPLICIT_COMPATIBILITIES:
+    # 1. Identical licenses are always compatible
+    if l_orig == l_sink:
         return True
 
-    # If both licenses belong to the same compatibility group, compatible
-    for group in COMPATIBILITY_RULES.values():
-        if license_a in group and license_b in group:
-            return True
+    # 2. Proprietary sinks/origins are never compatible with OSS (Conservative DSR approach)
+    if "Proprietary" in {l_orig, l_sink}:
+        return False
+
+    # 3. Check Explicit Incompatibilities (e.g., GPL-2.0-only vs GPL-3.0-only)
+    if (l_orig, l_sink) in INCOMPATIBILITIES:
+        return False
+
+    # 4. Check Explicit Compatibilities (e.g., Apache-2.0 into GPL-3.0)
+    if (l_orig, l_sink) in EXPLICIT_COMPATIBILITIES:
+        return True
+
+    # 5. Apply Directional Flow Logic
+
+    # If the sink group is allowed for this origin group, return True
+    if group_sink in FLOW_HIERARCHY.get(group_orig, []):
+        return True
     
-    # Default fallback: incompatible
     return False
 
-# Build compatibility matrix
-compatibility_matrix: Dict[str, Dict[str, bool]] = {}
-for lic_a in LICENSE_LIST:
-    compatibility_matrix[lic_a] = {lic_b: check_compatibility(lic_a, lic_b) for lic_b in LICENSE_LIST}
 
-if __name__ == "__main__":
-    import pprint
-    pprint.pprint(compatibility_matrix)
+def classify_violation(l_orig, l_sink, license_list):
+    """
+    Orchestrates classification of License Compliance Debt (LCD).
+    Returns: (Category_String, Audit_Message)
+    """
+
+    
+    # --- 1. HIGH RISK (CATEGORY 4) - MUST BE CHECKED FIRST ---
+    #L_orig = Proprietary to L_sink = Other #Category 4 (High Risk)
+    # Prioritize the "IP Leak" scenario even if metadata is messy.
+    if l_orig == "Proprietary" and (l_sink not in license_list or l_sink in ["Unlicensed", "Unknown"]):
+        return "4", f"High Risk - IP Leak - Proprietary code in unmonitored sink: {l_sink} incompatible with {l_orig}"
+
+    # Check for Viral Ingestion into Proprietary
+    if l_sink == "Proprietary" and get_license_group(l_orig) == "Strong Copyleft":
+        return "4", f"High-Risk-Viral Copyleft Ingestion: {l_sink} incompatible with {l_orig}"
+
+    # --- 2. UNDETERMINED / INFORMATION GAPS (CATEGORY 5) ---
+    # L_orig = Other to L_sink = Proprietary (or any other known license)
+    # we handle general missing/unrecognized metadata.
+    if (l_sink not in license_list or l_orig not in license_list or 
+        l_sink in ["Unlicensed", "Unknown"] or l_orig in ["Unlicensed", "Unknown"]):
+        return "5", f"Undetermined: {l_sink} with the {l_orig} (Provenance Debt)"
+
+    # --- 3. PROPRIETARY COMPATIBILITY (CATEGORY 3) ---
+    if l_orig == "Proprietary":
+        if l_sink == "Proprietary":
+            return "3", f"Restricted Proprietary Transfer: {l_sink} incompatible with {l_orig}"
+        else:
+            # Proprietary into known OSS (Permissive/Copyleft)
+            return "3", f"IP Leak - Proprietary code in OSS project: {l_sink} incompatible with {l_orig}"
+
+    if l_sink == "Proprietary":
+        # (Viral case was caught in Step 1, so this is for non-viral OSS like MIT/Apache)
+        return "3", f"Proprietary Ingestion of OSS: {l_orig} incompatible with {l_sink}"
+
+    # --- 4. STANDARD OSS COMPATIBILITY (CATEGORIES 1, 2, and 3) ---
+    if check_compatibility(l_orig, l_sink):
+        if l_orig == l_sink:
+            return "1", f"Sink is following same license {l_orig}"
+        else:
+            return "2", f"{l_sink} compatible with {l_orig}"
+    else:
+        # Known OSS Mismatch (e.g., GPL-3.0 into MIT)
+        return "3", f"{l_sink} incompatible with {l_orig}"
 
 #print(compatibility_matrix)

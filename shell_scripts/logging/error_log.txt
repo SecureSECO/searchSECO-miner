@@ -647,3 +647,85 @@ Traceback (most recent call last):
          ^^^^^^^^^^^^^^^^^^^^
 FileNotFoundError: [Errno 2] No such file or directory: './input_files/global_trivial_names.json'
 
+2026-04-01 17:38:34,886 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 560, in <module>
+    main()
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 512, in main
+    df = check_license_compatibility(df)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 273, in check_license_compatibility
+    cat, msg = classify_violation(l_orig, l_sink, LICENSE_LIST)
+               ^^^^^^^^^^^^^^^^^^
+NameError: name 'classify_violation' is not defined
+
+2026-04-01 17:48:25,202 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 560, in <module>
+    main()
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 521, in main
+    df, stat_count = violation_stat_count(df)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 332, in violation_stat_count
+    filtered_df = df[(df["Query Project"] not in ["0","1","2","3","4","5"])]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/generic.py", line 1580, in __nonzero__
+    raise ValueError(
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+2026-04-01 17:49:16,582 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 560, in <module>
+    main()
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 521, in main
+    df, stat_count = violation_stat_count(df)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 332, in violation_stat_count
+    filtered_df = df[(df["Query Project"] not in ["0","1","2","3","4","5"])]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/generic.py", line 1580, in __nonzero__
+    raise ValueError(
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+2026-04-01 17:49:41,474 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 560, in <module>
+    main()
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 521, in main
+    df, stat_count = violation_stat_count(df)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 332, in violation_stat_count
+    filtered_df = df[(df["Query Project"] not in ["0","1","2","3","4","5"])]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/generic.py", line 1580, in __nonzero__
+    raise ValueError(
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+2026-04-01 17:50:12,870 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 560, in <module>
+    main()
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 521, in main
+    df, stat_count = violation_stat_count(df)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 332, in violation_stat_count
+    filtered_df = df[(df["Query Project"] not in ["0","1","2","3","4","5"])]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/generic.py", line 1580, in __nonzero__
+    raise ValueError(
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
+2026-04-01 17:50:48,864 [ERROR] Unhandled exception in main:
+Traceback (most recent call last):
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 560, in <module>
+    main()
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 521, in main
+    df, stat_count = violation_stat_count(df)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/phd/searchSECO-miner/shell_scripts/../searchseco_batch_miner.py", line 332, in violation_stat_count
+    filtered_df = df[(df["Query Project"] not in ["0","1","2","3","4","5"])]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/didar/anaconda3/envs/rnd/lib/python3.11/site-packages/pandas/core/generic.py", line 1580, in __nonzero__
+    raise ValueError(
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+
