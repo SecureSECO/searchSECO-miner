@@ -10,7 +10,7 @@ LICENSE_LIST = [
     "EPL-1.0", "EPL-2.0", "CDDL-1.0", "AFL-3.0", "OSL-3.0", "CC-BY-4.0", "CC-BY-NC-4.0",
     "EUPL-1.1", "EUPL-1.2", "Python-2.0", "PostgreSQL", "MIT-0", "SQLite", "WTFPL",
     "CC0-1.0", "CC-BY-SA-4.0", "Artistic-2.0", "UPL-1.0", "Zlib", "ISC", "MS-PL", 
-    "Proprietary", "Unknown", "Unlicensed"
+    "Proprietary", "Unknown", "Unlicensed", "Unlicense", "Custom"
 ]
 
 # Mapping various license names and aliases to SPDX standard identifiers
@@ -298,7 +298,7 @@ license_mapping = {
     "ZLIB License": "Zlib",
     "The zlib License": "Zlib",
     "zlib/libpng": "Zlib",
-    
+
     # Universal Permissive License v1.0
     "UPL": "UPL-1.0",
     "UPL-1.0": "UPL-1.0",
@@ -323,8 +323,11 @@ license_mapping = {
     "n/a": "Proprietary",
     "NA": "Proprietary",
     "na": "Proprietary",
-    "Custom": "Proprietary",  # Often used for private/internal licenses
-    "custom": "Proprietary",
+    
+    # Unlicense and public domain
+    "The Unlicense": "Unlicense",
+    "Public Domain": "Unlicense",
+    "Unlicense (Public Domain Dedication)": "Unlicense",
 
     # Unlicensed
     "None": "Unlicensed",
@@ -337,15 +340,16 @@ license_mapping = {
     "no licensing": "Unlicensed",
     "Unlicensed": "Unlicensed",
     "unlicensed": "Unlicensed",
-    "Unlicense": "Unlicensed",
-    # Unlicense and public domain
-    "The Unlicense": "Unlicensed",
-    "Public Domain": "Unlicensed",
-    "Unlicense (Public Domain Dedication)": "Unlicensed",
 
-    # Proprietary Unknown
-    "Other": "Unknown",
-    "other": "Unknown",
+    # Custom
+    "Other": "Custom",
+    "other": "Custom",
+    "Custom": "Custom",
+    "custom": "Custom",
+    "Private": "Custom",
+    "Internal": "Custom",
+
+    # Unknown
     "Unknown": "Unknown",
     "unknown": "Unknown",
     "Not specified": "Unknown",
@@ -382,9 +386,14 @@ COMPATIBILITY_GROUPS = {
         "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only",
         "AGPL-3.0-only", "OSL-3.0", "GPL-3.0-or-later",
     },
-
+    "Custom": {
+        "Custom",
+        },
+    "Restricted": {
+        "CC-BY-NC-4.0",
+    },
     "Proprietary": {
-        "Proprietary", "CC-BY-NC-4.0",
+        "Proprietary",
     },
     "Unknown": {
         "Unknown",
@@ -397,12 +406,14 @@ COMPATIBILITY_GROUPS = {
 # Define the flow hierarchy for directional compatibility
 # A license can flow into a group listed in its 'can_flow_into'
 FLOW_HIERARCHY = {
-    "Permissive": ["Permissive", "Weak Copyleft", "Strong Copyleft"],
+    "Permissive": ["Permissive", "Weak Copyleft", "Strong Copyleft", "Unlicense"],
     "Weak Copyleft": ["Weak Copyleft", "Strong Copyleft"],
     "Strong Copyleft": ["Strong Copyleft"],
+    "Restricted": ["Restricted"],
     "Proprietary": ["Proprietary"],
-    "Unlicensed": ["Unlicensed"], 
-    "Unknown": ["Unknown"]        
+    "Custom": ["Custom",],
+    "Unknown": ["Unknown"],
+    "Unlicensed": ["Unlicensed"],         
 }
 
 # explicit incompatibility rules (pairs that should return False)
@@ -506,44 +517,87 @@ def classify_violation(l_orig, l_sink, license_list):
     Returns: (Category_String, Audit_Message)
     """
 
-    
-    # --- 1. HIGH RISK (CATEGORY 4) - MUST BE CHECKED FIRST ---
-    #L_orig = Proprietary to L_sink = Other #Category 4 (High Risk)
-    # Prioritize the "IP Leak" scenario even if metadata is messy.
-    if l_orig == "Proprietary" and (l_sink not in license_list or l_sink in ["Unlicensed", "Unknown"]):
-        return "4", f"High Risk - IP Leak - Proprietary code in unmonitored sink: {l_sink} incompatible with {l_orig}"
+    # --- 1. HIGH RISK (CATEGORY 4) ---
 
-    # Check for Viral Ingestion into Proprietary
+    # No legal permission anywhere
+    if l_orig == "Unlicensed" or l_sink == "Unlicensed":
+        return "4", f"High Risk - No legal permission to use: {l_sink} incompatible with {l_orig}"
+
+    # Unknown license entering proprietary product
+    if l_orig == "Unknown" and l_sink == "Proprietary":
+        return "4", "High Risk - Unknown license entering proprietary system"
+
+    # Proprietary code leaking into unknown destination
+    if l_orig == "Proprietary" and (
+        l_sink not in license_list or l_sink in ["Unknown", "Unlicensed", "Custom"]
+    ):
+        return "4", (
+            f"High Risk - IP Leak - Proprietary code in unmonitored sink: "
+            f"{l_sink} incompatible with {l_orig}"
+        )
+
+    # Viral copyleft into proprietary
     if l_sink == "Proprietary" and get_license_group(l_orig) == "Strong Copyleft":
-        return "4", f"High-Risk-Viral Copyleft Ingestion: {l_sink} incompatible with {l_orig}"
+        return "4", (
+            f"High-Risk-Viral Copyleft Ingestion: "
+            f"{l_sink} incompatible with {l_orig}"
+        )
+
+    # Non-commercial / restricted into proprietary
+    if get_license_group(l_orig) == "Restricted" and l_sink == "Proprietary":
+        return "4", (
+            f"High Risk - Non-commercial license used in commercial product: "
+            f"{l_sink} incompatible with {l_orig}"
+        )
+    
+    # Custom license into proprietary — possible violation
+    if l_orig == "Custom" and l_sink == "Proprietary":
+        return "4", (
+            f"Potential license conflict - Custom license requires legal review "
+            f"before proprietary use: {l_sink} with {l_orig}"
+        )
+    
+    if l_orig == "Proprietary" and l_sink == "Custom":
+        return "4", (
+            f"Potential IP policy conflict - Proprietary code entering "
+            f"custom-licensed system: {l_sink} with {l_orig}"
+        )
+    
+    if l_orig == "Custom" and l_sink == "Custom":
+        return "4", "High Risk: Unverified Custom-to-Custom Transfer"
 
     # --- 2. UNDETERMINED / INFORMATION GAPS (CATEGORY 5) ---
-    # L_orig = Other to L_sink = Proprietary (or any other known license)
-    # we handle general missing/unrecognized metadata.
-    if (l_sink not in license_list or l_orig not in license_list or 
-        l_sink in ["Unlicensed", "Unknown"] or l_orig in ["Unlicensed", "Unknown"]):
+
+    
+    if (l_orig == "Unknown" or l_sink == "Unknown" or l_orig not in license_list or l_sink not in license_list):
         return "5", f"Undetermined: {l_sink} with the {l_orig} (Provenance Debt)"
 
     # --- 3. PROPRIETARY COMPATIBILITY (CATEGORY 3) ---
+
     if l_orig == "Proprietary":
+
         if l_sink == "Proprietary":
-            return "3", f"Restricted Proprietary Transfer: {l_sink} incompatible with {l_orig}"
-        else:
-            # Proprietary into known OSS (Permissive/Copyleft)
-            return "3", f"IP Leak - Proprietary code in OSS project: {l_sink} incompatible with {l_orig}"
+            return "3", (
+                f"Restricted Proprietary Transfer: "
+                f"{l_sink} incompatible with {l_orig}"
+            )
+
+        if l_sink in LICENSE_LIST:
+            return "4", f"Potential IP policy conflict - Proprietary code entering: {l_sink} incompatible with {l_orig}"
 
     if l_sink == "Proprietary":
-        # (Viral case was caught in Step 1, so this is for non-viral OSS like MIT/Apache)
         return "3", f"Proprietary Ingestion of OSS: {l_orig} incompatible with {l_sink}"
 
-    # --- 4. STANDARD OSS COMPATIBILITY (CATEGORIES 1, 2, and 3) ---
+    # --- 4. STANDARD OSS COMPATIBILITY (CATEGORIES 1, 2, 3) ---
+
     if check_compatibility(l_orig, l_sink):
+
         if l_orig == l_sink:
             return "1", f"Sink is following same license {l_orig}"
+
         else:
             return "2", f"{l_sink} compatible with {l_orig}"
-    else:
-        # Known OSS Mismatch (e.g., GPL-3.0 into MIT)
-        return "3", f"{l_sink} incompatible with {l_orig}"
 
-#print(compatibility_matrix)
+    else:
+        return "3", f"{l_sink} incompatible with {l_orig}"
+    
