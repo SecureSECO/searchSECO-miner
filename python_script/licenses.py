@@ -511,6 +511,7 @@ def check_compatibility(l_orig: str, l_sink: str) -> bool:
     return False
 
 
+
 def classify_violation(l_orig, l_sink, license_list):
     """
     Orchestrates classification of License Compliance Debt (LCD).
@@ -518,10 +519,6 @@ def classify_violation(l_orig, l_sink, license_list):
     """
 
     # --- 1. HIGH RISK (CATEGORY 4) ---
-
-    # No legal permission anywhere
-    if l_orig == "Unlicensed" or l_sink == "Unlicensed":
-        return "4", f"High Risk - No legal permission to use: {l_sink} incompatible with {l_orig}"
 
     # Unknown license entering proprietary product
     if l_orig == "Unknown" and l_sink == "Proprietary":
@@ -563,14 +560,20 @@ def classify_violation(l_orig, l_sink, license_list):
             f"custom-licensed system: {l_sink} with {l_orig}"
         )
     
-    if l_orig == "Custom" and l_sink == "Custom":
-        return "4", "High Risk: Unverified Custom-to-Custom Transfer"
 
     # --- 2. UNDETERMINED / INFORMATION GAPS (CATEGORY 5) ---
 
     
     if (l_orig == "Unknown" or l_sink == "Unknown" or l_orig not in license_list or l_sink not in license_list):
         return "5", f"Undetermined: {l_sink} with the {l_orig} (Provenance Debt)"
+    
+    if l_orig == "Custom" and l_sink == "Custom":
+        return "5", f"Undetermined: {l_sink} with the {l_orig} (Provenance Debt)"
+    
+     # No legal permission anywhere
+    if l_orig == "Unlicensed" and l_sink == "Unlicensed":
+        return "5", f"Undetermined Double legal vacuum: {l_sink} with the {l_orig} (Provenance Debt)"
+
 
     # --- 3. PROPRIETARY COMPATIBILITY (CATEGORY 3) ---
 

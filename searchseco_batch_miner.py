@@ -274,40 +274,6 @@ def check_license_compatibility(df1):
                 df.at[idx, "Violation"] = msg
                 df.at[group_idx, "Query Project"] = cat
 
-                """
-                if l_sink not in LICENSE_LIST or l_orig not in LICENSE_LIST:
-                    df.at[idx, "Violation"] = f"Undetermined: {l_sink} with the {l_orig}"
-                    df.at[group_idx, "Query Project"] = "5"
-                    #stat_count[4] = stat_count[4]+1
-                elif l_sink=="Proprietary" and l_orig=="Proprietary": # Proprietary (A)	Proprietary (B)	Category 2 (Violation)
-                    df.at[idx, "Violation"] = f"Restricted Proprietary Transfer: {l_sink} incompatible with {l_orig}"
-                    df.at[group_idx, "Query Project"] = "3"
-                elif l_sink != "Proprietary" and l_orig=="Proprietary": # Origin (Proprietary) Sink (OSS-Any) Category 2 (Violation)
-                    df.at[idx, "Violation"] = f"IP Leak-Proprietary code in OSS project: {l_sink} incompatible with {l_orig}"
-                    df.at[group_idx, "Query Project"] = "3"
-                    #stat_count[3] = stat_count[3]+1
-                elif l_sink == "Proprietary" and l_orig != "Proprietary": # Origin (OSS-Any) Sink (Proprietary) Category 4 (High Risk)
-                    if get_license_group(l_orig) == "Strong Copyleft":
-                        df.at[idx, "Violation"] = f"High-Risk-Viral Copyleft Ingestion: {l_sink} incompatible with {l_orig}"
-                        df.at[group_idx, "Query Project"] = "4" # Category 4: High Risk
-                    else:
-                        df.at[idx, "Violation"] = "Proprietary Ingestion of OSS"
-                        df.at[group_idx, "Query Project"] = "3" # Category 3
-                    #stat_count[3] = stat_count[3]+1
-                elif check_compatibility(l_orig, l_sink):
-                    if l_orig==l_sink:
-                        df.at[idx, "Violation"] = f"Sink is following same license {l_orig}"
-                        df.at[group_idx, "Query Project"] = "1"
-                        #stat_count[0] = stat_count[0]+1
-                    else:
-                        df.at[idx, "Violation"] = f"{l_sink} compatible with {l_orig}"
-                        df.at[group_idx, "Query Project"] = "2"
-                        #stat_count[1] = stat_count[1]+1
-                elif not check_compatibility(l_orig, l_sink):
-                    df.at[idx, "Violation"] = f"{l_sink} incompatible with {l_orig}"
-                    df.at[group_idx, "Query Project"] = "3"
-                    #stat_count[2] = stat_count[2]+1
-                """
 
     return df
 
@@ -442,7 +408,7 @@ def main():
     # provide enterprise organization name: Google, Microsoft, IBM, Intel, Apple etc.
     # NGO/Foundation Wikimedia, KDE, Apache, Mozilla
 
-    company_name = "Microsoft"
+    company_name = "Intel"
     
     repos = get_search_repos(search_repo, company_name)
     
