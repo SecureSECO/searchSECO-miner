@@ -408,7 +408,7 @@ def main():
     # provide enterprise organization name: Google, Microsoft, IBM, Intel, Apple etc.
     # NGO/Foundation Wikimedia, KDE, Apache, Mozilla
 
-    company_name = "Intel"
+    company_name = "KDE"
     
     repos = get_search_repos(search_repo, company_name)
     

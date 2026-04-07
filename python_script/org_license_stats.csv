@@ -1,2 +1,3 @@
 organization,total_projects,total_methods,same_license,diff_license_comply,license_conflicts,high_risks,undetermined,no_match,conflict_and_risks
-microsoft,649,48824,6449 (13.2%),2337 (4.8%),12458 (25.5%),2130 (4.4%),12327 (25.2%),13123 (26.9%),14588 (29.9%)
+apache,58,11329,1924 (17.0%),34 (0.3%),346 (3.1%),0 (0.0%),1630 (14.4%),7395 (65.3%),346 (3.1%)
+kde,259,11308,32 (0.3%),86 (0.8%),553 (4.9%),348 (3.1%),4418 (39.1%),5871 (51.9%),901 (8.0%)

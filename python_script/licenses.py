@@ -309,9 +309,7 @@ license_mapping = {
     "Universal Permissive License Version 1.0": "UPL-1.0",
 
     # Proprietary Closed
-    "-": "Proprietary",
-    "": "Proprietary",
-    " ": "Proprietary",
+
     "Closed": "Proprietary",
     "Closed Source": "Proprietary",
     "Not Open Source": "Proprietary",
@@ -319,10 +317,7 @@ license_mapping = {
     "Internal": "Proprietary",
     "Commercial": "Proprietary",  # Sometimes used in commercial-only packages
     "Private": "Proprietary",
-    "N/A": "Proprietary",
-    "n/a": "Proprietary",
-    "NA": "Proprietary",
-    "na": "Proprietary",
+    "All Rights Reserved": "Proprietary",
     
     # Unlicense and public domain
     "The Unlicense": "Unlicense",
@@ -365,6 +360,13 @@ license_mapping = {
     "Undefined": "Unknown",
     "<undefined>": "Unknown",
     "n/a (unknown)": "Unknown",
+    "-": "Unknown",
+    "": "Unknown",
+    " ": "Unknown",
+    "N/A": "Unknown",
+    "n/a": "Unknown",
+    "NA": "Unknown",
+    "na": "Unknown",
 }
 
 
@@ -520,9 +522,8 @@ def classify_violation(l_orig, l_sink, license_list):
 
     # --- 1. HIGH RISK (CATEGORY 4) ---
 
-    # Unknown license entering proprietary product
-    if l_orig == "Unknown" and l_sink == "Proprietary":
-        return "4", "High Risk - Unknown license entering proprietary system"
+    if (l_orig in ["Unknown", "Unlicensed"]) and (l_sink in ["Custom", "Proprietary"]):
+        return "4", f"High Risk - Unknown/Unlabeled source entering {l_sink} project (Potential Viral Ingestion): {l_sink} incompatible with {l_orig}"
 
     # Proprietary code leaking into unknown destination
     if l_orig == "Proprietary" and (
